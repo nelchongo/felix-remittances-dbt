@@ -23,14 +23,14 @@ Section numbers like "§7" refer to `docs/DESIGN.md`.
 > Read CLAUDE.md, docs/ASSIGNMENT.md and docs/DESIGN.md §3, §9. Then do Phase 0 of docs/IMPLEMENTATION_PLAN.md: initialise the repo skeleton, the pinned environment, the dbt project and `run.py` with the `setup` command. Run the acceptance checks and tick the boxes.
 
 Tasks
-- [ ] `git init`. Add `.gitignore` (already provided: verify it covers `.venv/ warehouse/ data/landing/ dbt/target/ dbt/logs/ dbt/dbt_packages/ dashboard/compiled/ __pycache__/`)
-- [ ] `requirements.txt` is already pinned to the verified set. Don't change versions without a reason
-- [ ] `dbt/dbt_project.yml`: name `felix`, profile `felix`, paths, folder configs (§9), `vars` (§9), `flags: { send_anonymous_usage_stats: false }`, `on-run-end` hook placeholder
-- [ ] `dbt/profiles.yml` in the repo: target `dev` = duckdb `path: "{{ env_var('DUCKDB_PATH', '../warehouse/felix.duckdb') }}"`, threads 4. Optional `postgres` target commented out
-- [ ] `dbt/packages.yml`: `dbt-labs/dbt_utils` (pin to the latest 1.x that installs)
-- [ ] Macro `generate_schema_name`: use the custom schema name as-is (no `main_` prefix). Add a `dev_` prefix only when `target.name` starts with `ci_` (optional)
-- [ ] Empty folder structure with `.gitkeep` files: `macros/{utils,cleaning,modeling,tests,hooks}`, `snapshots`, `models/{docs,staging/felix_backend,intermediate/{payments,disbursements,remittances,customers},marts/{core,finance,operations,growth,risk},semantic/{semantic_models,metrics}}`, `ingest`, `dashboard/pages`, `tests_py`, `docs/adr`, `warehouse/.gitkeep`
-- [ ] `run.py` (argparse, cross-platform, `subprocess` with `cwd`/env: `DBT_PROJECT_DIR=dbt`, `DBT_PROFILES_DIR=dbt`, `DO_NOT_TRACK=1`). Subcommands are stubs, except `setup` = `dbt deps` + `dbt debug`
+- [x] `git init`. Add `.gitignore` (already provided: verify it covers `.venv/ warehouse/ data/landing/ dbt/target/ dbt/logs/ dbt/dbt_packages/ dashboard/compiled/ __pycache__/`)
+- [x] `requirements.txt` is already pinned to the verified set. Don't change versions without a reason
+- [x] `dbt/dbt_project.yml`: name `felix`, profile `felix`, paths, folder configs (§9), `vars` (§9), `flags: { send_anonymous_usage_stats: false }`, `on-run-end` hook placeholder
+- [x] `dbt/profiles.yml` in the repo: target `dev` = duckdb `path: "{{ env_var('DUCKDB_PATH', '../warehouse/felix.duckdb') }}"`, threads 4. Optional `postgres` target commented out
+- [x] `dbt/packages.yml`: `dbt-labs/dbt_utils` (pin to the latest 1.x that installs)
+- [x] Macro `generate_schema_name`: use the custom schema name as-is (no `main_` prefix). Add a `dev_` prefix only when `target.name` starts with `ci_` (optional)
+- [x] Empty folder structure with `.gitkeep` files: `macros/{utils,cleaning,modeling,tests,hooks}`, `snapshots`, `models/{docs,staging/felix_backend,intermediate/{payments,disbursements,remittances,customers},marts/{core,finance,operations,growth,risk},semantic/{semantic_models,metrics}}`, `ingest`, `dashboard/pages`, `tests_py`, `docs/adr`, `warehouse/.gitkeep`
+- [x] `run.py` (argparse, cross-platform, `subprocess` with `cwd`/env: `DBT_PROJECT_DIR=dbt`, `DBT_PROFILES_DIR=dbt`, `DO_NOT_TRACK=1`). Subcommands are stubs, except `setup` = `dbt deps` + `dbt debug`
 
 Acceptance
 ```bash

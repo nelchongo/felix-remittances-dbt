@@ -1,0 +1,90 @@
+# Félix remittances: dbt project (DuckDB). See docs/DESIGN.md §9.
+# No dbt seeds: sources are loaded into `raw` by ingest/load_raw.py and small
+# reference data lives in `vars` (turned into SQL by the `values_from_var` macro).
+name: felix
+version: "1.0.0"
+config-version: 2
+profile: felix
+require-dbt-version: [">=1.12.0", "<1.13.0"]
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+analysis-paths: ["analyses"]
+
+target-path: target
+clean-targets: [target, dbt_packages]
+
+flags:
+  send_anonymous_usage_stats: false
+
+on-run-end:
+  # Placeholder: Phase 5 writes run results to audit.dbt_run_results.
+  - "{{ log_run_results(results) }}"
+
+models:
+  felix:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+      +access: private
+    marts:
+      +materialized: table
+      +access: public
+      +contract:
+        enforced: true
+      core:
+        +schema: core
+      finance:
+        +schema: finance
+        +group: finance
+      operations:
+        +schema: operations
+        +group: operations
+      growth:
+        +schema: growth
+        +group: growth
+      risk:
+        +schema: risk
+        +group: risk
+
+snapshots:
+  felix:
+    +schema: snapshots
+
+vars:
+  # Q2: volume segments by cumulative share of volume (crossing user is included in the top segment)
+  volume_segments: { top: 0.50, middle: 0.80 }
+  # Q3: recurring = active in month M and in >= 2 of the previous 3 months
+  recurring_lookback_months: 3
+  recurring_min_active_months: 2
+  churn_after_inactive_days: 60
+  # Q4: payout provider tiers by attempt failure rate (healthy < 5% <= watch < 10% <= critical)
+  provider_failure_tiers: { healthy: 0.05, watch: 0.10 }
+  provider_min_attempts: 100
+  # Q5: a beneficiary with this many unrelated senders makes its cluster `high_fan_in`
+  mule_min_senders: 10
+  # Q6 / incremental lookback for late chargebacks
+  chargeback_maturity_days: 90
+  # Q8: cap on expected lifetime for projected LTV
+  ltv_horizon_months: 12
+
+  # Reference data (replaces seeds). Rendered as SQL by the `values_from_var` macro.
+  payment_methods:
+    debit_card: { channel: online, chargeback_eligible: true }
+    cash: { channel: in_store, chargeback_eligible: false }
+  payment_processors:
+    Adyen: { processor_type: card_acquirer }
+    Stripe: { processor_type: card_acquirer }
+    PayNearMe: { processor_type: cash_network }
+  corridors:
+    MX: { country_name: Mexico, currency: MXN, region: North America }
+    GT: { country_name: Guatemala, currency: GTQ, region: Central America }
+    HN: { country_name: Honduras, currency: HNL, region: Central America }
+    SV: { country_name: El Salvador, currency: USD, region: Central America }
+    DO: { country_name: Dominican Republic, currency: DOP, region: Caribbean }
+    CO: { country_name: Colombia, currency: COP, region: South America }

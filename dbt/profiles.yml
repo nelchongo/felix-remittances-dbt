@@ -1,0 +1,23 @@
+# In-repo profile: no reliance on ~/.dbt. run.py sets DBT_PROFILES_DIR to this folder
+# and DUCKDB_PATH to <repo>/warehouse/felix.duckdb.
+# Without DUCKDB_PATH, the file is <project dir>/../warehouse/felix.duckdb. dbt does not chdir into the
+# project, so the default is built from DBT_PROJECT_DIR: it works inside dbt/ (no env var) and from the
+# repo root with DBT_PROJECT_DIR=dbt.
+felix:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', env_var('DBT_PROJECT_DIR', '.') ~ '/../warehouse/felix.duckdb') }}"
+      threads: 4
+
+    # Optional alternative warehouse (requires `pip install dbt-postgres`):
+    # postgres:
+    #   type: postgres
+    #   host: "{{ env_var('PGHOST', 'localhost') }}"
+    #   port: "{{ env_var('PGPORT', '5432') | int }}"
+    #   user: "{{ env_var('PGUSER', 'postgres') }}"
+    #   password: "{{ env_var('PGPASSWORD', '') }}"
+    #   dbname: "{{ env_var('PGDATABASE', 'felix') }}"
+    #   schema: main
+    #   threads: 4

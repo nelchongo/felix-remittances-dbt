@@ -1,0 +1,24 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: >
+      Overrides dbt's default schema naming so custom schemas are used as-is
+      (`raw, staging, intermediate, snapshots, core, finance, operations, growth, risk, audit`)
+      instead of `<target_schema>_<custom>`. Targets named `ci_*` get a `dev_` prefix.
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: The `schema` config of the node, or none.
+      - name: node
+        type: object
+        description: The node being compiled (unused).
+
+  - name: log_run_results
+    description: >
+      `on-run-end` hook. Currently a no-op placeholder. Phase 5 makes it write one row per
+      executed node to `audit.dbt_run_results`.
+    arguments:
+      - name: results
+        type: list
+        description: The `results` context variable available in on-run-end hooks.
