@@ -20,7 +20,7 @@ import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.render_answers import fmt_money, trim_empty_months  # noqa: E402
+from scripts.render_answers import fmt_money, trim_empty_months
 
 DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
 COMPILED = ROOT / "dashboard" / "compiled"

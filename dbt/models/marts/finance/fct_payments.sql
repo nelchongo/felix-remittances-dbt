@@ -7,7 +7,8 @@ with
 payments as (
     select lifecycle.* from {{ ref('int_payments__lifecycle') }} as lifecycle
     {% if is_incremental() %}
-        where lifecycle.created_at is null
+        where
+            lifecycle.created_at is null
             or lifecycle.created_at >= (select max(current_table.created_at) from {{ this }} as current_table)
             - interval '{{ var("chargeback_maturity_days") }} days'
             or lifecycle.last_updated_at > (select max(current_table.last_updated_at) from {{ this }} as current_table)

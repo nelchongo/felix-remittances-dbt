@@ -19,7 +19,8 @@ remittances as (
 changed as (
     select candidates.* from remittances as candidates
     {% if is_incremental() %}
-        where candidates.receipt_created_at is null
+        where
+            candidates.receipt_created_at is null
             or candidates.receipt_created_at
             >= (select max(current_table.receipt_created_at) from {{ this }} as current_table)
             - interval '{{ var("chargeback_maturity_days") }} days'
