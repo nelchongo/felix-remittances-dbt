@@ -16,8 +16,8 @@ macros:
 
   - name: log_run_results
     description: >
-      `on-run-end` hook. Currently a no-op placeholder. Phase 5 makes it write one row per
-      executed node to `audit.dbt_run_results`.
+      `on-run-end` hook. Appends one row per executed node (invocation, command, node, status, execution
+      time, rows affected, message) to `audit.dbt_run_results`, creating the schema and table if needed.
     arguments:
       - name: results
         type: list[any]
@@ -169,3 +169,60 @@ macros:
       - name: current_valid_to
         type: string
         description: SQL literal marking the current version (default 9999-12-31).
+
+  - name: safe_divide
+    description: "`numerator / denominator`, NULL when the denominator is 0 or NULL. Used inside label logic only; ratios are never stored."
+    arguments:
+      - name: numerator
+        type: string
+        description: SQL expression.
+      - name: denominator
+        type: string
+        description: SQL expression.
+
+  - name: classify_tier
+    description: >
+      CASE expression that labels `expr` with ascending thresholds from a var (`{tier: upper_bound}`):
+      the first tier whose bound is not reached, else `else_label`. NULL input gives NULL. Used for the
+      Q2 volume segments and the Q4 provider reliability tiers.
+    arguments:
+      - name: expr
+        type: string
+        description: SQL expression to classify.
+      - name: var_name
+        type: string
+        description: "Var holding `{tier_name: upper_bound}`."
+      - name: else_label
+        type: string
+        description: Label when every bound is reached.
+      - name: labels
+        type: dict[str, str]
+        description: Optional renaming of tier names to output labels.
+
+  - name: test_no_derived_metrics_in_facts
+    description: >
+      Fails for every column of the model whose name looks like a derived metric (`*_rate`, `*_pct`,
+      `*_ratio`, `avg_*`, `median_*`). Enforces "facts store ingredients, the semantic layer stores the formulas".
+    arguments:
+      - name: model
+        type: relation
+        description: Fact under test.
+      - name: pattern
+        type: string
+        description: Regex for forbidden column names.
+
+  - name: test_share_at_least
+    description: Fails when the rows matching `condition` hold less than `min_share` of `sum(value_column)`.
+    arguments:
+      - name: model
+        type: relation
+        description: Model under test.
+      - name: value_column
+        type: string
+        description: Additive column to share out (e.g. lifetime volume).
+      - name: condition
+        type: string
+        description: SQL predicate for the segment.
+      - name: min_share
+        type: float
+        description: Minimum share, between 0 and 1.

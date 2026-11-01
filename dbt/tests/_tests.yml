@@ -1,0 +1,11 @@
+version: 2
+
+data_tests:
+  - name: assert_no_cash_chargebacks
+    description: Business rule. Cash payments can't be charged back, so no cash payment may have a `chargeback` version.
+  - name: assert_card_last4_only_on_debit_cards
+    description: Business rule. Only debit card payment versions carry `card_last4`.
+  - name: assert_payment_amount_within_method_limits
+    description: Business rule. Card payments are at most $2,000 and cash barcodes at most $1,000.
+  - name: assert_max_three_payout_attempts
+    description: Business rule. A remittance has at most 3 payout attempts.

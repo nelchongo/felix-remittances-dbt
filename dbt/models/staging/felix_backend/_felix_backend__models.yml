@@ -64,8 +64,14 @@ models:
   - name: stg_felix_backend__payment_events
     description: >
       Payment status history: one row per distinct payment version (payment × status × `updated_at`).
-      Exact duplicate rows are removed. Domain tests live here because they must hold for every version,
-      not just the latest one.
+      Exact duplicate rows are removed. Domain and row-level business rules live here because they must hold
+      for every version, not just the latest one, and so that one bad row trips its own test in a
+      `dbt build` (tests on downstream models would be skipped).
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "send_amount_usd > 0" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "fee_amount_usd >= 0 and store_fee_amount_usd >= 0" }
     columns:
       - name: payment_event_id
         description: Surrogate key of the version, hash of (`payment_id`, `status`, `updated_at`).
@@ -75,7 +81,15 @@ models:
         description: '{{ doc("col_payment_id") }}'
         data_type: varchar
         data_tests: [not_null]
-      - &user_id { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - name: user_id
+        description: '{{ doc("col_user_id") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: { to: ref('stg_felix_backend__users'), field: user_id }
+              config:
+                severity: warn  # source problem: a payment from a user missing in the users extract
       - &send_amount_usd { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)" }
       - &fee_amount_usd { name: fee_amount_usd, description: '{{ doc("col_fee_amount_usd") }}', data_type: "decimal(18,2)" }
       - &store_fee_amount_usd { name: store_fee_amount_usd, description: '{{ doc("col_store_fee_amount_usd") }}', data_type: "decimal(18,2)" }
@@ -128,26 +142,13 @@ models:
   - name: stg_felix_backend__payments
     description: >
       Payments, one row per `payment_id`: the latest version, i.e. the current status. Built from
-      `stg_felix_backend__payment_events`; use that model for the status history.
-    data_tests:
-      - dbt_utils.expression_is_true:
-          arguments: { expression: "send_amount_usd > 0" }
-      - dbt_utils.expression_is_true:
-          arguments: { expression: "fee_amount_usd >= 0 and store_fee_amount_usd >= 0" }
+      `stg_felix_backend__payment_events`; use that model for the status history (and its row-level tests).
     columns:
       - name: payment_id
         description: '{{ doc("col_payment_id") }}'
         data_type: varchar
         data_tests: [unique, not_null]
-      - name: user_id
-        description: '{{ doc("col_user_id") }}'
-        data_type: varchar
-        data_tests:
-          - not_null
-          - relationships:
-              arguments: { to: ref('stg_felix_backend__users'), field: user_id }
-              config:
-                severity: warn  # source problem: a payment from a user missing in the users extract
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
       - name: send_amount_usd
         description: '{{ doc("col_send_amount_usd") }}'
         data_type: "decimal(18,2)"

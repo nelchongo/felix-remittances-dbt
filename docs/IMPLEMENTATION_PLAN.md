@@ -142,17 +142,17 @@ duckdb warehouse/felix.duckdb "select count(*) from (select user_id from core.di
 > Do Phase 5 (DESIGN §5, §6, §8, §13). Build the label models, the facts for finance/operations/growth/risk with enforced contracts, the incremental config, the `no_derived_metrics_in_facts` and `share_at_least` tests, groups and exposures. Facts must hold ingredients only. Run the acceptance checks, then run the edge-case batch and record which tests fail.
 
 Tasks
-- [ ] Label models (intermediate/customers, disbursements): `int_customers__volume_ranking` (volume_rank, cumulative share, `volume_segment` from `var('volume_segments')`, crossing user included in top), `int_customers__activity_lifecycle` (user × month spine from first active month: `is_active`, `is_recurring` = active in M and in ≥ 2 of the previous 3 months, `lifecycle_status` new/recurring/returning/at_risk/churned, `cohort_month`, `months_since_first_transfer`), `int_payout_providers__reliability` (`reliability_tier` with `classify_tier`, min-attempts guard), `int_customers__sender_graph_components` (recursive CTE → `cluster_id` = min user_id, `cluster_type` individual/household/high_fan_in using `var('mule_min_senders')`)
-- [ ] Put the labels into the dims: `dim_users` gets volume_segment, volume_rank, cluster_id, primary_payment_method, first_transfer_month. `dim_payout_providers` gets reliability_tier. New `risk/dim_sender_clusters`
-- [ ] Facts (§6.2), all with `contract: enforced`, `meta.grain`, `meta.kimball_fact_type`, `meta.additivity` on every measure:
-  - [ ] `finance/fct_payments` (incremental merge on payment_id, 90-day lookback). SKs to user (PIT), beneficiary (PIT), payment method, processor, funding institution, corridor, date
-  - [ ] `finance/fct_chargebacks`
-  - [ ] `operations/fct_remittances` (accumulating snapshot, incremental merge), `operations/fct_disbursement_attempts`
-  - [ ] `growth/fct_customer_activity_monthly` (periodic snapshot, `cumulative_net_revenue_usd` with `meta.additivity: semi_additive`)
-  - [ ] `risk/bridge_user_beneficiary`
-- [ ] Custom tests: `no_derived_metrics_in_facts` (fails on columns matching `_rate$|_pct$|^avg_|_ratio$|^median_`), `share_at_least` (top_50pct segment ≥ 0.5 of volume). Singular tests: no cash chargebacks, `card_last4` only for debit cards, cash ≤ 1000 and card ≤ 2000, attempts ≤ 3
-- [ ] `marts/_groups.yml` (finance, operations, growth, risk + owners), `marts/_exposures.yml` (dashboard pages, filled in Phase 7)
-- [ ] Hook `log_run_results` → `audit.dbt_run_results`
+- [x] Label models (intermediate/customers, disbursements): `int_customers__volume_ranking` (volume_rank, cumulative share, `volume_segment` from `var('volume_segments')`, crossing user included in top), `int_customers__activity_lifecycle` (user × month spine from first active month: `is_active`, `is_recurring` = active in M and in ≥ 2 of the previous 3 months, `lifecycle_status` new/recurring/returning/at_risk/churned, `cohort_month`, `months_since_first_transfer`), `int_payout_providers__reliability` (`reliability_tier` with `classify_tier`, min-attempts guard), `int_customers__sender_graph_components` (recursive CTE → `cluster_id` = min user_id, `cluster_type` individual/household/high_fan_in using `var('mule_min_senders')`)
+- [x] Put the labels into the dims: `dim_users` gets volume_segment, volume_rank, cluster_id, primary_payment_method, first_transfer_month. `dim_payout_providers` gets reliability_tier. New `risk/dim_sender_clusters`
+- [x] Facts (§6.2), all with `contract: enforced`, `meta.grain`, `meta.kimball_fact_type`, `meta.additivity` on every measure:
+  - [x] `finance/fct_payments` (incremental merge on payment_id, 90-day lookback). SKs to user (PIT), beneficiary (PIT), payment method, processor, funding institution, corridor, date
+  - [x] `finance/fct_chargebacks`
+  - [x] `operations/fct_remittances` (accumulating snapshot, incremental merge), `operations/fct_disbursement_attempts`
+  - [x] `growth/fct_customer_activity_monthly` (periodic snapshot, `cumulative_net_revenue_usd` with `meta.additivity: semi_additive`)
+  - [x] `risk/bridge_user_beneficiary`
+- [x] Custom tests: `no_derived_metrics_in_facts` (fails on columns matching `_rate$|_pct$|^avg_|_ratio$|^median_`), `share_at_least` (top_50pct segment ≥ 0.5 of volume). Singular tests: no cash chargebacks, `card_last4` only for debit cards, cash ≤ 1000 and card ≤ 2000, attempts ≤ 3
+- [x] `marts/_groups.yml` (finance, operations, growth, risk + owners), `marts/_exposures.yml` (dashboard pages, filled in Phase 7)
+- [x] Hook `log_run_results` → `audit.dbt_run_results`
 
 Acceptance
 ```bash
