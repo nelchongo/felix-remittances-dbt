@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: int_disbursements__attempts_ranked
+    description: >
+      One row per payout attempt (latest status), ranked within its receipt. Adds the resolution timestamps
+      from the attempt's status history, `minutes_to_resolve` and flags for first, final and retry attempts.
+    columns:
+      - name: disbursement_id
+        description: '{{ doc("col_disbursement_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: receipt_id
+        description: '{{ doc("col_receipt_id") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique:
+              config:
+                where: "is_final_attempt"  # exactly one final attempt per receipt
+      - { name: attempt_number, description: '{{ doc("col_attempt_number") }}', data_type: integer }
+      - { name: provider_name, description: '{{ doc("col_provider_name") }}', data_type: varchar }
+      - { name: payout_method, description: '{{ doc("col_payout_method") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: beneficiary_country, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar }
+      - { name: payout_amount_local, description: '{{ doc("col_payout_amount_local") }}', data_type: "decimal(18,2)" }
+      - { name: payout_currency, description: "Payout currency.", data_type: varchar }
+      - name: final_status
+        description: 'Current status of the attempt. {{ doc("col_disbursement_status") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [processing, completed, failed] }
+      - { name: failure_reason, description: "Why the attempt failed (`invalid_account`, `provider_timeout`, ...). NULL otherwise.", data_type: varchar }
+      - { name: attempted_at, description: "When the attempt started, UTC.", data_type: timestamp }
+      - { name: completed_at, description: "When the attempt completed, UTC.", data_type: timestamp }
+      - { name: failed_at, description: "When the attempt failed, UTC.", data_type: timestamp }
+      - { name: resolved_at, description: "When the attempt completed or failed, UTC. NULL while processing.", data_type: timestamp }
+      - { name: minutes_to_resolve, description: "Minutes from the start of the attempt to its resolution.", data_type: bigint }
+      - { name: is_first_attempt, description: "True for attempt number 1.", data_type: boolean }
+      - { name: is_final_attempt, description: "True for the receipt's latest attempt (highest attempt number).", data_type: boolean }
+      - { name: is_retry, description: "True for attempts after the first (attempt number > 1).", data_type: boolean }
+      - { name: is_completed, description: "True if the attempt completed (money delivered).", data_type: boolean }
+      - { name: is_failed, description: "True if the attempt failed.", data_type: boolean }
+      - { name: is_processing, description: "True if the attempt is still processing.", data_type: boolean }

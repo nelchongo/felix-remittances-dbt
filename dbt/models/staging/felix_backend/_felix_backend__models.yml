@@ -154,7 +154,7 @@ models:
         data_tests: [not_null]
       - *fee_amount_usd
       - *store_fee_amount_usd
-      - { name: currency, description: Pay-in currency., data_type: varchar }
+      - { name: currency, description: "Pay-in currency.", data_type: varchar }
       - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
       - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
       - *funding_institution
@@ -271,7 +271,7 @@ models:
           - not_null
           - accepted_values:
               arguments: { values: [MX, GT, HN, SV, DO, CO] }
-      - &beneficiary_account_last4 { name: beneficiary_account_last4, description: Last 4 digits of the beneficiary's account or wallet., data_type: varchar }
+      - &beneficiary_account_last4 { name: beneficiary_account_last4, description: "Last 4 digits of the beneficiary's account or wallet.", data_type: varchar }
       - &payout_amount_local { name: payout_amount_local, description: '{{ doc("col_payout_amount_local") }}', data_type: "decimal(18,2)" }
       - name: payout_currency
         description: Payout currency.
@@ -336,10 +336,10 @@ models:
       - { name: beneficiary_country, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar }
       - *beneficiary_account_last4
       - *payout_amount_local
-      - { name: payout_currency, description: Payout currency., data_type: varchar }
+      - { name: payout_currency, description: "Payout currency.", data_type: varchar }
       - { name: status, description: 'Current status. {{ doc("col_disbursement_status") }}', data_type: varchar }
       - *disbursement_failure_reason
-      - { name: created_at, description: When the attempt started, UTC., data_type: timestamp }
-      - { name: updated_at, description: When the current status was written, UTC., data_type: timestamp }
+      - { name: created_at, description: "When the attempt started, UTC.", data_type: timestamp }
+      - { name: updated_at, description: "When the current status was written, UTC.", data_type: timestamp }
       - *batch_id
       - *loaded_at

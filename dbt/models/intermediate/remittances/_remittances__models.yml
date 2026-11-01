@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: int_remittances__joined
+    description: >
+      One row per remittance (receipt): payment lifecycle ⋈ receipt ⋈ final payout attempt. Adds
+      `fx_revenue_usd` (the `fx_revenue` macro), `chargeback_loss_usd` and `remittance_status`. Receipts whose
+      payment is missing from the extract (known orphans) are kept with NULL payment attributes.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "fx_revenue_usd >= 0" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "chargeback_loss_usd >= 0 and chargeback_loss_usd <= send_amount_usd" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "n_failed_attempts <= n_attempts" }
+    columns:
+      - name: receipt_id
+        description: '{{ doc("col_receipt_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - { name: payment_id, description: '{{ doc("col_payment_id") }}', data_type: varchar }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - name: destination_country
+        description: >
+          Corridor (ISO-2 destination country). From the final payout attempt, or from the receive currency
+          (via the `corridors` var) when no attempt exists yet.
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [MX, GT, HN, SV, DO, CO] }
+      - { name: receive_currency, description: "Payout currency of the corridor.", data_type: varchar }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: fee_amount_usd, description: '{{ doc("col_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: store_fee_amount_usd, description: '{{ doc("col_store_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: fx_rate, description: '{{ doc("col_fx_rate") }}', data_type: "decimal(18,6)" }
+      - { name: reference_fx_rate, description: '{{ doc("col_reference_fx_rate") }}', data_type: "decimal(18,6)" }
+      - name: fx_revenue_usd
+        description: '{{ doc("col_fx_revenue_usd") }}'
+        data_type: "decimal(18,4)"
+        data_tests: [not_null]
+      - { name: chargeback_loss_usd, description: "Principal lost to a chargeback (the send amount when the payment was charged back, else 0).", data_type: "decimal(18,2)" }
+      - { name: payout_amount_local, description: '{{ doc("col_payout_amount_local") }}', data_type: "decimal(18,2)" }
+      - { name: n_attempts, description: "Number of payout attempts so far.", data_type: bigint }
+      - { name: n_failed_attempts, description: "Number of failed payout attempts.", data_type: bigint }
+      - { name: final_provider_name, description: "Payout provider of the final attempt.", data_type: varchar }
+      - { name: final_payout_method, description: "Payout method of the final attempt.", data_type: varchar }
+      - { name: final_attempt_status, description: "Status of the final payout attempt (NULL when no attempt exists).", data_type: varchar }
+      - { name: payment_created_at, description: "When the payment was created, UTC.", data_type: timestamp }
+      - { name: payment_succeeded_at, description: "When the payment succeeded, UTC.", data_type: timestamp }
+      - { name: receipt_created_at, description: "When the receipt was issued, UTC.", data_type: timestamp }
+      - { name: first_attempt_at, description: "When the first payout attempt started, UTC.", data_type: timestamp }
+      - { name: delivered_at, description: "When the final attempt completed, UTC.", data_type: timestamp }
+      - { name: refunded_at, description: "When the payment was refunded, UTC.", data_type: timestamp }
+      - { name: chargeback_at, description: "When the payment was charged back, UTC.", data_type: timestamp }
+      - { name: minutes_to_deliver, description: "Minutes from receipt to delivery.", data_type: bigint }
+      - name: remittance_status
+        description: >
+          End-to-end status: `charged_back` (payment disputed), `failed_refunded` (refunded, or every payout
+          attempt failed), `delivered` (final attempt completed), `in_flight` (still processing or not attempted yet).
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [delivered, in_flight, failed_refunded, charged_back] }
+      - { name: is_delivered, description: "True when the money reached the beneficiary and the payment was not refunded or charged back.", data_type: boolean }
+      - { name: is_charged_back, description: "True when the payment was charged back.", data_type: boolean }
+      - { name: is_refunded, description: "True when the payment was refunded.", data_type: boolean }
+      - { name: is_payment_missing, description: "True when the receipt's payment is not in the extract (known source orphans).", data_type: boolean }
+
+unit_tests:
+  - name: remittances_fx_revenue_and_status
+    description: >
+      FX revenue = send × (1 − fx_rate / reference_fx_rate), NULL-safe for a zero reference rate.
+      A charged-back payment loses its principal and is `charged_back` even if delivered; a receipt with
+      no attempt is `in_flight` and gets its corridor from the receive currency.
+    model: int_remittances__joined
+    given:
+      - input: ref('stg_felix_backend__receipts')
+        rows:
+          - { receipt_id: r1, payment_id: p1, send_amount_usd: 100.00, fx_rate: 18.000000, reference_fx_rate: 18.500000, receive_currency: MXN }
+          - { receipt_id: r2, payment_id: p2, send_amount_usd: 200.00, fx_rate: 7.500000, reference_fx_rate: 7.500000, receive_currency: GTQ }
+          - { receipt_id: r3, payment_id: p3, send_amount_usd: 50.00, fx_rate: 18.000000, reference_fx_rate: 0, receive_currency: MXN }
+      - input: ref('int_payments__lifecycle')
+        rows:
+          - { payment_id: p1, is_charged_back: true, is_refunded: false }
+          - { payment_id: p2, is_charged_back: false, is_refunded: false }
+          - { payment_id: p3, is_charged_back: false, is_refunded: false }
+      - input: ref('int_disbursements__attempts_ranked')
+        rows:
+          - { receipt_id: r1, beneficiary_country: MX, final_status: completed, is_final_attempt: true, is_failed: false }
+          - { receipt_id: r2, beneficiary_country: GT, final_status: failed, is_final_attempt: false, is_failed: true }
+          - { receipt_id: r2, beneficiary_country: GT, final_status: completed, is_final_attempt: true, is_failed: false }
+    expect:
+      rows:
+        - { receipt_id: r1, fx_revenue_usd: 2.7027, chargeback_loss_usd: 100.00, remittance_status: charged_back, is_delivered: false, destination_country: MX, n_attempts: 1, n_failed_attempts: 0 }
+        - { receipt_id: r2, fx_revenue_usd: 0.0000, chargeback_loss_usd: 0.00, remittance_status: delivered, is_delivered: true, destination_country: GT, n_attempts: 2, n_failed_attempts: 1 }
+        - { receipt_id: r3, fx_revenue_usd: null, chargeback_loss_usd: 0.00, remittance_status: in_flight, is_delivered: false, destination_country: MX, n_attempts: 0, n_failed_attempts: 0 }

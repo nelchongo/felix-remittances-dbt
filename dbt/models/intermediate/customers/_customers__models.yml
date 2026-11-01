@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: int_beneficiaries__attribute_changes
+    description: >
+      One row per beneficiary with its **current** attribute combination (payout method, account last 4,
+      name, country) and `attributes_changed_at`, the first time that combination was observed. Consecutive
+      identical observations from the payout attempts are collapsed (gaps and islands). This is the source
+      of the `snp_beneficiaries` snapshot, which records a new version whenever `attributes_changed_at` moves.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "first_seen_at <= attributes_changed_at" }
+    columns:
+      - name: beneficiary_id
+        description: '{{ doc("col_beneficiary_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: beneficiary_name
+        description: Beneficiary full name (current).
+        data_type: varchar
+        config: { meta: { pii: true } }
+      - { name: beneficiary_country, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar }
+      - { name: payout_method, description: 'Current payout method. {{ doc("col_payout_method") }}', data_type: varchar }
+      - { name: beneficiary_account_last4, description: "Last 4 digits of the beneficiary's current account or wallet.", data_type: varchar }
+      - { name: n_attribute_versions, description: "Number of attribute versions observed so far (1 = never changed).", data_type: integer }
+      - { name: first_seen_at, description: "First time the beneficiary appeared on a payout attempt, UTC.", data_type: timestamp }
+      - name: attributes_changed_at
+        description: When the current attribute combination was first observed, UTC. The snapshot's `updated_at`.
+        data_type: timestamp
+        data_tests: [not_null]

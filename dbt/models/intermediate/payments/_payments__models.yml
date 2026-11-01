@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: int_payments__lifecycle
+    description: >
+      One row per payment. The status history (`stg_felix_backend__payment_events`) pivoted into milestone
+      timestamps and boolean flags, joined to the latest payment attributes. A later chargeback or refund keeps
+      `succeeded_at`. `is_first_transfer` marks the user's first succeeded payment (Félix's free first transfer).
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "succeeded_at >= created_at" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "chargeback_at >= succeeded_at and refunded_at >= succeeded_at" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "not is_first_transfer or is_succeeded" }
+    columns:
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: fee_amount_usd, description: '{{ doc("col_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: store_fee_amount_usd, description: '{{ doc("col_store_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - { name: card_last4, description: '{{ doc("col_card_last4") }}', data_type: varchar }
+      - name: final_status
+        description: 'Current (latest) status. {{ doc("col_payment_status") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [pending, succeeded, failed, expired, refunded, chargeback] }
+      - { name: decline_reason, description: "Reason recorded on the `failed` or `expired` status (card decline reason or `barcode_not_paid`).", data_type: varchar }
+      - { name: chargeback_reason, description: "Reason recorded on the `chargeback` status (e.g. `fraudulent`).", data_type: varchar }
+      - { name: refund_reason, description: "Reason recorded on the `refunded` status (`customer_request`, `disbursement_failed`).", data_type: varchar }
+      - { name: created_at, description: '{{ doc("col_created_at") }}', data_type: timestamp }
+      - { name: succeeded_at, description: "When the payment first reached `succeeded`, UTC. NULL if it never did.", data_type: timestamp }
+      - { name: failed_at, description: "When the card payment was declined, UTC.", data_type: timestamp }
+      - { name: expired_at, description: "When the cash barcode expired unpaid, UTC.", data_type: timestamp }
+      - { name: refunded_at, description: "When the payment was refunded, UTC.", data_type: timestamp }
+      - { name: chargeback_at, description: "When the card payment was charged back, UTC.", data_type: timestamp }
+      - { name: last_updated_at, description: "When the current status was written, UTC.", data_type: timestamp }
+      - { name: minutes_to_pay, description: "Minutes from creation to success (cash barcodes take hours to days).", data_type: bigint }
+      - { name: is_succeeded, description: "True if the payment ever reached `succeeded` (also true when later refunded or charged back).", data_type: boolean }
+      - { name: is_failed, description: "True if the card payment was declined.", data_type: boolean }
+      - { name: is_expired, description: "True if the cash barcode expired unpaid.", data_type: boolean }
+      - { name: is_refunded, description: "True if the payment was refunded.", data_type: boolean }
+      - { name: is_charged_back, description: "True if the card payment was charged back.", data_type: boolean }
+      - { name: is_pending, description: "True if the payment is still `pending` (in flight at the extract cut-off).", data_type: boolean }
+      - { name: is_first_transfer, description: "True for the user's first succeeded payment (ordered by `succeeded_at`). Félix's first transfer is free.", data_type: boolean }
+
+unit_tests:
+  - name: lifecycle_chargeback_keeps_succeeded_at
+    description: >
+      A payment that succeeded and was later charged back keeps its `succeeded_at`, is flagged both
+      succeeded and charged back, and is the user's first transfer. A later payment is not the first
+      transfer, and a pending one is neither succeeded nor first.
+    model: int_payments__lifecycle
+    given:
+      - input: ref('stg_felix_backend__payment_events')
+        rows:
+          - { payment_id: p1, user_id: u1, status: pending, created_at: "2025-01-01 10:00:00", updated_at: "2025-01-01 10:00:00" }
+          - { payment_id: p1, user_id: u1, status: succeeded, created_at: "2025-01-01 10:00:00", updated_at: "2025-01-01 10:05:00" }
+          - { payment_id: p1, user_id: u1, status: chargeback, failure_reason: fraudulent, created_at: "2025-01-01 10:00:00", updated_at: "2025-02-10 09:00:00" }
+          - { payment_id: p2, user_id: u1, status: succeeded, created_at: "2025-03-01 12:00:00", updated_at: "2025-03-01 12:01:00" }
+          - { payment_id: p3, user_id: u1, status: pending, created_at: "2025-04-01 08:00:00", updated_at: "2025-04-01 08:00:00" }
+      - input: ref('stg_felix_backend__payments')
+        rows:
+          - { payment_id: p1, user_id: u1, status: chargeback, created_at: "2025-01-01 10:00:00", updated_at: "2025-02-10 09:00:00" }
+          - { payment_id: p2, user_id: u1, status: succeeded, created_at: "2025-03-01 12:00:00", updated_at: "2025-03-01 12:01:00" }
+          - { payment_id: p3, user_id: u1, status: pending, created_at: "2025-04-01 08:00:00", updated_at: "2025-04-01 08:00:00" }
+    expect:
+      rows:
+        - { payment_id: p1, final_status: chargeback, succeeded_at: "2025-01-01 10:05:00", chargeback_at: "2025-02-10 09:00:00", chargeback_reason: fraudulent, minutes_to_pay: 5, is_succeeded: true, is_charged_back: true, is_pending: false, is_first_transfer: true }
+        - { payment_id: p2, final_status: succeeded, succeeded_at: "2025-03-01 12:01:00", chargeback_at: null, chargeback_reason: null, minutes_to_pay: 1, is_succeeded: true, is_charged_back: false, is_pending: false, is_first_transfer: false }
+        - { payment_id: p3, final_status: pending, succeeded_at: null, chargeback_at: null, chargeback_reason: null, minutes_to_pay: null, is_succeeded: false, is_charged_back: false, is_pending: true, is_first_transfer: false }

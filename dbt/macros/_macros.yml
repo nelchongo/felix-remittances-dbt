@@ -80,3 +80,19 @@ macros:
       - name: order_by
         type: string
         description: Deterministic ordering; the first row per key is kept (e.g. `updated_at desc, _loaded_at desc`).
+
+  - name: fx_revenue
+    description: >
+      FX revenue in USD, `send_amount × (1 − fx_rate / reference_fx_rate)`, cast to `decimal(18,4)`.
+      The single definition of FX revenue in the project. NULL when an input is NULL or the reference rate
+      is not positive.
+    arguments:
+      - name: send_amount
+        type: string
+        description: Expression for the amount sent, in USD.
+      - name: fx_rate
+        type: string
+        description: Expression for the customer rate (receive currency per USD).
+      - name: reference_fx_rate
+        type: string
+        description: Expression for the mid-market rate at quote time.

@@ -100,12 +100,12 @@ dbt docs generate                     # every staging column has a description
 > Do Phase 3 (DESIGN §6.2, §10). Build the intermediate models listed below with YAML, plus the `fx_revenue` macro. Run the acceptance checks.
 
 Tasks
-- [ ] Macro `fx_revenue(send_amount, fx_rate, reference_fx_rate)` = `send × (1 − fx_rate / reference_fx_rate)`, NULL-safe
-- [ ] `int_payments__lifecycle` (grain: payment): `created_at`, `succeeded_at`, `failed_at`, `expired_at`, `refunded_at`, `chargeback_at`, `final_status`, `minutes_to_pay`, flags `is_succeeded` (ever succeeded), `is_failed`, `is_expired`, `is_refunded`, `is_charged_back`, `is_first_transfer` (first succeeded per user)
-- [ ] `int_disbursements__attempts_ranked` (grain: attempt): `is_first_attempt`, `is_final_attempt`, `is_retry`, `minutes_to_resolve`, `final_status`
-- [ ] `int_remittances__joined` (grain: receipt): lifecycle ⋈ receipt ⋈ final attempt. Includes `fx_revenue_usd`, `chargeback_loss_usd` (send amount if charged back), `remittance_status` (`delivered`, `in_flight`, `failed_refunded`, `charged_back`), corridor
-- [ ] `int_beneficiaries__attribute_changes` (grain: beneficiary × version): collapse consecutive identical (payout_method, account_last4, name, country). `attributes_changed_at` = first time the combination was seen. Output the **latest** version per beneficiary (it feeds the snapshot)
-- [ ] Unit tests (dbt `unit_tests:`) for `int_payments__lifecycle` (a chargeback after succeeded keeps `succeeded_at`) and for `fx_revenue`
+- [x] Macro `fx_revenue(send_amount, fx_rate, reference_fx_rate)` = `send × (1 − fx_rate / reference_fx_rate)`, NULL-safe
+- [x] `int_payments__lifecycle` (grain: payment): `created_at`, `succeeded_at`, `failed_at`, `expired_at`, `refunded_at`, `chargeback_at`, `final_status`, `minutes_to_pay`, flags `is_succeeded` (ever succeeded), `is_failed`, `is_expired`, `is_refunded`, `is_charged_back`, `is_first_transfer` (first succeeded per user)
+- [x] `int_disbursements__attempts_ranked` (grain: attempt): `is_first_attempt`, `is_final_attempt`, `is_retry`, `minutes_to_resolve`, `final_status`
+- [x] `int_remittances__joined` (grain: receipt): lifecycle ⋈ receipt ⋈ final attempt. Includes `fx_revenue_usd`, `chargeback_loss_usd` (send amount if charged back), `remittance_status` (`delivered`, `in_flight`, `failed_refunded`, `charged_back`), corridor
+- [x] `int_beneficiaries__attribute_changes` (grain: beneficiary × version): collapse consecutive identical (payout_method, account_last4, name, country). `attributes_changed_at` = first time the combination was seen. Output the **latest** version per beneficiary (it feeds the snapshot)
+- [x] Unit tests (dbt `unit_tests:`) for `int_payments__lifecycle` (a chargeback after succeeded keeps `succeeded_at`) and for `fx_revenue`
 
 Acceptance
 ```bash
