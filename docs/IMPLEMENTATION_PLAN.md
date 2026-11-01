@@ -261,3 +261,24 @@ in extras, not in the dbt core, so v6 trims them without dropping any requiremen
 - [x] Incremental audit: a business-time watermark (`last_updated_at` > max) missed 12 late-arriving chargebacks and
   refunds in both facts. Now the facts merge on a load-time watermark (`_loaded_at`) plus the maturity lookback, a load
   that deletes raw rows triggers `--full-refresh`, and `run.py check-incremental` (CI) compares them with a full refresh
+
+---
+
+## Menu and brand (v8)
+
+- [x] `python run.py` with no arguments opens a menu (the help when there is no terminal, so CI never hangs). The
+  dashboard starts in the background on the first free port from 8501 and its link stays at the top; exiting stops it
+- [x] Option 1 is the dbt sequence (`run.py pipeline`): an empty warehouse gets the full ingest (monthly replay) and
+  build; afterwards it is incremental (new or changed landing files → snapshot → build), and a no-op when nothing is new.
+  Option 2 adds a monthly test batch and runs that increment; options 3–5 run the checks, open the dashboard, reset
+- [x] Dashboard in the Félix Pago brand (`src/brand.py`, `src/assets/`): logo header, favicon, light (linen) and dark
+  (slate) themes passed as flags, chart palettes derived from the brand tokens and validated with the data-viz checks
+  in both modes. Its cache follows the warehouse file, so a refresh after a build shows the new data
+- [x] `src/tests/test_run.py`: no menu without a terminal, brand theme flags, `pipeline` command
+- [x] The sequence runs step by step: ingest, one `dbt build --select tag:<step>` per tag (`staging`,
+  `intermediate`, `snapshot`, `core`, `marts`), then the semantic layer. Tests run where their last parent is built
+  (`buildable`, `eager` on the last step); a guard test checks one tag per node, DAG order and the same 258 tests
+- [x] Terminal: clean screen, Félix logo in block letters, clickable links (OSC 8); the sequence splits the screen
+  (connected dots with a spinner on the left, live dbt output on the right), and the marts step fans out into the
+  four groups dbt builds in parallel threads (separate processes are not possible: DuckDB has a single writer)
+- [x] `python run.py` resets the data on start, so option 1 always runs the whole sequence; README cut to a 2-minute read
