@@ -226,3 +226,19 @@ Acceptance
 git clone <repo> /tmp/fresh && cd /tmp/fresh && python -m venv .venv && . .venv/bin/activate \
   && pip install -r requirements.txt && python run.py all && python run.py test
 ```
+
+---
+
+## Simplification (v6, after delivery review)
+
+The first build followed v5 to the letter. A review against the brief showed that most of the added complexity sat
+in extras, not in the dbt core, so v6 trims them without dropping any requirement of `docs/ASSIGNMENT.md`.
+
+- [x] Dashboard: one file, one tab per question, reading the same saved queries as `docs/answers.md`.
+  Removed: 4 pages, the filter row, 15 dashboard-only saved queries, 2 semantic models (`sender_clusters`,
+  `user_beneficiary_pairs`), 10 metrics outside the v5 catalog and the extra `dim_sender_clusters.first_transfer_at` column
+- [x] Root: removed Makefile, Dockerfile, `.dockerignore`, `.pre-commit-config.yaml`, `.sqlfluffignore`, `.streamlit/`
+  (`run.py` and CI are the only entry points)
+- [x] Moved `ingest/load_raw.py` to `scripts/load_raw.py` (one folder for the Python helpers)
+- [x] Docs (DESIGN v6, README, CLAUDE.md, ADR 0004) updated; fresh-clone run green on Python 3.11 and 3.13
+
