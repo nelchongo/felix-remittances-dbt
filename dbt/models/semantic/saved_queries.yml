@@ -1,0 +1,141 @@
+# One saved query per question. `python run.py answers` runs them (mf query --saved-query <name> --csv)
+# and writes docs/answers.md; the dashboard runs their compiled SQL. Monthly queries drop the NULL
+# metric_time bucket (payments that never succeeded have no success date). Offset metrics (YoY) also emit
+# the 12 months after the last month with data; the readers trim those trailing empty months.
+saved_queries:
+  # ------------------------------------------------------------------ Q1
+  - name: q1_monthly_volume
+    label: "Q1 · Total amount transacted by month"
+    description: >
+      Gross volume = Σ principal (USD) of succeeded payments, by the month the payment succeeded, with
+      transfers, net revenue and month-over-month / year-over-year growth.
+    query_params:
+      metrics: [gross_volume_usd, transfers, net_revenue_usd, gross_volume_usd_mom_pct, gross_volume_usd_yoy_pct]
+      group_by: ["TimeDimension('metric_time', 'month')"]
+      where: ["{{ TimeDimension('metric_time', 'month') }} is not null"]
+      order_by: ["TimeDimension('metric_time', 'month')"]
+
+  # ------------------------------------------------------------------ Q2
+  - name: q2_volume_concentration
+    label: "Q2 · Users that represent 50% of the volume"
+    description: >
+      Senders ranked by lifetime volume; `top_50pct` are the users who together make up the first 50% of
+      the volume (the user who crosses the line included), then `middle_30pct` and `tail_20pct`.
+    query_params:
+      metrics: [active_senders, gross_volume_usd, transfers]
+      group_by: ["Dimension('user__volume_segment')"]
+      where: ["{{ Dimension('user__volume_segment') }} is not null"]
+      order_by: ["Metric('gross_volume_usd').descending(True)"]
+
+  # ------------------------------------------------------------------ Q3
+  - name: q3_recurring_customers
+    label: "Q3 · Recurring customers"
+    description: >
+      Recurring = active in the month and in at least 2 of the previous 3 months (a monthly payday habit).
+      Churned = no transfer for more than 60 days. Churn rate = newly churned ÷ active the previous month.
+    query_params:
+      metrics: [monthly_active_customers, recurring_senders, recurring_share, churned_senders, churn_rate]
+      group_by: ["TimeDimension('metric_time', 'month')"]
+      order_by: ["TimeDimension('metric_time', 'month')"]
+
+  # ------------------------------------------------------------------ Q4
+  - name: q4_payout_providers
+    label: "Q4 · Payout providers by failed disbursements"
+    description: >
+      Payout attempt failure rate per provider and its tier: `healthy` (< 5%), `watch` (5–10%),
+      `critical` (>= 10%), plus first-attempt success and how often a retry rescues a failed first attempt.
+    query_params:
+      metrics: [payout_attempts, payout_attempts_failed, payout_attempt_failure_rate, first_attempt_success_rate, rescued_by_retry_rate]
+      group_by: ["Dimension('attempt__provider_name')", "Dimension('payout_provider__reliability_tier')"]
+      order_by: ["Metric('payout_attempt_failure_rate').descending(True)"]
+
+  # ------------------------------------------------------------------ Q5
+  - name: q5_sender_clusters
+    label: "Q5 · Clusters of users sending to the same beneficiaries"
+    description: >
+      Connected components of the sender ↔ beneficiary graph: `individual` (one sender), `household`
+      (2+ senders sharing beneficiaries), `high_fan_in` (a beneficiary receives from >= 10 senders, AML review).
+    query_params:
+      metrics: [senders, beneficiaries, transfers, gross_volume_usd, chargeback_rate]
+      group_by: ["Dimension('user__cluster_type')"]
+      where: ["{{ Dimension('user__cluster_type') }} is not null"]
+      order_by: ["Metric('senders').descending(True)"]
+
+  # ------------------------------------------------------------------ Q6
+  - name: q6_chargeback_rate
+    label: "Q6 · Chargeback rate by month"
+    description: >
+      Charged-back ÷ succeeded debit card payments, by the month the payment succeeded (cohort view; recent
+      months are still maturing). `chargebacks_reported` counts disputes by the month they were recorded.
+    query_params:
+      metrics: [transfers, payments_charged_back, chargeback_rate, chargeback_rate_amount, chargebacks_reported]
+      group_by: ["TimeDimension('metric_time', 'month')"]
+      where: ["{{ TimeDimension('metric_time', 'month') }} is not null"]
+      order_by: ["TimeDimension('metric_time', 'month')"]
+  - name: q6_chargeback_rate_total
+    label: "Q6 · Chargeback rate, all time"
+    description: Chargeback rate over the whole history, by count and by amount.
+    query_params:
+      metrics: [transfers, payments_charged_back, chargeback_rate, chargeback_rate_amount]
+  - name: q6_chargeback_rate_by_bank
+    label: "Q6 · Chargeback rate by issuing bank"
+    description: Card chargeback rate by the bank that issued the card.
+    query_params:
+      metrics: [transfers, payments_charged_back, chargeback_rate]
+      group_by: ["Dimension('payment__funding_institution')"]
+      where: ["{{ Dimension('payment__payment_method') }} = 'debit_card'"]
+      order_by: ["Metric('chargeback_rate').descending(True)"]
+
+  # ------------------------------------------------------------------ Q7
+  - name: q7_transaction_value
+    label: "Q7 · Average transaction value"
+    description: ATV = gross volume ÷ transfers, with the median because tickets are skewed.
+    query_params:
+      metrics: [transfers, gross_volume_usd, atv_usd, median_ticket_usd]
+      group_by: ["Dimension('payment__payment_method')"]
+      order_by: ["Metric('atv_usd').descending(True)"]
+
+  # ------------------------------------------------------------------ Q8
+  - name: q8_ltv
+    label: "Q8 · Customer lifetime value (historical)"
+    description: >
+      Historical LTV = lifetime net revenue (fees + FX − chargeback losses) ÷ lifetime senders. The same
+      formula as ARPU without a time grain.
+    query_params:
+      metrics: [historical_ltv_usd, net_revenue_usd, fee_revenue_usd, fx_revenue_usd, chargeback_loss_usd, active_senders]
+  - name: q8_ltv_projection
+    label: "Q8 · Projected 12-month LTV"
+    description: Monthly ARPU × expected lifetime (1 ÷ monthly churn rate, capped at 12 months).
+    query_params:
+      metrics: [arpu_usd, churn_rate, projected_ltv_12m_usd]
+      group_by: ["TimeDimension('metric_time', 'month')"]
+      where: ["{{ TimeDimension('metric_time', 'month') }} is not null"]
+      order_by: ["TimeDimension('metric_time', 'month')"]
+  - name: q8_ltv_curve
+    label: "Q8 · LTV curves by cohort"
+    description: Average cumulative net revenue per user of each monthly cohort, N months after their first transfer.
+    query_params:
+      metrics: [ltv_per_cohort_user, customer_months]
+      group_by: ["Dimension('customer_month__cohort_month')", "Dimension('customer_month__months_since_first_transfer')"]
+      order_by: ["Dimension('customer_month__cohort_month')", "Dimension('customer_month__months_since_first_transfer')"]
+
+  # ------------------------------------------------------------------ growth KPIs
+  - name: growth_kpis_monthly
+    label: "Growth KPIs by month"
+    description: Active and new senders, ARPU (net revenue per active sender) and their month-over-month / year-over-year growth.
+    query_params:
+      metrics: [active_senders, new_senders, arpu_usd, arpu_usd_mom_pct, arpu_usd_yoy_pct, active_senders_yoy_pct]
+      group_by: ["TimeDimension('metric_time', 'month')"]
+      where: ["{{ TimeDimension('metric_time', 'month') }} is not null"]
+      order_by: ["TimeDimension('metric_time', 'month')"]
+
+  # ------------------------------------------------------------------ pay-in performance
+  - name: payin_performance
+    label: "Pay-in performance by processor and funding institution"
+    description: >
+      Payment success rate, card decline rate (by issuing bank) and cash barcode expiry rate (by store),
+      by the month the payment was created.
+    query_params:
+      metrics: [payments_created, payment_success_rate, card_decline_rate, cash_expiry_rate]
+      group_by: ["Dimension('payment__payment_processor')", "Dimension('payment__funding_institution')"]
+      order_by: ["Dimension('payment__payment_processor')", "Metric('payment_success_rate').descending(True)"]

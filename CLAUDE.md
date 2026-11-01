@@ -69,7 +69,10 @@ A spike on these versions confirmed that the following work: YAML snapshots with
 - **`mf query --explain`** prints a header line (`🔎 SQL (...)`) before the SQL. Strip everything up to the first blank line after it. Keep that logic in one helper.
 - **Period-over-period metrics** must be queried with `metric_time` in the group-by. Saved-query output isn't ordered, so add `order_by` or sort in pandas.
 - **DuckDB locking**: one writer OR many readers. The dashboard must use short-lived `duckdb.connect(path, read_only=True)` connections and never call `mf` at runtime (it executes compiled SQL instead).
-- Untested so far (verify when you get there): measure-level `agg_time_dimension`, `validity_params` on the SCD2 `dim_users` semantic model, the `non_additive_dimension` config.
+- Verified in Phase 6: measure-level `agg_time_dimension`, `validity_params` on the SCD2 `dim_users` semantic model (needs `primary_entity: user` with a `natural` entity; validity is resolved at day granularity) and `non_additive_dimension` (a quarter shows its last month).
+- Saved-query `order_by` descending must be written `"Metric('x').descending(True)"`, not `"-x"`.
+- Offset metrics (`offset_window: 1 year`) also emit the 12 months after the data ends, and succeeded-dated measures produce a NULL `metric_time` bucket. Saved queries filter `metric_time is not null`; readers trim trailing empty months (presentation only).
+- `mf` opens DuckDB read-write: never keep a DuckDB connection open (even read-only) while `mf` runs.
 
 ## Conventions
 - **Naming**: `stg_felix_backend__<entity>`, `int_<entity>__<verb>`, `fct_` / `dim_` / `bridge_`, `snp_`. Columns use snake_case, with `_at` for timestamps, `_date` for dates, `is_`/`has_` for booleans, `_usd` / `_local` suffixes for money, and `_sk` for surrogate keys.

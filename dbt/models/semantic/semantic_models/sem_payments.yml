@@ -1,0 +1,39 @@
+semantic_models:
+  - name: payments
+    label: Payments
+    description: >
+      One row per payment (fct_payments). Measures only aggregate the stored ingredients; every formula
+      (rates, ATV, ARPU, growth) is a metric in models/semantic/metrics/. Volume and revenue measures are
+      dated by `succeeded_at`; pay-in funnel measures by `created_at`.
+    model: ref('fct_payments')
+    defaults:
+      agg_time_dimension: created_at
+    entities:
+      - { name: payment, type: primary, expr: payment_id }
+      - { name: user, type: foreign, expr: user_id }
+      - { name: beneficiary, type: foreign, expr: beneficiary_id }
+    dimensions:
+      - { name: created_at, label: Payment created, type: time, type_params: { time_granularity: day } }
+      - { name: succeeded_at, label: Payment succeeded, type: time, type_params: { time_granularity: day } }
+      - { name: payment_method, label: Payment method, type: categorical }
+      - { name: payment_processor, label: Payment processor, type: categorical }
+      - { name: funding_institution, label: Funding institution, type: categorical }
+      - { name: funding_institution_type, label: Funding institution type, type: categorical }
+      - { name: corridor, label: Corridor (destination country), type: categorical, expr: destination_country }
+      - { name: final_status, label: Payment status, type: categorical }
+      - { name: is_first_transfer, label: First transfer, type: categorical }
+    measures:
+      - { name: payments_created, label: Payments created, description: "Payments created (any outcome).", agg: count, expr: payment_id }
+      - { name: payments_created_succeeded, label: Created payments that succeeded, description: "Payments that succeeded, dated by creation (pay-in funnel cohort).", agg: sum_boolean, expr: is_succeeded }
+      - { name: payments_succeeded, label: Succeeded payments, description: "Succeeded payments, dated by success.", agg: sum_boolean, expr: is_succeeded, agg_time_dimension: succeeded_at }
+      - { name: payments_failed, label: Declined payments, description: "Declined card payments, dated by creation.", agg: sum_boolean, expr: is_failed }
+      - { name: payments_expired, label: Expired barcodes, description: "Cash barcodes that expired unpaid, dated by creation.", agg: sum_boolean, expr: is_expired }
+      - { name: payments_charged_back, label: Charged-back payments, description: "Payments later charged back, dated by success (cohort view).", agg: sum_boolean, expr: is_charged_back, agg_time_dimension: succeeded_at }
+      - { name: gross_volume_usd, label: Gross volume (USD), description: "Σ send amount of succeeded payments.", agg: sum, expr: "case when is_succeeded then send_amount_usd end", agg_time_dimension: succeeded_at }
+      - { name: fee_revenue_usd, label: Fee revenue (USD), description: "Σ Félix fees on succeeded payments.", agg: sum, agg_time_dimension: succeeded_at }
+      - { name: fx_revenue_usd, label: FX revenue (USD), description: "Σ FX spread revenue.", agg: sum, agg_time_dimension: succeeded_at }
+      - { name: chargeback_loss_usd, label: Chargeback losses (USD), description: "Σ principal lost to chargebacks, dated by payment success.", agg: sum, agg_time_dimension: succeeded_at }
+      - { name: active_senders, label: Active senders, description: "Distinct users with at least one succeeded payment in the period.", agg: count_distinct, expr: "case when is_succeeded then user_id end", agg_time_dimension: succeeded_at }
+      - { name: new_senders, label: New senders, description: "Distinct users whose first-ever succeeded payment is in the period.", agg: count_distinct, expr: "case when is_succeeded and is_first_transfer then user_id end", agg_time_dimension: succeeded_at }
+      - { name: beneficiaries_paid, label: Beneficiaries paid, description: "Distinct beneficiaries of succeeded payments in the period.", agg: count_distinct, expr: "case when is_succeeded then beneficiary_id end", agg_time_dimension: succeeded_at }
+      - { name: ticket_median_usd, label: Median ticket (USD), description: "Median send amount of succeeded payments, computed at the queried grain.", agg: median, expr: "case when is_succeeded then send_amount_usd end", agg_time_dimension: succeeded_at }

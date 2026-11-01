@@ -1,0 +1,23 @@
+semantic_models:
+  - name: chargebacks
+    label: Chargebacks
+    description: >
+      One row per chargeback (fct_chargebacks), dated by when the dispute was recorded. Used for the
+      reporting view (`chargebacks_reported`); the cohort chargeback rate comes from `payments`.
+    model: ref('fct_chargebacks')
+    defaults:
+      agg_time_dimension: chargeback_at
+    entities:
+      - { name: chargeback, type: primary, expr: payment_id }
+      - { name: user, type: foreign, expr: user_id }
+    dimensions:
+      - { name: chargeback_at, label: Chargeback recorded, type: time, type_params: { time_granularity: day } }
+      - { name: payment_succeeded_at, label: Disputed payment succeeded, type: time, type_params: { time_granularity: day } }
+      - { name: funding_institution, label: Issuing bank, type: categorical }
+      - { name: payment_processor, label: Payment processor, type: categorical }
+      - { name: chargeback_reason, label: Chargeback reason, type: categorical }
+      - { name: corridor, label: Corridor, type: categorical, expr: destination_country }
+    measures:
+      - { name: chargebacks_recorded, label: Chargebacks recorded, description: "Chargebacks by the date they were recorded.", agg: count, expr: payment_id }
+      - { name: chargeback_amount_usd, label: Charged-back amount (USD), description: "Σ disputed principal by chargeback date.", agg: sum }
+      - { name: days_to_chargeback_total, label: Days to chargeback (sum), description: "Σ days from payment to chargeback (for averages).", agg: sum, expr: days_to_chargeback }

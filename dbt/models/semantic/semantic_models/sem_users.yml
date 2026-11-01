@@ -1,0 +1,26 @@
+semantic_models:
+  - name: users
+    label: Users (SCD2)
+    description: >
+      dim_users as a slowly changing dimension: MetricFlow joins the user version valid at the measure's
+      time (validity_params on valid_from / valid_to). Type 1 labels (volume segment, cluster) are the same
+      on every version.
+    model: ref('dim_users')
+    primary_entity: user
+    entities:
+      - { name: user, type: natural, expr: user_id }
+    dimensions:
+      - name: valid_from
+        type: time
+        type_params: { time_granularity: day, validity_params: { is_start: true } }
+      - name: valid_to
+        type: time
+        type_params: { time_granularity: day, validity_params: { is_end: true } }
+      - { name: kyc_status, label: KYC status, type: categorical }
+      - { name: state, label: US state, type: categorical }
+      - { name: volume_segment, label: Volume segment (Q2), type: categorical }
+      - { name: volume_rank, label: Volume rank, type: categorical }
+      - { name: cluster_id, label: Sender cluster, type: categorical }
+      - { name: cluster_type, label: Cluster type (Q5), type: categorical }
+      - { name: primary_payment_method, label: Primary payment method, type: categorical }
+      - { name: first_transfer_month, label: Cohort month, type: categorical }

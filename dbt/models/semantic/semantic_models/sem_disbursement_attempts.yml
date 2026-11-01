@@ -1,0 +1,26 @@
+semantic_models:
+  - name: disbursement_attempts
+    label: Payout attempts
+    description: One row per payout attempt (fct_disbursement_attempts), dated by when the attempt started.
+    model: ref('fct_disbursement_attempts')
+    defaults:
+      agg_time_dimension: attempted_at
+    entities:
+      - { name: attempt, type: primary, expr: disbursement_id }
+      - { name: remittance, type: foreign, expr: receipt_id }
+      - { name: payout_provider, type: foreign, expr: provider_name }
+      - { name: user, type: foreign, expr: user_id }
+    dimensions:
+      - { name: attempted_at, label: Attempt started, type: time, type_params: { time_granularity: day } }
+      - { name: provider_name, label: Payout provider, type: categorical }
+      - { name: payout_method, label: Payout method, type: categorical }
+      - { name: corridor, label: Corridor, type: categorical, expr: destination_country }
+      - { name: attempt_number, label: Attempt number, type: categorical }
+      - { name: failure_reason, label: Failure reason, type: categorical }
+    measures:
+      - { name: payout_attempts, label: Payout attempts, description: "Payout attempts started.", agg: count, expr: disbursement_id }
+      - { name: payout_attempts_failed, label: Failed attempts, agg: sum_boolean, expr: is_failed, description: "Attempts that failed." }
+      - { name: first_attempts, label: First attempts, agg: sum_boolean, expr: is_first_attempt, description: "First attempts (one per remittance)." }
+      - { name: first_attempts_completed, label: First attempts completed, description: "First attempts that delivered the money.", agg: sum, expr: "case when is_first_attempt and is_completed then 1 else 0 end" }
+      - { name: first_attempts_failed, label: First attempts failed, description: "First attempts that failed.", agg: sum, expr: "case when is_first_attempt and is_failed then 1 else 0 end" }
+      - { name: rescued_by_retry, label: Rescued by retry, agg: sum_boolean, expr: is_rescued_by_retry, description: "Failed first attempts later delivered by a retry." }

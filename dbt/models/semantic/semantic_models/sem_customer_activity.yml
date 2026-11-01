@@ -1,0 +1,37 @@
+semantic_models:
+  - name: customer_activity
+    label: Customer activity (monthly)
+    description: >
+      One row per sender × month (fct_customer_activity_monthly, periodic snapshot). Feeds recurrence, churn
+      and the LTV curves. `cumulative_net_revenue_usd` is semi-additive over `activity_month`
+      (non_additive_dimension, last month of the window); `cumulative_net_revenue_rows_usd` sums it plainly and
+      is only meaningful when each user appears once per group (cohort × months since first transfer).
+    model: ref('fct_customer_activity_monthly')
+    defaults:
+      agg_time_dimension: activity_month
+    entities:
+      - { name: customer_month, type: primary, expr: customer_month_id }
+      - { name: user, type: foreign, expr: user_id }
+    dimensions:
+      - { name: activity_month, label: Activity month, type: time, type_params: { time_granularity: month } }
+      - { name: cohort_month, label: Cohort month, type: categorical }
+      - { name: months_since_first_transfer, label: Months since first transfer, type: categorical }
+      - { name: lifecycle_status, label: Lifecycle status, type: categorical }
+    measures:
+      - { name: customer_months, label: Customer-months, description: "Rows of the snapshot (one per user per month).", agg: count, expr: customer_month_id }
+      - { name: monthly_active_customers, label: Active customers, agg: sum_boolean, expr: is_active, description: "Users active in the month." }
+      - { name: recurring_customers, label: Recurring customers, agg: sum_boolean, expr: is_recurring, description: "Users recurring in the month (Q3)." }
+      - { name: newly_churned_customers, label: Newly churned customers, agg: sum_boolean, expr: is_newly_churned, description: "Users who became churned in the month." }
+      - { name: customers_active_last_month, label: Active last month, agg: sum_boolean, expr: was_active_last_month, description: "Users active in the previous month." }
+      - name: cumulative_net_revenue_usd
+        label: Cumulative net revenue (USD)
+        description: "Σ cumulative net revenue across users at the last month of the queried window (semi-additive)."
+        agg: sum
+        non_additive_dimension:
+          name: activity_month
+          window_choice: max
+      - name: cumulative_net_revenue_rows_usd
+        label: Cumulative net revenue, row sum (USD)
+        description: "Plain Σ of cumulative net revenue. Only for cohort × months-since groupings (LTV curve)."
+        agg: sum
+        expr: cumulative_net_revenue_usd

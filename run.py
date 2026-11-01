@@ -18,10 +18,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -32,6 +34,10 @@ DATA_DIR = ROOT / "data"
 SOURCE_DIR = DATA_DIR / "source"  # untouched baseline extract, never modified
 TEST_BATCHES_DIR = DATA_DIR / "test_batches"  # never modified
 LANDING_DIR = DATA_DIR / "landing"  # working copy read by the loader (git-ignored)
+SEMANTIC_MANIFEST = DBT_DIR / "target" / "semantic_manifest.json"
+ANSWERS_MD = ROOT / "docs" / "answers.md"
+README = ROOT / "README.md"
+ANSWERS_START, ANSWERS_END = "<!-- ANSWERS:START -->", "<!-- ANSWERS:END -->"
 
 
 # --------------------------------------------------------------------------------------
@@ -80,6 +86,44 @@ def db_path() -> Path:
 def require_landing() -> None:
     if not LANDING_DIR.is_dir():
         sys.exit("error: data/landing does not exist. Run `python run.py reset-data` first.")
+
+
+# --------------------------------------------------------------------------------------
+# MetricFlow helpers (shared by `answers`, `compile-metrics` and tests_py)
+# --------------------------------------------------------------------------------------
+def mf_query(
+    saved_query: str | None = None,
+    metrics: list[str] | None = None,
+    group_by: list[str] | None = None,
+    where: str | None = None,
+):
+    """Run `mf query ... --csv` inside dbt/ and return a pandas DataFrame. Raises RuntimeError on failure."""
+    import pandas as pd
+
+    args = ["query"]
+    if saved_query:
+        args += ["--saved-query", saved_query]
+    if metrics:
+        args += ["--metrics", ",".join(metrics)]
+    if group_by:
+        args += ["--group-by", ",".join(group_by)]
+    if where:
+        args += ["--where", where]
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp) / "result.csv"
+        result = subprocess.run(
+            [find_tool("mf"), *args, "--csv", str(out), "--quiet"],
+            cwd=DBT_DIR, env=tool_env(), capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        if result.returncode != 0 or not out.exists():
+            raise RuntimeError(f"mf {' '.join(args)} failed:\n{result.stdout}\n{result.stderr}")
+        return pd.read_csv(out)
+
+
+def load_semantic_manifest() -> dict:
+    if not SEMANTIC_MANIFEST.exists():
+        dbt("parse")
+    return json.loads(SEMANTIC_MANIFEST.read_text(encoding="utf-8"))
 
 
 def not_implemented(command: str, phase: int) -> None:
@@ -173,7 +217,20 @@ def cmd_compile_metrics(_: argparse.Namespace) -> None:
 
 
 def cmd_answers(_: argparse.Namespace) -> None:
-    not_implemented("answers", 6)
+    """Run every saved query used by the answers and write docs/answers.md + the README block."""
+    from scripts.render_answers import SAVED_QUERIES, render_answers
+
+    dbt("parse")  # refresh target/semantic_manifest.json
+    frames = {}
+    for name in SAVED_QUERIES:
+        print(f"  mf query --saved-query {name}", flush=True)
+        frames[name] = mf_query(saved_query=name)
+    answers_md, readme_block = render_answers(frames, load_semantic_manifest())
+    ANSWERS_MD.write_text(answers_md, encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
+    start, end = readme.index(ANSWERS_START) + len(ANSWERS_START), readme.index(ANSWERS_END)
+    README.write_text(readme[:start] + "\n" + readme_block + "\n" + readme[end:], encoding="utf-8")
+    print(f"Wrote {ANSWERS_MD.relative_to(ROOT)} and the README answers block ({len(frames)} saved queries).")
 
 
 def cmd_dashboard(_: argparse.Namespace) -> None:
@@ -181,15 +238,24 @@ def cmd_dashboard(_: argparse.Namespace) -> None:
 
 
 def cmd_test(_: argparse.Namespace) -> None:
-    not_implemented("test", 6)
+    dbt("test")
+    run([sys.executable, "-m", "pytest", "tests_py", "-q"], cwd=ROOT)
 
 
 def cmd_lint(_: argparse.Namespace) -> None:
     not_implemented("lint", 8)
 
 
-def cmd_all(_: argparse.Namespace) -> None:
-    not_implemented("all", 6)
+def cmd_validate_metrics() -> None:
+    run(["mf", "validate-configs"])
+
+
+def cmd_all(args: argparse.Namespace) -> None:
+    cmd_reset_data(args)
+    cmd_replay(args)
+    cmd_build(args)
+    cmd_validate_metrics()
+    cmd_answers(args)
 
 
 COMMANDS: list[tuple[str, str, object]] = [

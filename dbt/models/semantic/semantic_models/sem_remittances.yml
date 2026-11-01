@@ -1,0 +1,21 @@
+semantic_models:
+  - name: remittances
+    label: Remittances
+    description: One row per remittance (fct_remittances, accumulating snapshot), dated by when the receipt was issued.
+    model: ref('fct_remittances')
+    defaults:
+      agg_time_dimension: receipt_created_at
+    entities:
+      - { name: remittance, type: primary, expr: receipt_id }
+      - { name: user, type: foreign, expr: user_id }
+    dimensions:
+      - { name: receipt_created_at, label: Receipt issued, type: time, type_params: { time_granularity: day } }
+      - { name: remittance_status, label: Remittance status, type: categorical }
+      - { name: final_provider_name, label: Final payout provider, type: categorical }
+      - { name: final_payout_method, label: Final payout method, type: categorical }
+      - { name: corridor, label: Corridor, type: categorical, expr: destination_country }
+    measures:
+      - { name: remittances_issued, label: Remittances, description: "Remittances (receipts) issued.", agg: count, expr: receipt_id }
+      - { name: remittances_delivered, label: Remittances delivered, agg: sum_boolean, expr: is_delivered, description: "Remittances delivered and not reversed." }
+      - { name: remittances_in_flight, label: Remittances in flight, agg: sum_boolean, expr: is_in_flight, description: "Remittances still being paid out." }
+      - { name: minutes_to_deliver_median, label: Median minutes to deliver, description: "Median minutes from receipt to delivery, at the queried grain.", agg: median, expr: minutes_to_deliver }

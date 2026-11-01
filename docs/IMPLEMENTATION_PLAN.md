@@ -171,12 +171,12 @@ python run.py reset-data              # back to clean
 > Do Phase 6 (DESIGN §7, §8). Create the semantic models, the full metric catalog (incl. ARPU, MoM, YoY, ATV, chargeback rate, LTV) and the saved queries q1–q8 + growth_kpis_monthly + payin_performance. Implement `run.py answers` and the pytest reconciliation tests. Verify the untested features listed in CLAUDE.md "Gotchas". Run the acceptance checks.
 
 Tasks
-- [ ] `semantic/semantic_models/`: `sem_payments`, `sem_chargebacks`, `sem_disbursement_attempts`, `sem_remittances`, `sem_customer_activity` (use `non_additive_dimension` for the cumulative revenue measure if supported, otherwise document it), `sem_users` (SCD2 with `validity_params` if supported, otherwise a current-state user dim + note)
-- [ ] `semantic/metrics/{finance,growth,operations,risk}.yml`: the catalog in DESIGN §7.3. Every metric gets a `label` and `description`. Aliases are ≥ 2 characters
-- [ ] `semantic/saved_queries.yml`: `q1_monthly_volume`, `q2_volume_concentration`, `q3_recurring_customers`, `q4_payout_providers`, `q5_sender_clusters`, `q6_chargeback_rate`, `q7_transaction_value`, `q8_ltv`, `growth_kpis_monthly`, `payin_performance` (+ the dashboard ones). Use `order_by` where useful
-- [ ] `run.py answers`: run each saved query with `mf query --saved-query <q> --csv`, write `docs/answers.md` (one section per question: definition, table and a 1–2 sentence interpretation template) and replace the block between `<!-- ANSWERS:START -->` and `<!-- ANSWERS:END -->` in README.md
-- [ ] `tests_py/test_semantic_layer.py`: every saved query returns rows; Σ `gross_volume_usd` (MetricFlow, all time) = Σ in `fct_payments` for succeeded; monthly `arpu_usd × active_senders ≈ net_revenue_usd`; `chargeback_rate` is NULL or 0 for cash
-- [ ] Remember: `mf` needs `dbt parse`/`build` first, and has to run inside `dbt/`
+- [x] `semantic/semantic_models/`: `sem_payments`, `sem_chargebacks`, `sem_disbursement_attempts`, `sem_remittances`, `sem_customer_activity` (use `non_additive_dimension` for the cumulative revenue measure if supported, otherwise document it), `sem_users` (SCD2 with `validity_params` if supported, otherwise a current-state user dim + note)
+- [x] `semantic/metrics/{finance,growth,operations,risk}.yml`: the catalog in DESIGN §7.3. Every metric gets a `label` and `description`. Aliases are ≥ 2 characters
+- [x] `semantic/saved_queries.yml`: `q1_monthly_volume`, `q2_volume_concentration`, `q3_recurring_customers`, `q4_payout_providers`, `q5_sender_clusters`, `q6_chargeback_rate`, `q7_transaction_value`, `q8_ltv`, `growth_kpis_monthly`, `payin_performance` (+ the dashboard ones). Use `order_by` where useful
+- [x] `run.py answers`: run each saved query with `mf query --saved-query <q> --csv`, write `docs/answers.md` (one section per question: definition, table and a 1–2 sentence interpretation template) and replace the block between `<!-- ANSWERS:START -->` and `<!-- ANSWERS:END -->` in README.md
+- [x] `tests_py/test_semantic_layer.py`: every saved query returns rows; Σ `gross_volume_usd` (MetricFlow, all time) = Σ in `fct_payments` for succeeded; monthly `arpu_usd × active_senders ≈ net_revenue_usd`; `chargeback_rate` is NULL or 0 for cash
+- [x] Remember: `mf` needs `dbt parse`/`build` first, and has to run inside `dbt/`
 
 Acceptance
 ```bash

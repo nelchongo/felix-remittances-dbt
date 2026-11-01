@@ -1,0 +1,199 @@
+# Growth metrics: active / new senders, ARPU, MoM / YoY growth, recurrence, churn, LTV (Q2, Q3, Q8).
+# Period-over-period metrics must be queried with metric_time in the group-by.
+metrics:
+  # ------------------------------------------------------------------ senders and ARPU
+  - name: active_senders
+    label: Active senders
+    description: Distinct senders with at least one succeeded transfer in the queried period (recomputed at every grain).
+    type: simple
+    type_params: { measure: { name: active_senders, fill_nulls_with: 0 } }
+  - name: new_senders
+    label: New senders
+    description: Distinct senders whose first-ever succeeded transfer falls in the period.
+    type: simple
+    type_params: { measure: { name: new_senders, fill_nulls_with: 0 } }
+  - name: arpu_usd
+    label: ARPU (net revenue per active sender, USD)
+    description: >
+      Net revenue ÷ active senders in the period. Monthly ARPU at metric_time__month, quarterly at __quarter;
+      both are correct because the distinct sender count is recomputed.
+    type: derived
+    type_params:
+      expr: net_revenue_usd / nullif(active_senders, 0)
+      metrics: [{ name: net_revenue_usd }, { name: active_senders }]
+  - name: arpu_volume_usd
+    label: Volume per active sender (USD)
+    description: Gross volume ÷ active senders in the period.
+    type: derived
+    type_params:
+      expr: gross_volume_usd / nullif(active_senders, 0)
+      metrics: [{ name: gross_volume_usd }, { name: active_senders }]
+
+  # ------------------------------------------------------------------ month over month
+  - name: gross_volume_usd_mom_pct
+    label: Volume growth % M/M
+    description: (volume − volume a month earlier) ÷ volume a month earlier.
+    type: derived
+    type_params:
+      expr: (vol_now - vol_prev) / nullif(vol_prev, 0)
+      metrics:
+        - { name: gross_volume_usd, alias: vol_now }
+        - { name: gross_volume_usd, alias: vol_prev, offset_window: 1 month }
+  - name: net_revenue_usd_mom_pct
+    label: Net revenue growth % M/M
+    description: Net revenue vs the previous month.
+    type: derived
+    type_params:
+      expr: (rev_now - rev_prev) / nullif(rev_prev, 0)
+      metrics:
+        - { name: net_revenue_usd, alias: rev_now }
+        - { name: net_revenue_usd, alias: rev_prev, offset_window: 1 month }
+  - name: transfers_mom_pct
+    label: Transfers growth % M/M
+    description: Transfers vs the previous month.
+    type: derived
+    type_params:
+      expr: (tx_now - tx_prev) / nullif(tx_prev, 0)
+      metrics:
+        - { name: transfers, alias: tx_now }
+        - { name: transfers, alias: tx_prev, offset_window: 1 month }
+  - name: active_senders_mom_pct
+    label: Active senders growth % M/M
+    description: Active senders vs the previous month.
+    type: derived
+    type_params:
+      expr: (senders_now - senders_prev) / nullif(senders_prev, 0)
+      metrics:
+        - { name: active_senders, alias: senders_now }
+        - { name: active_senders, alias: senders_prev, offset_window: 1 month }
+  - name: arpu_usd_mom_pct
+    label: ARPU growth % M/M
+    description: ARPU vs the previous month.
+    type: derived
+    type_params:
+      expr: (arpu_now - arpu_prev) / nullif(arpu_prev, 0)
+      metrics:
+        - { name: arpu_usd, alias: arpu_now }
+        - { name: arpu_usd, alias: arpu_prev, offset_window: 1 month }
+
+  # ------------------------------------------------------------------ year over year
+  - name: gross_volume_usd_yoy_pct
+    label: Volume growth % Y/Y
+    description: Volume vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (vol_now - vol_last_year) / nullif(vol_last_year, 0)
+      metrics:
+        - { name: gross_volume_usd, alias: vol_now }
+        - { name: gross_volume_usd, alias: vol_last_year, offset_window: 1 year }
+  - name: net_revenue_usd_yoy_pct
+    label: Net revenue growth % Y/Y
+    description: Net revenue vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (rev_now - rev_last_year) / nullif(rev_last_year, 0)
+      metrics:
+        - { name: net_revenue_usd, alias: rev_now }
+        - { name: net_revenue_usd, alias: rev_last_year, offset_window: 1 year }
+  - name: transfers_yoy_pct
+    label: Transfers growth % Y/Y
+    description: Transfers vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (tx_now - tx_last_year) / nullif(tx_last_year, 0)
+      metrics:
+        - { name: transfers, alias: tx_now }
+        - { name: transfers, alias: tx_last_year, offset_window: 1 year }
+  - name: active_senders_yoy_pct
+    label: Active senders growth % Y/Y
+    description: Active senders vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (senders_now - senders_last_year) / nullif(senders_last_year, 0)
+      metrics:
+        - { name: active_senders, alias: senders_now }
+        - { name: active_senders, alias: senders_last_year, offset_window: 1 year }
+  - name: arpu_usd_yoy_pct
+    label: ARPU growth % Y/Y
+    description: ARPU vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (arpu_now - arpu_last_year) / nullif(arpu_last_year, 0)
+      metrics:
+        - { name: arpu_usd, alias: arpu_now }
+        - { name: arpu_usd, alias: arpu_last_year, offset_window: 1 year }
+
+  # ------------------------------------------------------------------ recurrence and churn (Q3)
+  - name: monthly_active_customers
+    label: Active customers (monthly snapshot)
+    description: Users active in the month, from the monthly customer snapshot.
+    type: simple
+    type_params: { measure: { name: monthly_active_customers, fill_nulls_with: 0 } }
+  - name: recurring_senders
+    label: Recurring senders
+    description: "Q3. Users active in the month and in at least 2 of the previous 3 months."
+    type: simple
+    type_params: { measure: { name: recurring_customers, fill_nulls_with: 0 } }
+  - name: recurring_share
+    label: Recurring share
+    description: "Q3. Recurring senders ÷ active customers in the month."
+    type: ratio
+    type_params: { numerator: recurring_senders, denominator: monthly_active_customers }
+  - name: churned_senders
+    label: Churned senders
+    description: Users who became churned in the month (no transfer for more than 60 days).
+    type: simple
+    type_params: { measure: { name: newly_churned_customers, fill_nulls_with: 0 } }
+  - name: customers_active_last_month
+    label: Customers active last month
+    description: Users who were active in the previous month (churn denominator).
+    type: simple
+    type_params: { measure: { name: customers_active_last_month, fill_nulls_with: 0 } }
+  - name: churn_rate
+    label: Churn rate
+    description: Users who became churned in the month ÷ users active the month before.
+    type: ratio
+    type_params: { numerator: churned_senders, denominator: customers_active_last_month }
+
+  # ------------------------------------------------------------------ lifetime value (Q8)
+  - name: customer_months
+    label: Customer-months
+    description: Rows of the monthly customer snapshot (one per user per month since their first transfer).
+    type: simple
+    type_params: { measure: customer_months }
+  - name: cumulative_net_revenue_usd
+    label: Cumulative net revenue (USD)
+    description: Σ lifetime-to-date net revenue across users, at the last month of the queried window.
+    type: simple
+    type_params: { measure: cumulative_net_revenue_usd }
+  - name: cumulative_net_revenue_rows_usd
+    label: Cumulative net revenue, cohort sum (USD)
+    description: Σ lifetime-to-date net revenue over snapshot rows. Only meaningful by cohort × months since first transfer.
+    type: simple
+    type_params: { measure: cumulative_net_revenue_rows_usd }
+  - name: ltv_per_cohort_user
+    label: LTV per cohort user (USD)
+    description: >
+      Q8 LTV curve. Σ cumulative net revenue ÷ Σ users, grouped by `customer_month__cohort_month` and
+      `customer_month__months_since_first_transfer`: the average revenue a cohort's user has generated N
+      months after their first transfer.
+    type: ratio
+    type_params: { numerator: cumulative_net_revenue_rows_usd, denominator: customer_months }
+  - name: historical_ltv_usd
+    label: Historical LTV (USD)
+    description: >
+      Q8. Lifetime net revenue ÷ lifetime senders. The same formula as ARPU queried without a time grain,
+      so it reuses `arpu_usd`.
+    type: derived
+    type_params:
+      expr: arpu_usd
+      metrics: [{ name: arpu_usd }]
+  - name: projected_ltv_12m_usd
+    label: Projected 12-month LTV (USD)
+    description: >
+      Q8. Monthly ARPU × expected lifetime in months (1 ÷ churn rate), capped at `ltv_horizon_months` (12).
+      A simple, transparent retention model: no discounting, no CAC. Query by metric_time__month.
+    type: derived
+    type_params:
+      expr: arpu_usd * least(coalesce(1 / nullif(churn_rate, 0), {{ var('ltv_horizon_months') }}), {{ var('ltv_horizon_months') }})
+      metrics: [{ name: arpu_usd }, { name: churn_rate }]

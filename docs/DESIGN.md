@@ -549,7 +549,7 @@ def saved_query(name: str) -> pd.DataFrame:
 - **Semantic layer in production:** the same YAML runs on the dbt platform Semantic Layer (JDBC/GraphQL APIs for BI tools) or open-source MetricFlow in any orchestrator. BI tools consume the metrics instead of re-implementing formulas.
 - **Warehouse / ingestion:** a Snowflake/BigQuery profile swap. CDC (Debezium/Fivetran) into `raw` replaces CSV landing, and snapshots run daily.
 - **Risks:**
-  - *MetricFlow / dbt version compatibility.* Mitigated by the completed spike, exact pins and the pandas fallback. Still untested: measure-level `agg_time_dimension`, `validity_params`, `non_additive_dimension`.
+  - *MetricFlow / dbt version compatibility.* Mitigated by the completed spike, exact pins and the pandas fallback. Measure-level `agg_time_dimension`, `validity_params` (SCD2 at day granularity) and `non_additive_dimension` were verified in Phase 6.
   - *`--explain` output format.* Isolated in one helper inside `run.py compile-metrics`.
 - **Limitations:**
   - Synthetic data, with illustrative processor/bank/store names.

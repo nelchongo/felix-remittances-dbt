@@ -1,0 +1,120 @@
+# Finance metrics: volume, revenue, ticket size, pay-in performance, chargebacks (Q1, Q6, Q7).
+metrics:
+  # ------------------------------------------------------------------ base (simple)
+  - name: gross_volume_usd
+    label: Gross volume (USD)
+    description: "Q1. Σ principal (USD) of succeeded payments, dated by success."
+    type: simple
+    type_params: { measure: { name: gross_volume_usd, fill_nulls_with: 0 } }
+  - name: transfers
+    label: Transfers
+    description: Succeeded payments, dated by success.
+    type: simple
+    type_params: { measure: { name: payments_succeeded, fill_nulls_with: 0 } }
+  - name: fee_revenue_usd
+    label: Fee revenue (USD)
+    description: Félix fees earned on succeeded payments.
+    type: simple
+    type_params: { measure: { name: fee_revenue_usd, fill_nulls_with: 0 } }
+  - name: fx_revenue_usd
+    label: FX revenue (USD)
+    description: FX spread revenue, send × (1 − fx_rate / reference_fx_rate).
+    type: simple
+    type_params: { measure: { name: fx_revenue_usd, fill_nulls_with: 0 } }
+  - name: chargeback_loss_usd
+    label: Chargeback losses (USD)
+    description: Principal lost to chargebacks, dated by the month the payment succeeded.
+    type: simple
+    type_params: { measure: { name: chargeback_loss_usd, fill_nulls_with: 0 } }
+  - name: payments_created
+    label: Payments created
+    description: Payments created, any outcome, dated by creation.
+    type: simple
+    type_params: { measure: { name: payments_created, fill_nulls_with: 0 } }
+  - name: payments_created_succeeded
+    label: Created payments that succeeded
+    description: Payments created in the period that succeeded (pay-in funnel cohort).
+    type: simple
+    type_params: { measure: { name: payments_created_succeeded, fill_nulls_with: 0 } }
+  - name: payments_declined
+    label: Declined card payments
+    description: Card payments declined, dated by creation.
+    type: simple
+    type_params: { measure: { name: payments_failed, fill_nulls_with: 0 } }
+  - name: barcodes_expired
+    label: Expired cash barcodes
+    description: Cash barcodes that expired unpaid, dated by creation.
+    type: simple
+    type_params: { measure: { name: payments_expired, fill_nulls_with: 0 } }
+  - name: payments_charged_back
+    label: Charged-back payments
+    description: Payments later charged back, dated by the month they succeeded (cohort view).
+    type: simple
+    type_params: { measure: { name: payments_charged_back, fill_nulls_with: 0 } }
+  - name: median_ticket_usd
+    label: Median ticket (USD)
+    description: "Q7. Median send amount of succeeded payments at the queried grain (tickets are skewed)."
+    type: simple
+    type_params: { measure: ticket_median_usd }
+  - name: chargebacks_reported
+    label: Chargebacks reported
+    description: "Q6, reporting view. Chargebacks by the month they were recorded (network monitoring)."
+    type: simple
+    type_params: { measure: { name: chargebacks_recorded, fill_nulls_with: 0 } }
+
+  # ------------------------------------------------------------------ formulas
+  - name: net_revenue_usd
+    label: Net revenue (USD)
+    description: Fee revenue + FX revenue − chargeback losses. The store fee is a pass-through.
+    type: derived
+    type_params:
+      expr: fee_revenue_usd + fx_revenue_usd - chargeback_loss_usd
+      metrics: [{ name: fee_revenue_usd }, { name: fx_revenue_usd }, { name: chargeback_loss_usd }]
+  - name: take_rate
+    label: Take rate
+    description: Net revenue as a share of gross volume.
+    type: derived
+    type_params:
+      expr: net_revenue_usd / nullif(gross_volume_usd, 0)
+      metrics: [{ name: net_revenue_usd }, { name: gross_volume_usd }]
+  - name: atv_usd
+    label: Average transaction value (USD)
+    description: "Q7. Gross volume ÷ transfers."
+    type: ratio
+    type_params: { numerator: gross_volume_usd, denominator: transfers }
+  - name: payment_success_rate
+    label: Payment success rate
+    description: Share of created payments that succeeded (same creation cohort on both sides).
+    type: ratio
+    type_params: { numerator: payments_created_succeeded, denominator: payments_created }
+  - name: card_decline_rate
+    label: Card decline rate
+    description: Declined ÷ created, debit card payments only.
+    type: ratio
+    type_params:
+      numerator: { name: payments_declined, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }
+      denominator: { name: payments_created, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }
+  - name: cash_expiry_rate
+    label: Cash barcode expiry rate
+    description: Expired ÷ created, cash payments only.
+    type: ratio
+    type_params:
+      numerator: { name: barcodes_expired, filter: "{{ Dimension('payment__payment_method') }} = 'cash'" }
+      denominator: { name: payments_created, filter: "{{ Dimension('payment__payment_method') }} = 'cash'" }
+  - name: chargeback_rate
+    label: Chargeback rate (debit card, by payment month)
+    description: >
+      Q6. Charged-back ÷ succeeded debit card payments, both dated by the month the payment succeeded
+      (cohort view). Cash can't be charged back, so it is excluded from both sides. Recent months are
+      immature: chargebacks arrive up to ~75 days later.
+    type: ratio
+    type_params:
+      numerator: { name: payments_charged_back, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }
+      denominator: { name: transfers, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }
+  - name: chargeback_rate_amount
+    label: Chargeback rate by amount (debit card)
+    description: "Q6. Chargeback losses ÷ debit card gross volume, by payment month."
+    type: ratio
+    type_params:
+      numerator: { name: chargeback_loss_usd, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }
+      denominator: { name: gross_volume_usd, filter: "{{ Dimension('payment__payment_method') }} = 'debit_card'" }

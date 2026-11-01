@@ -1,0 +1,67 @@
+# Operations metrics: payout delivery through providers (Q4).
+metrics:
+  - name: payout_attempts
+    label: Payout attempts
+    description: Payout attempts started.
+    type: simple
+    type_params: { measure: { name: payout_attempts, fill_nulls_with: 0 } }
+  - name: payout_attempts_failed
+    label: Failed payout attempts
+    description: Payout attempts that failed.
+    type: simple
+    type_params: { measure: { name: payout_attempts_failed, fill_nulls_with: 0 } }
+  - name: first_attempts
+    label: First attempts
+    description: First payout attempts (one per remittance).
+    type: simple
+    type_params: { measure: { name: first_attempts, fill_nulls_with: 0 } }
+  - name: first_attempts_completed
+    label: First attempts completed
+    description: First attempts that delivered the money.
+    type: simple
+    type_params: { measure: { name: first_attempts_completed, fill_nulls_with: 0 } }
+  - name: first_attempts_failed
+    label: First attempts failed
+    description: First attempts that failed.
+    type: simple
+    type_params: { measure: { name: first_attempts_failed, fill_nulls_with: 0 } }
+  - name: rescued_by_retry
+    label: Rescued by retry
+    description: Failed first attempts that a retry later delivered.
+    type: simple
+    type_params: { measure: { name: rescued_by_retry, fill_nulls_with: 0 } }
+  - name: payout_attempt_failure_rate
+    label: Payout attempt failure rate
+    description: "Q4. Failed attempts ÷ attempts. Drives the provider `reliability_tier` label."
+    type: ratio
+    type_params: { numerator: payout_attempts_failed, denominator: payout_attempts }
+  - name: first_attempt_success_rate
+    label: First-attempt success rate
+    description: "Q4. Share of remittances delivered on the first attempt."
+    type: ratio
+    type_params: { numerator: first_attempts_completed, denominator: first_attempts }
+  - name: rescued_by_retry_rate
+    label: Rescued-by-retry rate
+    description: Share of failed first attempts that a retry later delivered.
+    type: ratio
+    type_params: { numerator: rescued_by_retry, denominator: first_attempts_failed }
+  - name: remittances_issued
+    label: Remittances
+    description: Remittances (receipts) issued.
+    type: simple
+    type_params: { measure: { name: remittances_issued, fill_nulls_with: 0 } }
+  - name: remittances_delivered
+    label: Remittances delivered
+    description: Remittances delivered and not reversed.
+    type: simple
+    type_params: { measure: { name: remittances_delivered, fill_nulls_with: 0 } }
+  - name: delivery_rate
+    label: Delivery rate
+    description: Remittances delivered ÷ remittances issued (by receipt date).
+    type: ratio
+    type_params: { numerator: remittances_delivered, denominator: remittances_issued }
+  - name: median_minutes_to_deliver
+    label: Median minutes to deliver
+    description: Median minutes from receipt to delivery, at the queried grain.
+    type: simple
+    type_params: { measure: minutes_to_deliver_median }

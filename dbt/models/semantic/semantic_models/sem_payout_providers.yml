@@ -1,0 +1,10 @@
+semantic_models:
+  - name: payout_providers
+    label: Payout providers
+    description: dim_payout_providers, so payout metrics can be grouped by the Q4 `reliability_tier`.
+    model: ref('dim_payout_providers')
+    entities:
+      - { name: payout_provider, type: primary, expr: provider_name }
+    dimensions:
+      - { name: reliability_tier, label: Reliability tier (Q4), type: categorical }
+      - { name: corridors_served, label: Corridors served, type: categorical }

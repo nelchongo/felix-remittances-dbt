@@ -1,0 +1,13 @@
+# Risk metrics (Q5). Group them by user__cluster_type; gross_volume_usd and chargeback_rate are reused
+# from finance.yml.
+metrics:
+  - name: senders
+    label: Senders
+    description: "Q5. Distinct senders with a succeeded transfer (same measure as active_senders)."
+    type: simple
+    type_params: { measure: { name: active_senders, fill_nulls_with: 0 } }
+  - name: beneficiaries
+    label: Beneficiaries
+    description: "Q5. Distinct beneficiaries of succeeded transfers."
+    type: simple
+    type_params: { measure: { name: beneficiaries_paid, fill_nulls_with: 0 } }
