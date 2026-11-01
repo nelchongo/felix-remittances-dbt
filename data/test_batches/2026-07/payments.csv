@@ -1,0 +1,1210 @@
+payment_id,user_id,amount,fee_amount,store_fee_amount,currency,payment_method,payment_processor,funding_institution,funding_institution_type,card_last4,status,failure_reason,created_at,updated_at
+pay_79eb966b3f1a51be,usr_3ec2e72ac832b3f0,221.26,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-06-29T00:47:09.408Z,2026-07-01T00:47:09.408Z
+pay_da9a68dad8acb89e,usr_3d3f3799a07295e9,281.13,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-01T01:05:11.091Z,2026-07-01T01:05:11.091Z
+pay_80a74dc0c13b4b70,usr_23d99d90c964f746,199.19,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-01 01:33:44,2026-07-01 01:33:44
+pay_e8614a61b5f9beae,usr_ceddadec929d778e,500.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-06-30 21:26:16,2026-07-01T02:40:50.891Z
+pay_6b9b7d37613150af,usr_88a66f332b9eebab,97.89,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-06-30T19:55:07.761Z,2026-07-01T02:46:16.687Z
+pay_438619dafc5a1ed4,usr_22ffe9fc512e5e8e,1406.05,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8042,pending,,2026-07-01T02:50:56.191Z,2026-07-01T02:50:56.191Z
+pay_438619dafc5a1ed4,usr_22ffe9fc512e5e8e,1406.05,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8042,succeeded,,2026-07-01T02:50:56.191Z,2026-07-01T02:51:21.541Z
+pay_44829ebf7e5dbebd,usr_499b0c67a5965343,550.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-06-30T05:58:49.458Z,2026-07-01T02:56:55.602Z
+pay_12b4cc4930fad4a1,usr_8a8ce2d7bdeb7527,550.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-01T03:50:01.433Z,2026-07-01T03:50:01.433Z
+pay_834a4034cca36d28,usr_bb966a3d49afb037,100.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-06-30T00:13:39.081Z,2026-07-01T03:54:04.055Z
+pay_56b7b0e417b2d09a,usr_fbcf57d745f84c5d,450.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4025,pending,,2026-07-01T04:00:55.519Z,2026-07-01T04:00:55.519Z
+pay_56b7b0e417b2d09a,usr_fbcf57d745f84c5d,450.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4025,succeeded,,2026-07-01T04:00:55.519Z,2026-07-01T04:01:09.058Z
+pay_f6d8d33cd7b91363,usr_db0e09ffb6e3f5d3,200.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-06-30T02:18:56.565Z,2026-07-01T04:06:37.010Z
+pay_9a3b978766a8c97b,usr_01a1f7da417e9ecb,918.90,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-06-29T06:33:30.547Z,2026-07-01T06:33:30.547Z
+pay_5c0c0fe216c3b69c,usr_175a81ec112fa612,461.54,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,9201,succeeded,,2026-07-01T06:59:38.337Z,2026-07-01T07:00:11.843Z
+pay_e37ed3400331f14d,usr_06cc2bbacef4b59b,461.82,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-06-30T15:58:04.558Z,2026-07-01T07:42:11.079Z
+pay_1dd17dbd0910fb47,usr_1d2324e6832920b7,369.04,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-01T07:58:21.096Z,2026-07-01T07:58:21.096Z
+pay_2515ae8cc9746b04,usr_2b1feecd95c127e6,510.84,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-06-30T09:36:52.449Z,2026-07-01T08:50:05.758Z
+pay_ecf079c80cde0564,usr_d8b2f3368170c721,284.40,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-01T10:21:43.133Z,2026-07-01T10:21:43.133Z
+pay_eaa2cfb42e56e579,usr_9a4d5aaf6b4a426a,187.59,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,7031,pending,,2026-07-01T10:22:32.664Z,2026-07-01T10:22:32.664Z
+pay_eaa2cfb42e56e579,usr_9a4d5aaf6b4a426a,187.59,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,7031,succeeded,,2026-07-01T10:22:32.664Z,2026-07-01T10:23:38.184Z
+pay_50448f680fc8eeb1,usr_7f353843d25bb219,350.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1970,pending,,2026-07-01 11:28:50,2026-07-01 11:28:50
+pay_50448f680fc8eeb1,usr_7f353843d25bb219,350.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1970,succeeded,,2026-07-01 11:28:50,2026-07-01T11:29:12.126Z
+pay_12b4cc4930fad4a1,usr_8a8ce2d7bdeb7527,550.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-01T03:50:01.433Z,2026-07-01T12:31:19.764Z
+pay_bd3a3419f963cd24,usr_50a7d6a76480a4f2,100.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-01T12:50:15.388Z,2026-07-01T12:50:15.388Z
+pay_9de683455e8649a9,usr_74ed53ceef0ebfd3,650.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-06-29T12:52:20.448Z,2026-07-01T12:52:20.448Z
+pay_9df784c62df040de,usr_bdecfa9d84b0249a,200.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1212,pending,,2026-07-01T12:59:50.888Z,2026-07-01T12:59:50.888Z
+pay_9df784c62df040de,usr_bdecfa9d84b0249a,200.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1212,succeeded,,2026-07-01T12:59:50.888Z,2026-07-01T13:00:10.866Z
+pay_9ec56676d2cb96fc,usr_48555e7890fbd067,290.64,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6792,pending,,2026-07-01T13:45:59.967Z,2026-07-01T13:45:59.967Z
+pay_9ec56676d2cb96fc,usr_48555e7890fbd067,290.64,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6792,succeeded,,2026-07-01T13:45:59.967Z,2026-07-01T13:47:28.414Z
+pay_45a243dedf6a0f4c,usr_8beb4e78e68373a3,440.52,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-01T16:04:56.404Z,2026-07-01T16:04:56.404Z
+pay_949474305da32f0a,usr_fa4a58efe3837348,450.00,4.98,0.00,USD,debit_card,Stripe,Citibank,bank,2830,pending,,2026-07-01T16:31:46.367Z,2026-07-01T16:31:46.367Z
+pay_949474305da32f0a,usr_fa4a58efe3837348,450.00,4.98,0.00,USD,debit_card,Stripe,Citibank,bank,2830,SUCCEEDED,,2026-07-01T16:31:46.367Z,2026-07-01T16:33:07.568Z
+pay_7280e0227aca976d,usr_6d1040a014f89da1,900.00,4.98,0.00,USD,debit_card,Stripe,Citibank,bank,6636,succeeded,,2026-07-01T18:00:13.451Z,2026-07-01T18:00:43.865Z
+pay_4d6504b24a3eb97b,usr_534064b0ea4f4a80,113.03,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,2900,pending,,2026-07-01T18:39:38.302Z,2026-07-01T18:39:38.302Z
+pay_4d6504b24a3eb97b,usr_534064b0ea4f4a80,113.03,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,2900,succeeded,,2026-07-01T18:39:38.302Z,2026-07-01T18:39:58.383Z
+pay_bda1f8d7e8296faa,usr_d84ccc2000bd2562,505.22,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-01T19:23:45.566Z,2026-07-01T19:23:45.566Z
+pay_2752264ed6c18e43,usr_c96d525ea5639cf4,182.08,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,5021,pending,,2026-07-01T20:02:21.579Z,2026-07-01T20:02:21.579Z
+pay_2752264ed6c18e43,usr_c96d525ea5639cf4,182.08,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,5021,succeeded,,2026-07-01T20:02:21.579Z,2026-07-01T20:02:43.043Z
+pay_847a4dd8c36a1cea,usr_0096b4d6d67d81a6,111.58,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-01T21:42:07.228Z,2026-07-01T21:42:07.228Z
+pay_bd3a3419f963cd24,usr_50a7d6a76480a4f2,100.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-01T12:50:15.388Z,2026-07-01T22:53:29.239Z
+pay_e77995e8668a7bcc,usr_70972046fa7cf893,800.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3876,SUCCEEDED,,2026-07-01T22:59:56.973Z,2026-07-01T23:00:38.785Z
+pay_80a74dc0c13b4b70,usr_23d99d90c964f746,199.19,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-01 01:33:44,2026-07-01T23:15:05.961Z
+pay_35783d3921b88f38,usr_85b56b35050c67c7,181.63,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,, expired,barcode_not_paid,2026-06-30T00:40:53.186Z,2026-07-02T00:40:53.186Z
+pay_1fb96d21b5cee575,usr_97dfc472e2fba2a1,715.57,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8373,pending,,2026-07-02T03:49:40.387Z,2026-07-02T03:49:40.387Z
+pay_1fb96d21b5cee575,usr_97dfc472e2fba2a1,715.57,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8373,succeeded,,2026-07-02T03:49:40.387Z,2026-07-02T03:50:31.106Z
+pay_4d9b08230aa73a6f,usr_99e48a169c9a3db3,750.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,7533,succeeded,,2026-07-02T03:52:12.402Z,2026-07-02T03:53:38.198Z
+pay_bda1f8d7e8296faa,usr_d84ccc2000bd2562,505.22,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-01T19:23:45.566Z,2026-07-02T04:41:01.587Z
+pay_5501fa1b3db0cdbb,usr_d294100f823ca34a,450.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,2958,pending,,2026-07-02T04:54:34.765Z,2026-07-02T04:54:34.765Z
+pay_5501fa1b3db0cdbb,usr_d294100f823ca34a,450.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,2958,succeeded,,2026-07-02T04:54:34.765Z,2026-07-02T04:55:18.320Z
+pay_23aa85c44060919f,usr_8c7e6fb779339fa8,404.64,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-02T04:59:54.958Z,2026-07-02T04:59:54.958Z
+pay_f9076b644261d97c,usr_f4604426c31fd749,223.39,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-02T05:11:20.803Z,2026-07-02T05:11:20.803Z
+pay_d51324286d538cd0,usr_9349c66a058815b3,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-02T07:12:33.662Z,2026-07-02T07:12:33.662Z
+pay_f7fdd00419b278ef,usr_34879e411a9c672a,800.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,expired,barcode_not_paid,2026-06-30T07:13:27.773Z,2026-07-02T07:13:27.773Z
+pay_ecf079c80cde0564,usr_d8b2f3368170c721,284.40,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-01T10:21:43.133Z,2026-07-02T09:43:25.457Z
+pay_847a4dd8c36a1cea,usr_0096b4d6d67d81a6,111.58,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-01T21:42:07.228Z,2026-07-02T09:46:58.790Z
+pay_1dd17dbd0910fb47,usr_1d2324e6832920b7,369.04,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-01T07:58:21.096Z,2026-07-02T09:56:33.505Z
+pay_2ead6f9f7b6f52ca,usr_95cc34cd5a6d86ba,400.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,6602,pending,,2026-07-02T11:23:39.024Z,2026-07-02T11:23:39.024Z
+pay_2ead6f9f7b6f52ca,usr_95cc34cd5a6d86ba,400.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,6602,succeeded,,2026-07-02T11:23:39.024Z,2026-07-02T11:24:11.359Z
+pay_6178f993295bb56a,usr_5ff595ea5bc440f1,559.22,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6267,pending,,2026-07-02T11:32:23.861Z,2026-07-02T11:32:23.861Z
+pay_6178f993295bb56a,usr_5ff595ea5bc440f1,559.22,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6267,succeeded,,2026-07-02T11:32:23.861Z,2026-07-02 11:33:22
+pay_8a3cf2abff96b8f1,usr_b115d7e2d257b49c,276.71,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,9496,pending,,2026-07-02T12:04:22.458Z,2026-07-02T12:04:22.458Z
+pay_8a3cf2abff96b8f1,usr_b115d7e2d257b49c,276.71,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,9496,failed,risk_blocked,2026-07-02T12:04:22.458Z,2026-07-02T12:04:31.526Z
+pay_6b96936599d9491a,usr_c7a7a071d2621558,250.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,2874,succeeded,,2026-07-02T12:24:10.512Z,2026-07-02T12:25:24.340Z
+pay_45a243dedf6a0f4c,usr_8beb4e78e68373a3,440.52,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-01T16:04:56.404Z,2026-07-02T13:20:02.801Z
+pay_844a83377d6c3f1b,usr_1060573a721b7707,196.97,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0640,refunded,disbursement_failed,2026-06-29T08:43:57.280Z,2026-07-02T13:48:00.956Z
+pay_3a6fcae08615606c,usr_97f333229323338b,194.70,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,6687,PENDING,,2026-07-02 14:14:12,2026-07-02 14:14:12
+pay_3a6fcae08615606c,usr_97f333229323338b,194.70,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,6687,succeeded,,2026-07-02 14:14:12,2026-07-02T14:15:07.463Z
+pay_a471543f2b1d1df3,usr_c982a300f95f17e6,"1,200.00",2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1506,pending,,2026-07-02T14:31:40.366Z,2026-07-02T14:31:40.366Z
+pay_a471543f2b1d1df3,usr_c982a300f95f17e6,"1,200.00",2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1506,succeeded,,2026-07-02T14:31:40.366Z,2026-07-02T14:31:59.674Z
+pay_953b74396e5fa0cb,usr_e67410de479fb5f3,218.62,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-02T15:50:39.386Z,2026-07-02T15:50:39.386Z
+pay_2c158fd790587cb8,usr_c64d8e701ea391e2,450.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,2938,pending,,2026-07-02T17:14:27.900Z,2026-07-02T17:14:27.900Z
+pay_2c158fd790587cb8,usr_c64d8e701ea391e2,450.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,2938,succeeded,,2026-07-02T17:14:27.900Z,2026-07-02T17:15:33.928Z
+pay_50448f680fc8eeb1,usr_7f353843d25bb219,350.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1970,refunded,customer_request,2026-07-01 11:28:50,2026-07-02T17:47:43.170Z
+pay_f9eddbc172875164,usr_04f299efc26cd636,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-02T20:02:40.426Z,2026-07-02T20:02:40.426Z
+pay_e4fd2d594fbaee85,usr_be2eaf0a22ffd90b,221.39,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5431,succeeded,,2026-07-02T20:09:55.149Z,2026-07-02T20:10:29.556Z
+pay_341dbc38f0128c8d,usr_510e641ffe67e8e9,134.62,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5633,succeeded,,2026-07-02T21:25:23.194Z,2026-07-02T21:26:05.428Z
+pay_cd8021eafd10b50f,usr_3d5cab0e0b2d983a,508.51,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-03T00:22:28.843Z,2026-07-03T00:22:28.843Z
+pay_f9076b644261d97c,usr_f4604426c31fd749,223.39,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-02T05:11:20.803Z,2026-07-03T00:28:16.356Z
+pay_da9a68dad8acb89e,usr_3d3f3799a07295e9,281.13,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-01T01:05:11.091Z,2026-07-03T01:05:11.091Z
+pay_5ad5ba079f16acf5,usr_65363c77787fb578,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7198,pending,,2026-07-03 01:44:39,2026-07-03 01:44:39
+pay_5ad5ba079f16acf5,usr_65363c77787fb578,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7198,succeeded,,2026-07-03 01:44:39,2026-07-03T01:45:11.716Z
+pay_08c686dcbe2d948c,usr_b8bbcc542fc068d2,"1,550.00",2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4533,succeeded,,2026-07-03T02:00:44.909Z,2026-07-03T02:01:56.453Z
+pay_23aa85c44060919f,usr_8c7e6fb779339fa8,404.64,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-02T04:59:54.958Z,2026-07-03T02:30:04.537Z
+pay_7805bca0a8e1b6e9,usr_cd9ed3281ce99ec0,498.27,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-03T02:44:01.679Z,2026-07-03T02:44:01.679Z
+pay_5ee5e79b89f4642e,usr_4f9c78bf010d583f,150.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5119,pending,,2026-07-03T03:27:05.577Z,2026-07-03T03:27:05.577Z
+pay_5ee5e79b89f4642e,usr_4f9c78bf010d583f,150.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5119,succeeded,,2026-07-03T03:27:05.577Z,2026-07-03T03:27:40.618Z
+pay_53f598d126301bb8,usr_a6a148c3abd4b9a0,500.00,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-03T03:46:19.055Z,2026-07-03T03:46:19.055Z
+pay_3041df0527a9b78f,usr_945285ec568a7b62,350.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,2734,pending,,2026-07-03T03:47:33.394Z,2026-07-03T03:47:33.394Z
+pay_3041df0527a9b78f,usr_945285ec568a7b62,350.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,2734,succeeded,,2026-07-03T03:47:33.394Z,2026-07-03T03:48:16.024Z
+pay_c5f79a9687356e31,usr_ca3904f7c9d22116,207.33,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4480,Pending,,2026-07-03T04:08:52.591Z,2026-07-03T04:08:52.591Z
+pay_c5f79a9687356e31,usr_ca3904f7c9d22116,207.33,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4480,succeeded,,2026-07-03T04:08:52.591Z,2026-07-03T04:10:00.510Z
+pay_f08ffc1d5beb854e,usr_48d9548ec87ce81d,518.83,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-03T04:22:32.472Z,2026-07-03T04:22:32.472Z
+pay_8d3a80ac301867c0,usr_eab4bce840f96050,450.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,7267,pending,,2026-07-03T04:28:34.285Z,2026-07-03T04:28:34.285Z
+pay_8d3a80ac301867c0,usr_eab4bce840f96050,450.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,7267,succeeded,,2026-07-03T04:28:34.285Z,2026-07-03T04:29:44.654Z
+pay_d75d5821ed785127,usr_f49ee85fafd580eb,900.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4650,pending,,2026-07-03T05:43:40.088Z,2026-07-03T05:43:40.088Z
+pay_d75d5821ed785127,usr_f49ee85fafd580eb,900.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4650,succeeded,,2026-07-03T05:43:40.088Z,2026-07-03T05:44:56.674Z
+pay_0d0d73166c270a84,usr_6772fe9f999bc859,650.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6361,succeeded,,2026-07-03T06:17:49.415Z,2026-07-03T06:18:36.604Z
+pay_0cd74a77ab2dce10,usr_14b0bab5a0350f66,400.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,5122,pending,,2026-07-03T06:49:06.191Z,2026-07-03T06:49:06.191Z
+pay_0cd74a77ab2dce10,usr_14b0bab5a0350f66,400.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,5122,succeeded,,2026-07-03T06:49:06.191Z,2026-07-03T06:49:38.684Z
+pay_47ab7a67a868dce0,usr_b6e3b91b3777d823,146.73,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-03T09:19:47.133Z,2026-07-03T09:19:47.133Z
+pay_5df545dca4555722,usr_3e5521ecc3cd61ab,265.21,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,8488,pending,,2026-07-03T09:37:05.677Z,2026-07-03T09:37:05.677Z
+pay_5df545dca4555722,usr_3e5521ecc3cd61ab,265.21,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,8488,succeeded,,2026-07-03T09:37:05.677Z,2026-07-03T09:37:47.119Z
+pay_cd8021eafd10b50f,usr_3d5cab0e0b2d983a,508.51,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-03T00:22:28.843Z,2026-07-03T11:23:45.134Z
+pay_155db64fe75cda25,usr_79705db63b97810d,450.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,7846,succeeded,,2026-07-03T13:32:15.675Z,2026-07-03T13:33:00.445Z
+pay_53f598d126301bb8,usr_a6a148c3abd4b9a0,500.00,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-03T03:46:19.055Z,2026-07-03T14:17:52.353Z
+pay_733ad5dc56b1ffda,usr_d355441e3e3f9b1e,685.72,2.99,0.00,USD,debit_card,Adyen,Truist,bank,4356,pending,,2026-07-03T14:39:16.483Z,2026-07-03T14:39:16.483Z
+pay_733ad5dc56b1ffda,usr_d355441e3e3f9b1e,685.72,2.99,0.00,USD,debit_card,Adyen,Truist,bank,4356,succeeded,,2026-07-03T14:39:16.483Z,2026-07-03T14:40:04.887Z
+pay_f9eddbc172875164,usr_04f299efc26cd636,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-02T20:02:40.426Z,2026-07-03T15:11:33.878Z
+pay_efdd7b3ed8cd30d4,usr_a6928bbf25aae4ba,1250.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0287,succeeded,,2026-07-03T15:37:17.284Z,2026-07-03T15:38:29.073Z
+pay_47ab7a67a868dce0,usr_b6e3b91b3777d823,146.73,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-03T09:19:47.133Z,2026-07-03T16:32:03.035Z
+pay_17090ffee180f5e7,usr_23e57b5027dfc6e0,100.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-03T16:44:52.367Z,2026-07-03T16:44:52.367Z
+pay_5b5226d727fcd4df,usr_35abe59350888c74,500.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6041,pending,,2026-07-03T18:05:46.913Z,2026-07-03T18:05:46.913Z
+pay_5b5226d727fcd4df,usr_35abe59350888c74,500.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6041,pending,,2026-07-03T18:05:46.913Z,2026-07-03T18:05:46.913Z
+pay_5b5226d727fcd4df,usr_35abe59350888c74,500.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6041,failed,card_declined,2026-07-03T18:05:46.913Z,2026-07-03T18:06:44.224Z
+pay_0d053afea25c75c2,usr_797eb3e463dba8c8,124.52,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,8687,pending,,2026-07-03T18:19:04.623Z,2026-07-03T18:19:04.623Z
+pay_0d053afea25c75c2,usr_797eb3e463dba8c8,124.52,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,8687,succeeded,,2026-07-03T18:19:04.623Z,2026-07-03T18:20:00.742Z
+pay_9f0eac1718171e4c,usr_fd508f47652a176a,400.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-03T18:38:08.100Z,2026-07-03T18:38:08.100Z
+pay_f9e1fe32db025773,usr_89e08b89ca3e3238,119.89,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,7295,pending,,2026-07-03T19:47:27.255Z,2026-07-03T19:47:27.255Z
+pay_f9e1fe32db025773,usr_89e08b89ca3e3238,119.89,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,7295,succeeded,,2026-07-03T19:47:27.255Z,2026-07-03T19:48:44.037Z
+pay_c02f8b25ff6b42cd,usr_53d01efa248b7d4f,1000.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-03T20:36:52.578Z,2026-07-03T20:36:52.578Z
+pay_f652279a18c69b2e,usr_a0c15094922e590a,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7057,pending,,2026-07-03T20:44:42.428Z,2026-07-03T20:44:42.428Z
+pay_f652279a18c69b2e,usr_a0c15094922e590a,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7057,succeeded,,2026-07-03T20:44:42.428Z,2026-07-03T20:45:05.581Z
+pay_953b74396e5fa0cb,usr_e67410de479fb5f3,218.62,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-02T15:50:39.386Z,2026-07-03T21:18:16.608Z
+pay_1bae17fd902098fe,usr_ab6d9aa8aaefdbe1,532.25,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4514,PENDING,,2026-07-03T21:18:24.092Z,2026-07-03T21:18:24.092Z
+pay_1bae17fd902098fe,usr_ab6d9aa8aaefdbe1,532.25,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4514,succeeded,,2026-07-03T21:18:24.092Z,2026-07-03T21:18:31.797Z
+pay_e6d1795989ba129a,usr_beb9e02afe36d4f8,700.00,4.98,0.00,USD,debit_card,Stripe,TD Bank,bank,7985,failed,card_declined,2026-07-03T21:32:04.075Z,2026-07-03T21:32:18.692Z
+pay_507ecee6298e9efb,usr_673d78049c5bad2e,300.00,0.00,0.00,USD,debit_card,Adyen,Truist,bank,5897,pending,,2026-07-03 22:45:50,2026-07-03 22:45:50
+pay_507ecee6298e9efb,usr_673d78049c5bad2e,300.00,0.00,0.00,USD,debit_card,Adyen,Truist,bank,5897,succeeded,,2026-07-03 22:45:50,2026-07-03T22:46:06.972Z
+pay_1c0f959ca729fde4,usr_29e6c348a47d0a49,1100.00,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,4166,pending,,2026-07-03T22:48:25.428Z,2026-07-03T22:48:25.428Z
+pay_1c0f959ca729fde4,usr_29e6c348a47d0a49,1100.00,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,4166,succeeded,,2026-07-03T22:48:25.428Z,2026-07-03T22:49:32.096Z
+pay_11ded1c451191151,usr_8d3ba57f300ffa68,650.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7926,pending,,2026-07-03T23:44:40.874Z,2026-07-03T23:44:40.874Z
+pay_11ded1c451191151,usr_8d3ba57f300ffa68,650.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7926,succeeded,,2026-07-03T23:44:40.874Z,2026-07-03T23:45:18.273Z
+pay_5190ff96e3ba9fc9,usr_04287972ad433e2d,100.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-04T00:31:37.232Z,2026-07-04T00:31:37.232Z
+pay_ecd98d30905ff05b,usr_7e6a3ea7fae91634,650.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,6489,pending,,2026-07-04T00:39:49.132Z,2026-07-04T00:39:49.132Z
+pay_ecd98d30905ff05b,usr_7e6a3ea7fae91634,650.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,6489,succeeded,,2026-07-04T00:39:49.132Z,2026-07-04T00:40:01.535Z
+pay_bebb6376d246c40c,usr_0c6e703fd5ab3fd6,700.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,7845,failed,insufficient_funds,2026-07-04T01:37:52.864Z,2026-07-04T01:38:49.460Z
+pay_0e0fa335e7a2ed28,usr_fba938bca922f180,600.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,7276,succeeded,,2026-07-04T01:40:10.294Z,2026-07-04T01:41:31.821Z
+pay_339342d080ca6327,usr_d0b6eada5b6b8e34,1200.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0747,PENDING,,2026-07-04T02:29:26.207Z,2026-07-04T02:29:26.207Z
+pay_339342d080ca6327,usr_d0b6eada5b6b8e34,1200.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0747,succeeded,,2026-07-04T02:29:26.207Z,2026-07-04T02:30:34.545Z
+pay_7805bca0a8e1b6e9,usr_cd9ed3281ce99ec0,498.27,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-03T02:44:01.679Z,2026-07-04T03:12:24.791Z
+pay_9a2547520975fca1,usr_68edeed76f721a94,284.18,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-04 03:19:24,2026-07-04 03:19:24
+pay_1bae17fd902098fe,usr_ab6d9aa8aaefdbe1,532.25,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4514,refunded,customer_request,2026-07-03T21:18:24.092Z,2026-07-04T03:20:46.365Z
+pay_ede5ec727aab2a13,usr_600715fffaad409b,150.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2913,succeeded,,2026-07-04T04:00:40.757Z,2026-07-04T04:01:04.208Z
+pay_c7b3d9208ef41112,usr_6b1205aa9bd3f580,200.00,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,3748,pending,,2026-07-04 04:35:39,2026-07-04 04:35:39
+pay_c7b3d9208ef41112,usr_6b1205aa9bd3f580,200.00,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,3748,failed,card_declined,2026-07-04 04:35:39,2026-07-04T04:36:22.329Z
+pay_ff5a0a6cbbcc3f6f,usr_76242c71de49531a,750.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-04T04:45:09.978Z,2026-07-04T04:45:09.978Z
+pay_c43028983c025184,usr_c80069fbd4c7ca67,300.00,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-04T04:51:11.786Z,2026-07-04T04:51:11.786Z
+pay_f08ffc1d5beb854e,usr_48d9548ec87ce81d,518.83,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-03T04:22:32.472Z,2026-07-04T07:06:09.869Z
+pay_d51324286d538cd0,usr_9349c66a058815b3,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-02T07:12:33.662Z,2026-07-04T07:12:33.662Z
+pay_2db86e8144132c4b,usr_09811a969b0188fe,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-04T09:56:34.564Z,2026-07-04T09:56:34.564Z
+pay_bf1a9ea0466abe03,usr_51ef467b1f4db543,467.62,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,1251,pending,,2026-07-04T10:25:57.139Z,2026-07-04T10:25:57.139Z
+pay_bf1a9ea0466abe03,usr_51ef467b1f4db543,467.62,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,1251,succeeded,,2026-07-04T10:25:57.139Z,2026-07-04T10:26:52.366Z
+pay_dda5be10c14e95df,usr_739181a3b84593aa,150.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,0194,pending,,2026-07-04T11:01:14.631Z,2026-07-04T11:01:14.631Z
+pay_dda5be10c14e95df,usr_739181a3b84593aa,150.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,0194,succeeded,,2026-07-04T11:01:14.631Z,2026-07-04T11:02:15.773Z
+pay_17090ffee180f5e7,usr_23e57b5027dfc6e0,100.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-03T16:44:52.367Z,2026-07-04T12:46:37.729Z
+pay_81c9a8b8c0375540,usr_6d34cd77a59040c7,300.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,3563,succeeded,,2026-07-04T12:53:59.455Z,2026-07-04T12:54:17.099Z
+pay_9983c52e0500fc34,usr_67a37614b4e2fbce,250.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,4298,pending,,2026-07-04T14:12:28.233Z,2026-07-04T14:12:28.233Z
+pay_9983c52e0500fc34,usr_67a37614b4e2fbce,250.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,4298,succeeded,,2026-07-04T14:12:28.233Z,2026-07-04T14:13:35.707Z
+pay_c02f8b25ff6b42cd,usr_53d01efa248b7d4f,1000.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-03T20:36:52.578Z,2026-07-04T14:24:40.303Z
+pay_ff5a0a6cbbcc3f6f,usr_76242c71de49531a,750.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-04T04:45:09.978Z,2026-07-04T15:52:25.811Z
+pay_5190ff96e3ba9fc9,usr_04287972ad433e2d,100.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-04T00:31:37.232Z,2026-07-04T16:20:48.351Z
+pay_0481384712e0c4ce,usr_594c100c76a5dfbc,723.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5226,succeeded,,2026-07-04T17:09:25.851Z,2026-07-04T17:10:41.963Z
+pay_70c5774ff0d5bc0a,usr_f8dc2c64c4e43753,700.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-04T17:35:43.690Z,2026-07-04T17:35:43.690Z
+pay_9f0eac1718171e4c,usr_fd508f47652a176a,400.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded ,,2026-07-03T18:38:08.100Z,2026-07-04T19:43:16.060Z
+pay_1048536d6a51f16e,usr_b27b3d901a16342c,133.78,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6071,pending,,2026-07-04T20:00:18.660Z,2026-07-04T20:00:18.660Z
+pay_1048536d6a51f16e,usr_b27b3d901a16342c,133.78,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6071,succeeded,,2026-07-04T20:00:18.660Z,2026-07-04T20:01:46.859Z
+pay_197893039e43430a,usr_d4ffa66675c8e90d,247.17,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5083,pending,,2026-07-04 20:08:28,2026-07-04 20:08:28
+pay_197893039e43430a,usr_d4ffa66675c8e90d,247.17,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5083,succeeded,,2026-07-04 20:08:28,2026-07-04T20:09:35.821Z
+pay_bc7c1acc4ed57e4a,usr_1816f30b34f735ed,400.00,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,1133,pending,,2026-07-04T20:09:47.449Z,2026-07-04T20:09:47.449Z
+pay_bc7c1acc4ed57e4a,usr_1816f30b34f735ed,400.00,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,1133,failed,insufficient_funds,2026-07-04T20:09:47.449Z,2026-07-04 20:10:43
+pay_441a510732a16ffc,usr_038484279361a973,300.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,0341,pending,,2026-07-04T20:45:04.524Z,2026-07-04T20:45:04.524Z
+pay_441a510732a16ffc,usr_038484279361a973,300.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,0341,succeeded,,2026-07-04T20:45:04.524Z,2026-07-04T20:46:21.922Z
+pay_6bd81d0071832335,usr_561da77b5d524c68,1000.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-04T20:53:16.547Z,2026-07-04T20:53:16.547Z
+pay_ee55d84990e33998,usr_88e86648a994ddca,400.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-04T21:32:39.897Z,2026-07-04T21:32:39.897Z
+pay_16b5473bc9271f72,usr_ea4cd6078e487a8c,793.09,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,7760,failed,risk_blocked,2026-07-04T23:49:30.347Z,2026-07-04T23:50:38.682Z
+pay_40a34f9382a4e29c,usr_8be5199ee212b2e8,150.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-05T01:09:33.384Z,2026-07-05T01:09:33.384Z
+pay_f8ebbb6775b762f6,usr_fa7bb223ce57e676,350.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-05T02:31:37.518Z,2026-07-05T02:31:37.518Z
+pay_f0e040bb8a31af3f,usr_13badc91a0a5fde6,274.64,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,1685,pending,,2026-07-05T02:56:02.659Z,2026-07-05T02:56:02.659Z
+pay_f0e040bb8a31af3f,usr_13badc91a0a5fde6,274.64,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,1685,succeeded,,2026-07-05T02:56:02.659Z,2026-07-05T02:56:23.807Z
+pay_d942324d97032c8d,usr_e1cbad8534f17153,250.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1364,succeeded,,2026-07-05T03:29:33.020Z,2026-07-05T03:30:43.144Z
+pay_40a34f9382a4e29c,usr_8be5199ee212b2e8,150.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-05T01:09:33.384Z,2026-07-05T03:54:40.756Z
+pay_6ff7212919c453a3,usr_8cdc718dc4057420,400.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-05 05:04:40,2026-07-05 05:04:40
+pay_9a2547520975fca1,usr_68edeed76f721a94,284.18,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-04 03:19:24,2026-07-05T05:41:51.389Z
+pay_79a25990d77e67b0,usr_c69dd06e1fcb92b0,550.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-05T05:57:55.750Z,2026-07-05T05:57:55.750Z
+pay_f8ebbb6775b762f6,usr_fa7bb223ce57e676,350.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-05T02:31:37.518Z,2026-07-05T07:01:45.317Z
+pay_79a25990d77e67b0,usr_c69dd06e1fcb92b0,550.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-05T05:57:55.750Z,2026-07-05T07:08:48.309Z
+pay_a95f94903e274937,usr_be8dee1eabfd9148,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-05T07:10:57.392Z,2026-07-05T07:10:57.392Z
+pay_ac0ee30982f97d68,usr_f8d4866f599a20f1,969.87,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,9947,succeeded,,2026-07-05T09:12:56.788Z,2026-07-05T09:14:03.258Z
+pay_70c5774ff0d5bc0a,usr_f8dc2c64c4e43753,700.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-04T17:35:43.690Z,2026-07-05T09:21:17.669Z
+pay_9bd0f41ba0547848,usr_3fbce063ea467d0d,500.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1479,succeeded,,2026-07-05T09:27:26.016Z,2026-07-05 09:28:53
+pay_6bd81d0071832335,usr_561da77b5d524c68,1000.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-04T20:53:16.547Z,2026-07-05T09:37:11.242Z
+pay_d4c0102796cc4416,usr_097a575d36ce8d27,100.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-05T09:42:28.228Z,2026-07-05T09:42:28.228Z
+pay_e8e0a4182f0f19d3,usr_830481c2f9d09e26,600.54,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2423,succeeded,,2026-07-05T10:06:33.022Z,2026-07-05T10:07:33.223Z
+pay_c43028983c025184,usr_c80069fbd4c7ca67,300.00,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-04T04:51:11.786Z,2026-07-05T10:41:29.872Z
+pay_0a5f00b53a7093df,usr_9b48fb2491600f57,450.00,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,5101,chargeback,fraudulent,2026-05-06T14:33:04.380Z,2026-07-05T11:32:17.649Z
+pay_991a7f0d91ea1398,usr_0171f5a74148bd11,250.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-05T12:56:04.508Z,2026-07-05T12:56:04.508Z
+pay_d4c0102796cc4416,usr_097a575d36ce8d27,100.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-05T09:42:28.228Z,2026-07-05T13:33:27.354Z
+pay_ffa506a647827353,usr_747bcec80d2cc4dc,271.89,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1922,pending,,2026-07-05T14:26:29.767Z,2026-07-05T14:26:29.767Z
+pay_ffa506a647827353,usr_747bcec80d2cc4dc,271.89,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1922,succeeded,,2026-07-05T14:26:29.767Z,2026-07-05T14:27:37.368Z
+pay_e28df6fe3904fa76,usr_f37259aedb19b4bc,300.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7207,pending,,2026-07-05T15:02:16.290Z,2026-07-05T15:02:16.290Z
+pay_e28df6fe3904fa76,usr_f37259aedb19b4bc,300.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7207,succeeded,,2026-07-05T15:02:16.290Z,2026-07-05T15:02:26.469Z
+pay_0aebb85653a453dd,usr_93de2da040ff5822,292.34,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-05T16:11:06.702Z,2026-07-05T16:11:06.702Z
+pay_991a7f0d91ea1398,usr_0171f5a74148bd11,250.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-05T12:56:04.508Z,2026-07-05T17:26:09.681Z
+pay_b09a44f7093d50b8,usr_d5b4c4a4f9d7b9ad,410.08,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-05T17:44:48.383Z,2026-07-05T17:44:48.383Z
+pay_6ff7212919c453a3,usr_8cdc718dc4057420,400.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-05 05:04:40,2026-07-05T17:46:57.845Z
+pay_38072b36e7ec19fe,usr_4b1fa0286cf6c879,641.49,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-05T17:52:58.781Z,2026-07-05T17:52:58.781Z
+pay_b09a44f7093d50b8,usr_d5b4c4a4f9d7b9ad,410.08,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-05T17:44:48.383Z,2026-07-05T20:20:55.088Z
+pay_e419cdc70bfd4f5c,usr_3f203c2279477aa8,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5243,pending,,2026-07-05T21:02:54.758Z,2026-07-05T21:02:54.758Z
+pay_e419cdc70bfd4f5c,usr_3f203c2279477aa8,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5243,succeeded,,2026-07-05T21:02:54.758Z,2026-07-05T21:03:53.437Z
+pay_7ba2dc608d73b1ea,usr_6ac01a5cda6c59b2,500.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-05T21:30:05.067Z,2026-07-05T21:30:05.067Z
+pay_94e0ed7749d87d81,usr_6a1e5d9a705f052b,350.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,6342,pending ,,2026-07-05T22:54:57.730Z,2026-07-05T22:54:57.730Z
+pay_94e0ed7749d87d81,usr_6a1e5d9a705f052b,350.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,6342,succeeded,,2026-07-05T22:54:57.730Z,2026-07-05T22:55:03.544Z
+pay_a95f94903e274937,usr_be8dee1eabfd9148,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-05T07:10:57.392Z,2026-07-06T00:37:23.270Z
+pay_4dc44f0ed825f94a,usr_547c903018dd3aea,150.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,5417,succeeded,,2026-07-06T03:21:35.769Z,2026-07-06T03:22:38.826Z
+pay_98de5538e64930cd,usr_426cd241261e5c4d,998.10,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5207,pending,,2026-07-06T03:41:43.660Z,2026-07-06T03:41:43.660Z
+pay_98de5538e64930cd,usr_426cd241261e5c4d,998.10,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5207,succeeded,,2026-07-06T03:41:43.660Z,2026-07-06T03:42:33.300Z
+pay_69db515e90922e90,usr_0038dc84a3ed033a,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8039,succeeded,,2026-07-06T05:03:38.932Z,2026-07-06T05:04:15.253Z
+pay_0aebb85653a453dd,usr_93de2da040ff5822,292.34,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-05T16:11:06.702Z,2026-07-06T05:30:46.027Z
+pay_149c224c092d1aad,usr_798fa5ebc24cf38a,650.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,4981,pending,,2026-07-06T05:58:15.837Z,2026-07-06T05:58:15.837Z
+pay_149c224c092d1aad,usr_798fa5ebc24cf38a,650.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,4981,succeeded,,2026-07-06T05:58:15.837Z,2026-07-06T05:59:09.023Z
+pay_07a291824bb939c0,usr_6d6a53cb2f991807,900.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-06T06:41:59.064Z,2026-07-06T06:41:59.064Z
+pay_ebc29ca86654ce37,usr_d50d4252e272e218,254.97,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,9838,succeeded,,2026-07-06T07:16:01.499Z,2026-07-06T07:17:07.846Z
+pay_5b45cf0bd6968716,usr_10f35eeba3520153,250.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,4468,pending,,2026-07-06T07:49:56.718Z,2026-07-06T07:49:56.718Z
+pay_5b45cf0bd6968716,usr_10f35eeba3520153,250.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,4468,succeeded,,2026-07-06T07:49:56.718Z,2026-07-06 07:50:01
+pay_87b22fcca2484ad5,usr_4c031d1638c4f346,248.10,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-06T09:07:50.774Z,2026-07-06T09:07:50.774Z
+pay_2db86e8144132c4b,usr_09811a969b0188fe,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-04T09:56:34.564Z,2026-07-06T09:56:34.564Z
+pay_e3684b94e9bf8956,usr_de943130b514db32,243.22,2.99,0.00,USD,debit_card,Adyen,U.S. Bank,bank,9628,pending,,2026-07-06T10:15:51.062Z,2026-07-06T10:15:51.062Z
+pay_e3684b94e9bf8956,usr_de943130b514db32,243.22,2.99,0.00,USD,debit_card,Adyen,U.S. Bank,bank,9628,succeeded,,2026-07-06T10:15:51.062Z,2026-07-06T10:16:06.066Z
+pay_c1d5ce80c96c6edd,usr_26ecd1dcb75168f6,800.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8548,failed,card_declined,2026-07-06T11:18:48.347Z,2026-07-06T11:19:35.450Z
+pay_ad96b6a38b203111,usr_312997afd7e305d5,514.84,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-06T12:53:14.905Z,2026-07-06T12:53:14.905Z
+pay_38072b36e7ec19fe,usr_4b1fa0286cf6c879,641.49,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-05T17:52:58.781Z,2026-07-06T13:25:05.655Z
+pay_1c9a6660414c0927,usr_087c46f95c579417,338.99,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-06T14:58:40.098Z,2026-07-06T14:58:40.098Z
+pay_7ba2dc608d73b1ea,usr_6ac01a5cda6c59b2,500.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-05T21:30:05.067Z,2026-07-06T15:35:04.383Z
+pay_a30ada7251abcb4d,usr_1ff294f8fcb6f55f,175.55,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4579,succeeded,,2026-07-06T15:58:50.945Z,2026-07-06T15:59:18.774Z
+pay_472a2f605a96109c,usr_5b62a8df493e904d,450.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6334,pending,,2026-07-06T16:37:06.508Z,2026-07-06T16:37:06.508Z
+pay_472a2f605a96109c,usr_5b62a8df493e904d,450.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6334,succeeded,,2026-07-06T16:37:06.508Z,2026-07-06T16:37:20.001Z
+pay_f8a44e154545b150,usr_db3b630d643fa780,600.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,3532,succeeded,,2026-07-06T18:38:07.578Z,2026-07-06T18:38:40.747Z
+pay_a43ff9242e1692a3,usr_7fcd9eb1a7cad415,304.74,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,7019,pending,,2026-07-06T20:12:45.366Z,2026-07-06T20:12:45.366Z
+pay_a43ff9242e1692a3,usr_7fcd9eb1a7cad415,304.74,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,7019,succeeded,,2026-07-06T20:12:45.366Z,2026-07-06T20:12:55.460Z
+pay_ee55d84990e33998,usr_88e86648a994ddca,400.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-04T21:32:39.897Z,2026-07-06T21:32:39.897Z
+pay_5e513f8a6ccb867f,usr_8ad303b1d77dd689,350.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9922,pending,,2026-07-06T21:59:23.729Z,2026-07-06T21:59:23.729Z
+pay_5e513f8a6ccb867f,usr_8ad303b1d77dd689,350.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9922,succeeded,,2026-07-06T21:59:23.729Z,2026-07-06T21:59:32.098Z
+pay_dce2d775869b2e59,usr_28c2cbfc484411ef,300.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1090,pending,,2026-07-06T22:53:48.919Z,2026-07-06T22:53:48.919Z
+pay_dce2d775869b2e59,usr_28c2cbfc484411ef,300.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1090,succeeded,,2026-07-06T22:53:48.919Z,2026-07-06T22:54:39.887Z
+pay_7c4500ea6c303bcf,usr_87f797fa6cfa855f,200.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,0203,pending,,2026-07-06T23:40:08.009Z,2026-07-06T23:40:08.009Z
+pay_7c4500ea6c303bcf,usr_87f797fa6cfa855f,200.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,0203,succeeded,,2026-07-06T23:40:08.009Z,2026-07-06T23:40:14.182Z
+pay_87b22fcca2484ad5,usr_4c031d1638c4f346,248.10,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-06T09:07:50.774Z,2026-07-06T23:48:16.921Z
+pay_eed7092432c3f8ea,usr_f55c12c668c5eddc,350.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3987,succeeded,,2026-07-07T00:29:27.549Z,2026-07-07T00:29:29.584Z
+pay_07a291824bb939c0,usr_6d6a53cb2f991807,900.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,, succeeded,,2026-07-06T06:41:59.064Z,2026-07-07T00:45:03.726Z
+pay_aa1c6fc7757417b3,usr_3f203c2279477aa8,650.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5243,pending,,2026-07-07T01:33:40.970Z,2026-07-07T01:33:40.970Z
+pay_aa1c6fc7757417b3,usr_3f203c2279477aa8,650.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5243,succeeded,,2026-07-07T01:33:40.970Z,2026-07-07T01:34:31.455Z
+pay_fb86ba056b50b14d,usr_f3377b9ee60587ef,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-07T01:46:44.777Z,2026-07-07T01:46:44.777Z
+pay_116f4489acc00939,usr_11bbc208f76afb78,"1,150.00",2.99,0.00,USD,debit_card,Adyen,Citibank,bank,3490,pending,,2026-07-07T01:51:33.365Z,2026-07-07T01:51:33.365Z
+pay_116f4489acc00939,usr_11bbc208f76afb78,"1,150.00",2.99,0.00,USD,debit_card,Adyen,Citibank,bank,3490,succeeded,,2026-07-07T01:51:33.365Z,2026-07-07T01:52:53.269Z
+pay_bf441fc47bf46962,usr_e44b4ef12cd4ff6e,300.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3304,pending,,2026-07-07T01:59:50.776Z,2026-07-07T01:59:50.776Z
+pay_bf441fc47bf46962,usr_e44b4ef12cd4ff6e,300.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3304,succeeded,,2026-07-07T01:59:50.776Z,2026-07-07T02:00:58.490Z
+pay_4c15c0f95dadc3cb,usr_dcfa02a93f4435c3,287.12,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3927,pending,,2026-07-07T03:49:33.011Z,2026-07-07T03:49:33.011Z
+pay_4c15c0f95dadc3cb,usr_dcfa02a93f4435c3,287.12,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3927,failed,insufficient_funds,2026-07-07T03:49:33.011Z,2026-07-07T03:50:40.322Z
+pay_7ab693af5a49f50b,usr_3a1d8916ba9b9531,779.75,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,9729,pending,,2026-07-07T04:20:34.082Z,2026-07-07T04:20:34.082Z
+pay_7ab693af5a49f50b,usr_3a1d8916ba9b9531,779.75,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,9729,succeeded,,2026-07-07T04:20:34.082Z,2026-07-07T04:21:22.317Z
+pay_e419cdc70bfd4f5c,usr_3f203c2279477aa8,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5243,refunded,customer_request,2026-07-05T21:02:54.758Z,2026-07-07T04:37:47.875Z
+pay_fb86ba056b50b14d,usr_f3377b9ee60587ef,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-07T01:46:44.777Z,2026-07-07T05:02:07.787Z
+pay_ad96b6a38b203111,usr_312997afd7e305d5,514.84,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-06T12:53:14.905Z,2026-07-07T05:33:57.644Z
+pay_0c351c7009333908,usr_f2e401af47021755,400.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,1623,succeeded,,2026-07-07T06:16:40.282Z,2026-07-07T06:17:14.386Z
+pay_571b4603f7f6acbb,usr_19134417281f8439,550.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,7129,succeeded,,2026-07-07T06:32:12.755Z,2026-07-07T06:32:24.177Z
+pay_ed6ce4d11b8961d1,usr_f324a4fd8f1372bb,500.00,2.99,0.00,USD,debit_card,Adyen,Truist,bank,2859,chargeback,unrecognized,2026-05-06T13:40:54.443Z,2026-07-07T11:39:54.638Z
+pay_1c9a6660414c0927,usr_087c46f95c579417,338.99,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-06T14:58:40.098Z,2026-07-07 13:05:04
+pay_817c6559a14428d9,usr_262b2cda00dce949,719.83,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1777,pending,,2026-07-07T13:18:59.308Z,2026-07-07T13:18:59.308Z
+pay_817c6559a14428d9,usr_262b2cda00dce949,719.83,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1777,succeeded,,2026-07-07T13:18:59.308Z,2026-07-07T13:19:55.536Z
+pay_8d5ebe0c41dd401e,usr_01308be0fcea9a96,280.69,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-07T13:57:50.317Z,2026-07-07T13:57:50.317Z
+pay_c6be266e0b565e34,usr_3e6d48ce4cff00d7,500.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-07T14:52:36.363Z,2026-07-07T14:52:36.363Z
+pay_5b12b3bbb059419f,usr_c520d50fa0ff3498,700.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2138,pending,,2026-07-07T16:35:42.571Z,2026-07-07T16:35:42.571Z
+pay_5b12b3bbb059419f,usr_c520d50fa0ff3498,700.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2138,succeeded,,2026-07-07T16:35:42.571Z,2026-07-07T16:36:03.632Z
+pay_b81ebccc7d5de1c2,usr_0c0fd195c17af08a,107.08,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7668,pending,,2026-07-07T17:36:49.972Z,2026-07-07T17:36:49.972Z
+pay_b81ebccc7d5de1c2,usr_0c0fd195c17af08a,107.08,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7668,succeeded,,2026-07-07T17:36:49.972Z,2026-07-07T17:38:19.908Z
+pay_8d318c3c133cd1ea,usr_ed44ab9df095562e,400.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-07T19:59:51.355Z,2026-07-07T19:59:51.355Z
+pay_abfcb7d67d9b79e0,usr_ab8a501567273710,196.50,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,1753,pending,,2026-07-07 20:29:57,2026-07-07 20:29:57
+pay_abfcb7d67d9b79e0,usr_ab8a501567273710,196.50,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,1753,succeeded,,2026-07-07 20:29:57,2026-07-07T20:31:18.921Z
+pay_cf024710ea840e12,usr_b32eddf2c1dd9365,100.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,4186,pending,,2026-07-07T23:10:36.851Z,2026-07-07T23:10:36.851Z
+pay_cf024710ea840e12,usr_b32eddf2c1dd9365,100.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,4186,failed,risk_blocked,2026-07-07T23:10:36.851Z,2026-07-07T23:11:01.038Z
+pay_0d8b0aeefbf1f3c3,usr_ae1b545097330a45,1500.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9734,succeeded,,2026-07-08T03:13:16.436Z,2026-07-08T03:14:10.959Z
+pay_2f881888b94ecc02,usr_ea86ff039e9d5a73,750.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9529,pending,,2026-07-08T03:16:38.130Z,2026-07-08T03:16:38.130Z
+pay_2f881888b94ecc02,usr_ea86ff039e9d5a73,750.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9529,succeeded,,2026-07-08T03:16:38.130Z,2026-07-08T03:17:26.754Z
+pay_2de711e9abb6dc35,usr_8fae987e1ed8d9a2,361.81,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-08T04:03:13.045Z,2026-07-08T04:03:13.045Z
+pay_b9b74c147c8acad2,usr_5bb25e79c47b15e0,150.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,0130,succeeded,,2026-07-08T04:40:53.311Z,2026-07-08 04:41:19
+pay_7c1fa4c50326e8b3,usr_64c46086919fa02e,650.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,7999,succeeded,,2026-07-08T09:42:12.053Z,2026-07-08T09:42:35.400Z
+pay_8b1b7e98fee8ca21,usr_8b4bd7e7a4515ae0,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,3706,pending,,2026-07-08T10:56:03.386Z,2026-07-08T10:56:03.386Z
+pay_8b1b7e98fee8ca21,usr_8b4bd7e7a4515ae0,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,3706,succeeded,,2026-07-08T10:56:03.386Z,2026-07-08T10:56:34.800Z
+pay_be1adb96463b01fa,usr_28f205b02862763d,182.71,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,3939,succeeded,,2026-07-08T11:24:29.621Z,2026-07-08T11:25:33.702Z
+pay_20f9c88f068ec711,usr_9a0270da505c1021,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-08T11:43:32.257Z,2026-07-08T11:43:32.257Z
+pay_cf96dac1f6dedfa3,usr_21b6d83537b5115a,500.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-08T16:33:44.967Z,2026-07-08T16:33:44.967Z
+pay_78440f193016288c,usr_e1301617c2dff335,250.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,0853,pending,,2026-07-08T17:49:20.479Z,2026-07-08T17:49:20.479Z
+pay_78440f193016288c,usr_e1301617c2dff335,250.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,0853,succeeded,,2026-07-08T17:49:20.479Z,2026-07-08T17:50:30.102Z
+pay_a3fe5d710e0431d8,usr_386b859410e2a69d,850.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-08T18:55:18.121Z,2026-07-08T18:55:18.121Z
+pay_b989abb1a4286154,usr_30683a88e778feaf,150.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-08T19:51:54.187Z,2026-07-08T19:51:54.187Z
+pay_20f9c88f068ec711,usr_9a0270da505c1021,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-08T11:43:32.257Z,2026-07-08T20:03:18.137Z
+pay_60e184238c4d115d,usr_ed1b0f86b60147c8,350.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9866,pending,,2026-07-08T20:13:41.901Z,2026-07-08T20:13:41.901Z
+pay_60e184238c4d115d,usr_ed1b0f86b60147c8,350.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9866,succeeded,,2026-07-08T20:13:41.901Z,2026-07-08T20:15:03.753Z
+pay_54746556817657d9,usr_79c9f246b556aeac,350.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-08T21:18:14.223Z,2026-07-08T21:18:14.223Z
+pay_2e014eb73a57d08b,usr_ff68307fe99640f8,500.00,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,0004,pending,,2026-07-08T21:26:10.267Z,2026-07-08T21:26:10.267Z
+pay_2e014eb73a57d08b,usr_ff68307fe99640f8,500.00,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,0004,succeeded,,2026-07-08T21:26:10.267Z,2026-07-08T21:27:36.497Z
+pay_e35703dfa99af0c0,usr_af88a9b227c15ab7,750.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,5507,pending,,2026-07-09T01:10:49.599Z,2026-07-09T01:10:49.599Z
+pay_e35703dfa99af0c0,usr_af88a9b227c15ab7,750.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,5507,succeeded,,2026-07-09T01:10:49.599Z,2026-07-09T01:12:03.340Z
+pay_52d707e7c7913ad0,usr_eeba6ad9ea88d27d,950.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7093,pending,,2026-07-09T01:17:00.223Z,2026-07-09T01:17:00.223Z
+pay_52d707e7c7913ad0,usr_eeba6ad9ea88d27d,950.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7093,succeeded,,2026-07-09T01:17:00.223Z,2026-07-09T01:18:09.762Z
+pay_bff5d66323543288,usr_266b4b6db9ec28ff,1042.60,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9411,pending,,2026-07-09T01:35:58.490Z,2026-07-09T01:35:58.490Z
+pay_bff5d66323543288,usr_266b4b6db9ec28ff,1042.60,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9411,succeeded,,2026-07-09T01:35:58.490Z,2026-07-09T01:36:27.447Z
+pay_2de711e9abb6dc35,usr_8fae987e1ed8d9a2,361.81,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-08T04:03:13.045Z,2026-07-09T03:15:32.692Z
+pay_569a01731150ff3f,usr_f1901b7ec6b469ef,193.52,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,6524,succeeded,,2026-07-09T04:24:52.840Z,2026-07-09T04:25:46.379Z
+pay_5d4eb97b5205a982,usr_5ca0c428822c4d32,550.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2253,pending,,2026-07-09T06:25:27.911Z,2026-07-09T06:25:27.911Z
+pay_5d4eb97b5205a982,usr_5ca0c428822c4d32,550.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2253,succeeded,,2026-07-09T06:25:27.911Z,2026-07-09T06:26:42.448Z
+pay_af2b9cf4f108ad6d,usr_2d5e114d83eab8b5,176.22,0.00,0.00,USD,debit_card,Adyen,PNC Bank,bank,8074,succeeded,,2026-07-09T10:00:54.144Z,2026-07-09T10:01:00.157Z
+pay_cf96dac1f6dedfa3,usr_21b6d83537b5115a,500.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-08T16:33:44.967Z,2026-07-09T10:45:47.567Z
+pay_5a14f65ca48e7038,usr_015824639d8776a0,1531.37,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4720,pending,,2026-07-09T11:42:16.057Z,2026-07-09T11:42:16.057Z
+pay_5a14f65ca48e7038,usr_015824639d8776a0,1531.37,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4720,succeeded,,2026-07-09T11:42:16.057Z,2026-07-09T11:43:10.455Z
+pay_5c4c1a5f96bfd25f,usr_c55cdd1908121b35,333.58,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6735,pending,,2026-07-09T12:11:57.145Z,2026-07-09T12:11:57.145Z
+pay_5c4c1a5f96bfd25f,usr_c55cdd1908121b35,333.58,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6735,succeeded,,2026-07-09T12:11:57.145Z,2026-07-09T12:12:46.231Z
+pay_f30422726bc851bb,usr_622ecdaf5a0763a1,169.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8922,pending,,2026-07-09T12:16:11.695Z,2026-07-09T12:16:11.695Z
+pay_f30422726bc851bb,usr_622ecdaf5a0763a1,169.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8922,succeeded,,2026-07-09T12:16:11.695Z,2026-07-09T12:17:23.476Z
+pay_392c66c8005ff969,usr_6d1040a014f89da1,262.57,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,6636,pending,,2026-07-09T13:26:40.889Z,2026-07-09T13:26:40.889Z
+pay_392c66c8005ff969,usr_6d1040a014f89da1,262.57,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,6636,succeeded,,2026-07-09T13:26:40.889Z,2026-07-09T13:26:58.599Z
+pay_8d5ebe0c41dd401e,usr_01308be0fcea9a96,280.69,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,Expired,barcode_not_paid,2026-07-07T13:57:50.317Z,2026-07-09T13:57:50.317Z
+pay_c6be266e0b565e34,usr_3e6d48ce4cff00d7,500.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,expired,barcode_not_paid,2026-07-07T14:52:36.363Z,2026-07-09T14:52:36.363Z
+pay_12741167b3c29f83,usr_b1f4dd8848eb14a5,654.71,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2674,succeeded,,2026-07-09T15:09:11.135Z,2026-07-09T15:09:30.732Z
+pay_a391b4d973b38aa0,usr_31fab84d80dd8005,304.53,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-09T15:12:33.769Z,2026-07-09T15:12:33.769Z
+pay_a3fe5d710e0431d8,usr_386b859410e2a69d,850.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-08T18:55:18.121Z,2026-07-09T15:18:54.840Z
+pay_6cdf36a21827c167,usr_7303a90382749f61,950.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,5457,pending,,2026-07-09T15:29:54.042Z,2026-07-09T15:29:54.042Z
+pay_6cdf36a21827c167,usr_7303a90382749f61,950.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,5457,succeeded,,2026-07-09T15:29:54.042Z,2026-07-09T15:31:11.647Z
+pay_ee5fceb2ae02ad84,usr_886766415714fc0b,850.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,4815,pending,,2026-07-09T15:59:41.322Z,2026-07-09T15:59:41.322Z
+pay_ee5fceb2ae02ad84,usr_886766415714fc0b,850.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,4815,succeeded,,2026-07-09T15:59:41.322Z,2026-07-09T15:59:58.815Z
+pay_b989abb1a4286154,usr_30683a88e778feaf,150.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-08T19:51:54.187Z,2026-07-09T16:44:56.143Z
+pay_0b739fc263b52bc2,usr_2b1feecd95c127e6,846.63,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,5940,succeeded,,2026-07-09T19:56:40.217Z,2026-07-09T19:57:24.409Z
+pay_8d318c3c133cd1ea,usr_ed44ab9df095562e,400.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,expired,barcode_not_paid,2026-07-07T19:59:51.355Z,2026-07-09T19:59:51.355Z
+pay_76be168d4ee564c6,usr_54764d30b657c7e8,550.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-09T21:41:02.884Z,2026-07-09T21:41:02.884Z
+pay_decbe51fbfa4f10e,usr_c6f06a7146fc4ff2,"1,199.94",2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8056,pending,,2026-07-09T22:14:31.998Z,2026-07-09T22:14:31.998Z
+pay_decbe51fbfa4f10e,usr_c6f06a7146fc4ff2,"1,199.94",2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8056,succeeded,,2026-07-09T22:14:31.998Z,2026-07-09T22:14:38.801Z
+pay_76be168d4ee564c6,usr_54764d30b657c7e8,550.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-09T21:41:02.884Z,2026-07-09T22:52:23.572Z
+pay_5959793a1a24524b,usr_a07bf99be08c82ea,150.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-09T23:10:26.041Z,2026-07-09T23:10:26.041Z
+pay_f702206ef034fcbb,usr_f2d1e6c1fc8ad016,1128.66,4.98,0.00,USD,debit_card,Stripe,Capital One,bank,4453,succeeded,,2026-07-10T00:53:40.153Z,2026-07-10T00:54:56.730Z
+pay_0220551d95968812,usr_df10c0abf7347784,350.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1329,pending,,2026-07-10T00:59:56.535Z,2026-07-10T00:59:56.535Z
+pay_0220551d95968812,usr_df10c0abf7347784,350.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1329,succeeded,,2026-07-10T00:59:56.535Z,2026-07-10T01:00:55.149Z
+pay_cd303bedfbf369dd,usr_b35c348c31934d22,350.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-10T01:09:26.526Z,2026-07-10T01:09:26.526Z
+pay_a71ddf394a852683,usr_466772ce204e178c,1330.46,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9919,failed,card_declined,2026-07-10T01:31:45.144Z,2026-07-10 01:32:14
+pay_4af9d9109d7799b9,usr_f41402b1e4429ebb,250.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,7956,succeeded,,2026-07-10T01:55:03.727Z,2026-07-10T01:55:19.125Z
+pay_a391b4d973b38aa0,usr_31fab84d80dd8005,304.53,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-09T15:12:33.769Z,2026-07-10T02:27:04.479Z
+pay_d4a1b7b9d2dd3c44,usr_e61cf9a3e0acdb75,400.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-10T03:21:35.187Z,2026-07-10T03:21:35.187Z
+pay_f04e9214e4558dba,usr_19bc143efb02bebb,350.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0893,pending,,2026-07-10T03:51:22.286Z,2026-07-10T03:51:22.286Z
+pay_f04e9214e4558dba,usr_19bc143efb02bebb,350.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0893,succeeded,,2026-07-10T03:51:22.286Z,2026-07-10 03:52:07
+pay_baff6ecfa6222776,usr_9d1b40f51fc61eb3,500.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,6250,pending,,2026-07-10T04:17:28.025Z,2026-07-10T04:17:28.025Z
+pay_baff6ecfa6222776,usr_9d1b40f51fc61eb3,500.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,6250,succeeded,,2026-07-10T04:17:28.025Z,2026-07-10T04:18:45.925Z
+pay_113ec6fdeb34a210,usr_10df997455ab946d,300.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-10T06:07:40.989Z,2026-07-10T06:07:40.989Z
+pay_c67d87ba7eb3a333,usr_b038389555a8e46d,350.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,6391,pending,,2026-07-10T06:38:31.799Z,2026-07-10T06:38:31.799Z
+pay_c67d87ba7eb3a333,usr_b038389555a8e46d,350.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,6391,succeeded,,2026-07-10T06:38:31.799Z,2026-07-10T06:39:43.701Z
+pay_3bbbf78c43e0e52d,usr_203dfc74ecd06b5a,850.00,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,6242,failed,card_declined,2026-07-10T07:06:27.635Z,2026-07-10T07:07:09.931Z
+pay_3ecc412d8eb16e5f,usr_11b461e9b15da72d,69.08,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6176,succeeded,,2026-07-10T10:23:19.290Z,2026-07-10T10:23:27.773Z
+pay_865693051f4dbfff,usr_6919732fe88288ee,950.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7506,pending,,2026-07-10T10:35:54.493Z,2026-07-10T10:35:54.493Z
+pay_865693051f4dbfff,usr_6919732fe88288ee,950.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7506,succeeded,,2026-07-10T10:35:54.493Z,2026-07-10T10:36:51.486Z
+pay_2db382079bba9994,usr_3d1bd63a6553c98b,318.02,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4357,pending,,2026-07-10T11:20:22.752Z,2026-07-10T11:20:22.752Z
+pay_2db382079bba9994,usr_3d1bd63a6553c98b,318.02,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4357,succeeded,,2026-07-10T11:20:22.752Z,2026-07-10T11:20:32.590Z
+pay_8046020fa91a55e2,usr_f601e005c4c4f69f,700.00,4.98,0.00,USD,debit_card,Stripe,PNC Bank,bank,0200,succeeded,,2026-07-10T11:37:42.156Z,2026-07-10T11:38:41.659Z
+pay_b89199cdb7fbd8e0,usr_9058e121f2aff86f,800.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-10T11:48:33.438Z,2026-07-10T11:48:33.438Z
+pay_d4a1b7b9d2dd3c44,usr_e61cf9a3e0acdb75,400.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-10T03:21:35.187Z,2026-07-10T12:40:29.275Z
+pay_6bb55bdd342f86dd,usr_47a4e115aeca599c,300.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1677,succeeded,,2026-07-10T13:54:17.488Z,2026-07-10T13:55:29.515Z
+pay_39eb31a3b3ab4a37,usr_19bc143efb02bebb,400.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0893,pending,,2026-07-10T14:47:43.943Z,2026-07-10T14:47:43.943Z
+pay_39eb31a3b3ab4a37,usr_19bc143efb02bebb,400.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0893,succeeded,,2026-07-10T14:47:43.943Z,2026-07-10T14:49:08.864Z
+pay_d34eeee1d29f13c6,usr_6e6a3d5b2154be4a,250.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,2391,chargeback,fraudulent,2026-05-03T19:48:08.832Z,2026-07-10T16:01:52.666Z
+pay_7e37389104a12e72,usr_26cc18ad032fc3b2,550.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9835,succeeded,,2026-07-10T16:43:13.222Z,2026-07-10T16:43:41.399Z
+pay_ecc777fd790f402b,usr_c47d336f2e8f2f7f,590.96,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-10T18:54:14.707Z,2026-07-10T18:54:14.707Z
+pay_65ba23ad9f0dc062,usr_bee1dc6577a319c6,950.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,8893,succeeded,,2026-07-10T20:08:01.575Z,2026-07-10T20:08:35.562Z
+pay_65ba23ad9f0dc062,usr_bee1dc6577a319c6,950.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,8893,succeeded,,2026-07-10T20:08:01.575Z,2026-07-10T20:08:35.562Z
+pay_d48ad4f96076ab54,usr_10416cbc534234cf,450.00,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,8004,pending,,2026-07-10T20:59:22.621Z,2026-07-10T20:59:22.621Z
+pay_d48ad4f96076ab54,usr_10416cbc534234cf,450.00,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,8004,succeeded,,2026-07-10T20:59:22.621Z,2026-07-10T21:00:05.256Z
+pay_54746556817657d9,usr_79c9f246b556aeac,350.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,expired,barcode_not_paid,2026-07-08T21:18:14.223Z,2026-07-10T21:18:14.223Z
+pay_113ec6fdeb34a210,usr_10df997455ab946d,300.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded ,,2026-07-10T06:07:40.989Z,2026-07-10T21:34:56.482Z
+pay_e676124b579f4193,usr_bd1eb06fbf490d20,200.00,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6908,succeeded,,2026-07-10T22:03:20.728Z,2026-07-10T22:04:06.999Z
+pay_bda6eef374c8401f,usr_ce151855f0588da7,841.89,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,9099,pending,,2026-07-10T23:33:48.289Z,2026-07-10T23:33:48.289Z
+pay_bda6eef374c8401f,usr_ce151855f0588da7,841.89,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,9099,succeeded,,2026-07-10T23:33:48.289Z,2026-07-10T23:34:09.756Z
+pay_59df7c3104c5064a,usr_ed3049cf43e458fc,184.60,4.98,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-11T00:49:00.105Z,2026-07-11T00:49:00.105Z
+pay_ecc777fd790f402b,usr_c47d336f2e8f2f7f,590.96,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-10T18:54:14.707Z,2026-07-11T01:30:52.120Z
+pay_04945fe7dde27946,usr_4f9c78bf010d583f,50.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5119,succeeded,,2026-07-11T01:54:29.713Z,2026-07-11T01:54:55.409Z
+pay_cd303bedfbf369dd,usr_b35c348c31934d22,350.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-10T01:09:26.526Z,2026-07-11T02:02:59.341Z
+pay_24b48465496c2bcc,usr_e966a932c8dd57fd,300.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-11T02:06:00.332Z,2026-07-11T02:06:00.332Z
+pay_aa9d9f7e139b2bef,usr_cdc7b3a063492ba3,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-11T02:38:04.589Z,2026-07-11T02:38:04.589Z
+pay_a7d07e7d3c37a78d,usr_5939dc71c0d9863f,560.17,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-11T04:02:52.991Z,2026-07-11T04:02:52.991Z
+pay_2a664e1d3cc311b3,usr_3df1e70edbb5d0f9,1050.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,2832,pending,,2026-07-11T04:49:36.543Z,2026-07-11T04:49:36.543Z
+pay_2a664e1d3cc311b3,usr_3df1e70edbb5d0f9,1050.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,2832,succeeded,,2026-07-11T04:49:36.543Z,2026-07-11T04:50:46.880Z
+pay_a6dd9915a07d7193,usr_a87dd098b903b981,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-11T06:28:13.223Z,2026-07-11T06:28:13.223Z
+pay_45b69d2777730a1a,usr_00b30bda6f26bd7c,340.33,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,6759,pending,,2026-07-11T06:58:22.065Z,2026-07-11T06:58:22.065Z
+pay_45b69d2777730a1a,usr_00b30bda6f26bd7c,340.33,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,6759, succeeded,,2026-07-11T06:58:22.065Z,2026-07-11T06:59:31.030Z
+pay_1935cf078f8fb677,usr_f4f7bfdc5d96d459,150.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,8433,succeeded,,2026-07-11T07:20:11.450Z,2026-07-11T07:20:37.264Z
+pay_21fa53b2bd2a02b0,usr_26f05fcffb16e5db,500.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-11T07:29:55.930Z,2026-07-11T07:29:55.930Z
+pay_a7d07e7d3c37a78d,usr_5939dc71c0d9863f,560.17,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-11T04:02:52.991Z,2026-07-11T07:58:33.841Z
+pay_8c0f385a405b7fa8,usr_975e1b27ead5d65a,246.22,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-11T09:48:07.163Z,2026-07-11T09:48:07.163Z
+pay_c07a2ac8be8dd112,usr_68dd66fd9fa38f4b,350.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,, pending,,2026-07-11T12:00:30.139Z,2026-07-11T12:00:30.139Z
+pay_eec1b565a1a526e9,usr_78fc2ae6b359b0f1,648.58,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6941,pending,,2026-07-11T13:06:16.740Z,2026-07-11T13:06:16.740Z
+pay_eec1b565a1a526e9,usr_78fc2ae6b359b0f1,648.58,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6941,succeeded,,2026-07-11T13:06:16.740Z,2026-07-11T13:07:43.537Z
+pay_b58a2ab899790767,usr_87f3c9a4cd1a810d,100.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,8846,succeeded,,2026-07-11T14:12:27.375Z,2026-07-11T14:12:50.535Z
+pay_a94eee5f61129d9d,usr_05efea2af825a8bd,150.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,1111,succeeded,,2026-07-11T15:13:58.819Z,2026-07-11T15:14:07.583Z
+pay_6be99659a527158c,usr_bc0dd6ed7b122ee5,472.43,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0491, succeeded,,2026-07-11T15:14:21.443Z,2026-07-11T15:14:30.172Z
+pay_c07a2ac8be8dd112,usr_68dd66fd9fa38f4b,350.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-11T12:00:30.139Z,2026-07-11T16:35:42.887Z
+pay_c2fb859d2c08b66b,usr_15dc37a77a43475b,800.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5297,pending,,2026-07-11T16:55:48.970Z,2026-07-11T16:55:48.970Z
+pay_c2fb859d2c08b66b,usr_15dc37a77a43475b,800.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5297,succeeded,,2026-07-11T16:55:48.970Z,2026-07-11T16:56:22.641Z
+pay_dcb4c6defabc4eff,usr_6fe61bfa74d2feb6,380.12,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-11T17:01:35.259Z,2026-07-11T17:01:35.259Z
+pay_7241e5ffe2898943,usr_3c37531544bd8fcd,400.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-11T17:20:43.737Z,2026-07-11T17:20:43.737Z
+pay_21fa53b2bd2a02b0,usr_26f05fcffb16e5db,500.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-11T07:29:55.930Z,2026-07-11T17:23:58.040Z
+pay_32ebea500877cf5c,usr_71e64bce88baef4a,600.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,3438,succeeded,,2026-07-11T17:59:15.537Z,2026-07-11T18:00:44.228Z
+pay_e18254edb0415c11,usr_f7ad3af94f9a13b3,163.49,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-11T19:08:07.461Z,2026-07-11T19:08:07.461Z
+pay_de9c08a064ba2a01,usr_a8addf36ddf275eb,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-11T19:24:03.092Z,2026-07-11T19:24:03.092Z
+pay_54f2532e7b87ec33,usr_48f4ef125e9953d2,1000.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-11T19:24:38.564Z,2026-07-11T19:24:38.564Z
+pay_0349f808a59ae715,usr_447a4e2c8e990457,100.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7489,pending,,2026-07-11T22:41:03.610Z,2026-07-11T22:41:03.610Z
+pay_0349f808a59ae715,usr_447a4e2c8e990457,100.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7489,succeeded,,2026-07-11T22:41:03.610Z,2026-07-11T22:41:51.354Z
+pay_5959793a1a24524b,usr_a07bf99be08c82ea,150.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,expired,barcode_not_paid,2026-07-09T23:10:26.041Z,2026-07-11T23:10:26.041Z
+pay_93d9e8aaadd8b769,usr_6d8811bad6c3d78f,600.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,5417,succeeded,,2026-07-11T23:52:42.810Z,2026-07-11T23:53:53.227Z
+pay_1717c32bc444244e,usr_79004406b1e58a88,250.00,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,3852,pending,,2026-07-12T00:07:43.855Z,2026-07-12T00:07:43.855Z
+pay_1717c32bc444244e,usr_79004406b1e58a88,250.00,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,3852,succeeded,,2026-07-12T00:07:43.855Z,2026-07-12T00:08:19.374Z
+pay_15c073a14330d87f,usr_841145315f1f4fae,700.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9600,failed,insufficient_funds,2026-07-12T00:13:46.563Z,2026-07-12T00:14:22.155Z
+pay_87d99c680ff4d025,usr_ed646014e254c6d1,"1,250.00",2.99,0.00,USD,debit_card,Adyen,Capital One,bank,4233,chargeback,unrecognized,2026-05-09T20:34:49.803Z,2026-07-12T00:34:40.478Z
+pay_cd99dc7c1a4e3b30,usr_4855f44a33704903,200.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,8035,pending,,2026-07-12T00:55:11.387Z,2026-07-12T00:55:11.387Z
+pay_cd99dc7c1a4e3b30,usr_4855f44a33704903,200.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,8035,Succeeded,,2026-07-12T00:55:11.387Z,2026-07-12T00:55:34.256Z
+pay_59df7c3104c5064a,usr_ed3049cf43e458fc,184.60,4.98,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-11T00:49:00.105Z,2026-07-12 01:27:14
+pay_8c0f385a405b7fa8,usr_975e1b27ead5d65a,246.22,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-11T09:48:07.163Z,2026-07-12T04:08:44.651Z
+pay_7241e5ffe2898943,usr_3c37531544bd8fcd,400.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-11T17:20:43.737Z,2026-07-12T04:30:16.148Z
+pay_f6829a1bc8468316,usr_34c8fba5e8ac133d,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,8714,pending,,2026-07-12T06:13:41.494Z,2026-07-12T06:13:41.494Z
+pay_f6829a1bc8468316,usr_34c8fba5e8ac133d,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,8714,succeeded,,2026-07-12T06:13:41.494Z,2026-07-12T06:15:02.014Z
+pay_045efb268e94824f,usr_5bb25e79c47b15e0,158.93,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,0130,chargeback,fraudulent,2026-05-24T11:34:30.380Z,2026-07-12T07:33:39.652Z
+pay_aa9d9f7e139b2bef,usr_cdc7b3a063492ba3,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-11T02:38:04.589Z,2026-07-12T07:39:26.934Z
+pay_24b48465496c2bcc,usr_e966a932c8dd57fd,300.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-11T02:06:00.332Z,2026-07-12T07:47:29.601Z
+pay_4ca10b5058eaf764,usr_30d34f4293995122,300.00,2.99,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8453,SUCCEEDED,,2026-07-12T07:57:11.874Z,2026-07-12T07:58:29.293Z
+pay_de9c08a064ba2a01,usr_a8addf36ddf275eb,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-11T19:24:03.092Z,2026-07-12T08:40:49.897Z
+pay_581c5e072c4d2aea,usr_94350cb1724af3fb,262.16,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-12T09:04:13.191Z,2026-07-12T09:04:13.191Z
+pay_5d91f23a5ae82574,usr_931c2818f61c1661,750.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8996,pending,,2026-07-12T09:21:56.535Z,2026-07-12T09:21:56.535Z
+pay_5d91f23a5ae82574,usr_931c2818f61c1661,750.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8996,succeeded,,2026-07-12T09:21:56.535Z,2026-07-12T09:22:53.605Z
+pay_83486cc5079cc753,usr_a7b4f9c831b5efb0,391.13,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9614,pending,,2026-07-12T09:38:59.556Z,2026-07-12T09:38:59.556Z
+pay_83486cc5079cc753,usr_a7b4f9c831b5efb0,391.13,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9614,succeeded,,2026-07-12T09:38:59.556Z,2026-07-12T09:39:52.626Z
+pay_a6dd9915a07d7193,usr_a87dd098b903b981,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-11T06:28:13.223Z,2026-07-12T10:40:03.678Z
+pay_2c8cacb670a8fb53,usr_242c60e4c39dd70c,1000.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-12T11:43:54.642Z,2026-07-12T11:43:54.642Z
+pay_b89199cdb7fbd8e0,usr_9058e121f2aff86f,800.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,expired,barcode_not_paid,2026-07-10T11:48:33.438Z,2026-07-12T11:48:33.438Z
+pay_6b2578bb007dc456,usr_6772fe9f999bc859,803.88,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6361,pending,,2026-07-12T11:50:48.178Z,2026-07-12T11:50:48.178Z
+pay_6b2578bb007dc456,usr_6772fe9f999bc859,803.88,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6361,succeeded,,2026-07-12T11:50:48.178Z,2026-07-12T11:51:18.857Z
+pay_6cee96a87abf9f6f,usr_f52d82cc302d8d1f,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4066,pending,,2026-07-12T12:24:41.395Z,2026-07-12T12:24:41.395Z
+pay_6cee96a87abf9f6f,usr_f52d82cc302d8d1f,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4066,succeeded,,2026-07-12T12:24:41.395Z,2026-07-12T12:25:31.409Z
+pay_54f2532e7b87ec33,usr_48f4ef125e9953d2,1000.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-11T19:24:38.564Z,2026-07-12T13:20:21.437Z
+pay_8a6d8da8d78b1666,usr_6917a9fbbeb70b53,368.33,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5176,pending,,2026-07-12T13:25:04.704Z,2026-07-12T13:25:04.704Z
+pay_8a6d8da8d78b1666,usr_6917a9fbbeb70b53,368.33,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5176,succeeded,,2026-07-12T13:25:04.704Z,2026-07-12T13:25:14.182Z
+pay_5f24c864627bb3b0,usr_96620519236a1333,400.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-12T15:08:14.816Z,2026-07-12T15:08:14.816Z
+pay_25b221f60c5ea66c,usr_47c1c01760452909,1350.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,0440,succeeded,,2026-07-12T15:12:58.956Z,2026-07-12T15:14:06.200Z
+pay_ca2b60be11f57c49,usr_3393509428b20e34,211.99,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-12T15:41:39.414Z,2026-07-12T15:41:39.414Z
+pay_4701820278eae80f,usr_0e58877025660316,499.78,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0206,failed,3ds_failed,2026-07-12T17:37:24.845Z,2026-07-12T17:38:37.368Z
+pay_da344f63d3c6cb73,usr_93de2da040ff5822,650.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-12T18:10:07.706Z,2026-07-12T18:10:07.706Z
+pay_83cdce83cc3b0457,usr_22ffe9fc512e5e8e,740.73,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8042,succeeded,,2026-07-12T19:16:21.645Z,2026-07-12T19:16:33.781Z
+pay_0b5f17af3a197336,usr_cac29f1dc72c3764,947.91,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-12T19:31:26.535Z,2026-07-12T19:31:26.535Z
+pay_3d1dd01d6f829cce,usr_2a983090831fd302,500.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5458,pending,,2026-07-12T19:42:14.204Z,2026-07-12T19:42:14.204Z
+pay_3d1dd01d6f829cce,usr_2a983090831fd302,500.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5458,succeeded,,2026-07-12T19:42:14.204Z,2026-07-12 19:43:39
+pay_a3858a424651f8b0,usr_9d3fb2bf826aad17,250.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-12T20:37:52.768Z,2026-07-12T20:37:52.768Z
+pay_a20762ed0aa626c2,usr_1f0c4661109a5450,150.00,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,3609,pending,,2026-07-12T20:59:03.631Z,2026-07-12T20:59:03.631Z
+pay_a20762ed0aa626c2,usr_1f0c4661109a5450,150.00,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,3609,succeeded,,2026-07-12T20:59:03.631Z,2026-07-12T21:00:13.754Z
+pay_484911f6fbac38d6,usr_2ada62ce189099c9,495.63,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,1702,succeeded,,2026-07-12T22:04:55.316Z,2026-07-12T22:05:36.905Z
+pay_9c7ccb77fe88e7c3,usr_ac952a16c6769625,200.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-12T22:43:42.714Z,2026-07-12T22:43:42.714Z
+pay_527a3f1b63cc2029,usr_fd0714feafd5ffa4,250.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-12T23:00:07.545Z,2026-07-12T23:00:07.545Z
+pay_12d70f5044849132,usr_d0b6eada5b6b8e34,950.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0747,succeeded,,2026-07-12 23:07:42,2026-07-12T23:08:23.203Z
+pay_c957d90162022462,usr_bee1dc6577a319c6,850.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,8893,chargeback,fraudulent,2026-06-18T13:21:41.440Z,2026-07-13T00:04:53.485Z
+pay_ca2b60be11f57c49,usr_3393509428b20e34,211.99,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-12T15:41:39.414Z,2026-07-13T00:41:27.315Z
+pay_ff7ea0e48d5e74ea,usr_1c36036fbeba0619,166.20,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1938,pending,,2026-07-13T04:07:34.366Z,2026-07-13T04:07:34.366Z
+pay_ff7ea0e48d5e74ea,usr_1c36036fbeba0619,166.20,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1938,succeeded,,2026-07-13T04:07:34.366Z,2026-07-13T04:08:21.446Z
+pay_9d9f13c7a09b8f33,usr_1a7167c768759545,350.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-13T06:34:48.454Z,2026-07-13T06:34:48.454Z
+pay_da344f63d3c6cb73,usr_93de2da040ff5822,650.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-12T18:10:07.706Z,2026-07-13T06:44:52.036Z
+pay_2c8cacb670a8fb53,usr_242c60e4c39dd70c,1000.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-12T11:43:54.642Z,2026-07-13T08:47:31.756Z
+pay_5f24c864627bb3b0,usr_96620519236a1333,400.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-12T15:08:14.816Z,2026-07-13T09:48:56.950Z
+pay_581c5e072c4d2aea,usr_94350cb1724af3fb,262.16,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-12T09:04:13.191Z,2026-07-13T10:34:50.570Z
+pay_e3ea41d77d999185,usr_5b460364416dea26,163.16,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,3922,succeeded,,2026-07-13T12:02:11.396Z,2026-07-13T12:03:32.910Z
+pay_6dfd4321908834bf,usr_daf63750e94f9c81,300.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6729,pending,,2026-07-13T12:36:27.350Z,2026-07-13T12:36:27.350Z
+pay_6dfd4321908834bf,usr_daf63750e94f9c81,300.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6729, succeeded,,2026-07-13T12:36:27.350Z,2026-07-13T12:37:37.844Z
+pay_0b5f17af3a197336,usr_cac29f1dc72c3764,947.91,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-12T19:31:26.535Z,2026-07-13T12:54:32.967Z
+pay_5c4c1e23a73003b8,usr_3fbce063ea467d0d,400.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,1479,chargeback,unrecognized,2026-06-25T17:30:17.806Z,2026-07-13T13:22:22.974Z
+pay_527a3f1b63cc2029,usr_fd0714feafd5ffa4,250.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,SUCCEEDED,,2026-07-12T23:00:07.545Z,2026-07-13T13:25:41.006Z
+pay_97b8e0e43299c003,usr_e1cbad8534f17153,703.31,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1364,pending,,2026-07-13T16:39:47.585Z,2026-07-13T16:39:47.585Z
+pay_97b8e0e43299c003,usr_e1cbad8534f17153,703.31,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1364,failed,insufficient_funds,2026-07-13T16:39:47.585Z,2026-07-13T16:40:18.520Z
+pay_dcb4c6defabc4eff,usr_6fe61bfa74d2feb6,380.12,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-11T17:01:35.259Z,2026-07-13T17:01:35.259Z
+pay_4b072342f71f940b,usr_49e785c7cbd8715e,871.74,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,3452,succeeded,,2026-07-13T18:29:08.670Z,2026-07-13T18:29:20.403Z
+pay_e18254edb0415c11,usr_f7ad3af94f9a13b3,163.49,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-11T19:08:07.461Z,2026-07-13T19:08:07.461Z
+pay_1c8866ef6445a4c3,usr_53d01efa248b7d4f,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,8852,pending,,2026-07-13T21:11:47.729Z,2026-07-13T21:11:47.729Z
+pay_1c8866ef6445a4c3,usr_53d01efa248b7d4f,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,8852,succeeded,,2026-07-13T21:11:47.729Z,2026-07-13T21:12:34.485Z
+pay_8fe65dccd8374d06,usr_651c9898571ece45,150.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,2624,pending,,2026-07-13T21:58:54.410Z,2026-07-13T21:58:54.410Z
+pay_8fe65dccd8374d06,usr_651c9898571ece45,150.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,2624,Succeeded,,2026-07-13T21:58:54.410Z,2026-07-13T21:59:55.038Z
+pay_00c9a04aca741d49,usr_a43267645228e8ca,248.09,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5431,pending,,2026-07-13T22:50:36.904Z,2026-07-13T22:50:36.904Z
+pay_00c9a04aca741d49,usr_a43267645228e8ca,248.09,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5431,succeeded,,2026-07-13T22:50:36.904Z,2026-07-13T22:51:24.191Z
+pay_ed7a4544b8e4903f,usr_9c68253fa654b58b,550.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,3981,succeeded,,2026-07-13T23:12:33.695Z,2026-07-13T23:12:47.543Z
+pay_b7385707825d8120,usr_386b859410e2a69d,200.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-13T23:34:57.431Z,2026-07-13T23:34:57.431Z
+pay_0379079b744bf0fb,usr_3f2e3130f8434845,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-14T00:24:00.901Z,2026-07-14T00:24:00.901Z
+pay_95b7864d78511c1e,usr_74ed53ceef0ebfd3,400.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-14T00:25:16.677Z,2026-07-14T00:25:16.677Z
+pay_5e3e1d138336a354,usr_db3f516b0a7bf7f2,490.89,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4017,pending,,2026-07-14 00:26:44,2026-07-14 00:26:44
+pay_5e3e1d138336a354,usr_db3f516b0a7bf7f2,490.89,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4017,failed,insufficient_funds,2026-07-14 00:26:44,2026-07-14T00:26:47.917Z
+pay_c7bfd17bdc9d8211,usr_38fb3a54daa045ad,300.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,5415,pending,,2026-07-14T00:44:25.784Z,2026-07-14T00:44:25.784Z
+pay_c7bfd17bdc9d8211,usr_38fb3a54daa045ad,300.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,5415,succeeded,,2026-07-14T00:44:25.784Z,2026-07-14T00:45:49.801Z
+pay_b844010042dd2a47,usr_4d11a9f0cccc3146,400.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4759,succeeded,,2026-07-14T01:13:15.945Z,2026-07-14T01:14:39.085Z
+pay_8548bd166cfa7930,usr_cabac975e12ac803,265.25,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,0236,succeeded,,2026-07-14T01:52:51.097Z,2026-07-14T01:53:08.818Z
+pay_9d9f13c7a09b8f33,usr_1a7167c768759545,350.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-13T06:34:48.454Z,2026-07-14T02:22:37.267Z
+pay_9aadcdf3de686669,usr_2182b51818e9ef77,350.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,Pending,,2026-07-14T04:11:34.336Z,2026-07-14T04:11:34.336Z
+pay_bad24d93c98d5d6a,usr_29e6c348a47d0a49,1641.27,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,4166,succeeded,,2026-07-14T05:51:45.981Z,2026-07-14T05:52:57.205Z
+pay_f99f3e55d7a0805a,usr_6f0b5b2b97514f49,150.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,6268,pending,,2026-07-14T07:23:34.435Z,2026-07-14T07:23:34.435Z
+pay_f99f3e55d7a0805a,usr_6f0b5b2b97514f49,150.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,6268,succeeded,,2026-07-14T07:23:34.435Z,2026-07-14T07:24:12.457Z
+pay_9aadcdf3de686669,usr_2182b51818e9ef77,350.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-14T04:11:34.336Z,2026-07-14T07:45:30.619Z
+pay_7759d284ccac99ea,usr_70972046fa7cf893,500.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3876,pending,,2026-07-14T08:33:53.837Z,2026-07-14T08:33:53.837Z
+pay_7759d284ccac99ea,usr_70972046fa7cf893,500.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3876,succeeded,,2026-07-14T08:33:53.837Z,2026-07-14T08:34:34.337Z
+pay_0b985133bd7a6728,usr_2d085b30619a77cd,2000.00,2.99,0.00,USD,debit_card,Stripe,TD Bank,bank,6817,pending,,2026-07-14T13:12:24.924Z,2026-07-14T13:12:24.924Z
+pay_0b985133bd7a6728,usr_2d085b30619a77cd,2000.00,2.99,0.00,USD,debit_card,Stripe,TD Bank,bank,6817,succeeded,,2026-07-14T13:12:24.924Z,2026-07-14T13:13:48.226Z
+pay_18003bf03613b15d,usr_594c100c76a5dfbc,1000.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-14T13:29:35.416Z,2026-07-14T13:29:35.416Z
+pay_132734e32c5e5714,usr_5b4b946636feb3a6,200.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7557,pending,,2026-07-14T13:32:40.883Z,2026-07-14T13:32:40.883Z
+pay_132734e32c5e5714,usr_5b4b946636feb3a6,200.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7557,succeeded,,2026-07-14T13:32:40.883Z,2026-07-14T13:33:38.602Z
+pay_b18b88f5ac18645c,usr_2999bbef518b2f21,250.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9222,succeeded,,2026-07-14T17:16:32.787Z,2026-07-14T17:18:02.093Z
+pay_0379079b744bf0fb,usr_3f2e3130f8434845,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-14T00:24:00.901Z,2026-07-14T17:51:55.673Z
+pay_b7385707825d8120,usr_386b859410e2a69d,200.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-13T23:34:57.431Z,2026-07-14T18:09:49.073Z
+pay_6ed0a272bf693362,usr_d99989111c3de334,695.17,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,5625,pending,,2026-07-14T18:22:42.205Z,2026-07-14T18:22:42.205Z
+pay_6ed0a272bf693362,usr_d99989111c3de334,695.17,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,5625,succeeded,,2026-07-14T18:22:42.205Z,2026-07-14T18:23:42.711Z
+pay_0be65e5cf4250f6c,usr_22f9cafe2eb23ca3,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2492,pending,,2026-07-14T18:40:50.305Z,2026-07-14T18:40:50.305Z
+pay_0be65e5cf4250f6c,usr_22f9cafe2eb23ca3,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2492,succeeded,,2026-07-14T18:40:50.305Z,2026-07-14T18:40:56.919Z
+pay_59980ae727f026f6,usr_1e0186462c64f73d,250.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8142,pending,,2026-07-14T19:04:47.547Z,2026-07-14T19:04:47.547Z
+pay_59980ae727f026f6,usr_1e0186462c64f73d,250.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8142,succeeded,,2026-07-14T19:04:47.547Z,2026-07-14T19:05:47.263Z
+pay_59980ae727f026f6,usr_1e0186462c64f73d,250.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8142,succeeded,,2026-07-14T19:04:47.547Z,2026-07-14T19:05:47.263Z
+pay_1cff57a7d5103a01,usr_5bb25e79c47b15e0,250.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,0130,pending,,2026-07-14T19:56:25.334Z,2026-07-14T19:56:25.334Z
+pay_1cff57a7d5103a01,usr_5bb25e79c47b15e0,250.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,0130,succeeded,,2026-07-14T19:56:25.334Z,2026-07-14T19:57:28.763Z
+pay_a3858a424651f8b0,usr_9d3fb2bf826aad17,250.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-12T20:37:52.768Z,2026-07-14T20:37:52.768Z
+pay_8d84d138c6f5fc98,usr_2da29e52707d5478,103.84,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6245,pending,,2026-07-14T21:24:34.435Z,2026-07-14T21:24:34.435Z
+pay_8d84d138c6f5fc98,usr_2da29e52707d5478,103.84,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6245,succeeded ,,2026-07-14T21:24:34.435Z,2026-07-14T21:25:34.617Z
+pay_9f0286ab6a930bf4,usr_ccf6f9f02a4ab336,200.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,0132,pending,,2026-07-14T22:41:29.156Z,2026-07-14T22:41:29.156Z
+pay_9f0286ab6a930bf4,usr_ccf6f9f02a4ab336,200.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,0132,succeeded,,2026-07-14T22:41:29.156Z,2026-07-14T22:42:56.249Z
+pay_9c7ccb77fe88e7c3,usr_ac952a16c6769625,200.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-12T22:43:42.714Z,2026-07-14T22:43:42.714Z
+pay_c29b18a80e70f4e7,usr_bbe30fd24ed7b3f3,500.00,0.00,0.00,USD,debit_card,Adyen,Truist,bank,2338,pending,,2026-07-14T22:46:25.588Z,2026-07-14T22:46:25.588Z
+pay_c29b18a80e70f4e7,usr_bbe30fd24ed7b3f3,500.00,0.00,0.00,USD,debit_card,Adyen,Truist,bank,2338,succeeded,,2026-07-14T22:46:25.588Z,2026-07-14T22:46:53.387Z
+pay_edb2f88cbe0f4ee0,usr_b84e203df2612977,350.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9776,pending,,2026-07-14T23:14:48.679Z,2026-07-14T23:14:48.679Z
+pay_edb2f88cbe0f4ee0,usr_b84e203df2612977,350.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9776, succeeded,,2026-07-14T23:14:48.679Z,2026-07-14T23:15:50.986Z
+pay_8f0e0eeb8d2dd4ee,usr_3768b54abb0c686a,318.87,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-14T23:27:48.276Z,2026-07-14T23:27:48.276Z
+pay_37d83e0b726facc8,usr_35abe59350888c74,879.99,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6041,succeeded,,2026-07-15T00:40:24.685Z,2026-07-15T00:40:42.134Z
+pay_1d191a494ace1481,usr_022456cb3e9800fb,300.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9137,pending,,2026-07-15T00:45:53.644Z,2026-07-15T00:45:53.644Z
+pay_1d191a494ace1481,usr_022456cb3e9800fb,300.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9137,succeeded,,2026-07-15T00:45:53.644Z,2026-07-15T00:45:55.695Z
+pay_88c674e57157c2b2,usr_9803a82e926a4bd0,115.78,2.99,0.00,USD,debit_card,Stripe,TD Bank,bank,0694,succeeded,,2026-07-15T00:48:34.916Z,2026-07-15T00:49:33.737Z
+pay_0fc4829c77857548,usr_b76091dfa2338347,100.00,0.00,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-15T01:40:20.196Z,2026-07-15T01:40:20.196Z
+pay_b46d72f1b8d58fbb,usr_c55cdd1908121b35,150.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6735,chargeback,fraudulent,2026-06-18 10:39:17,2026-07-15T01:55:35.466Z
+pay_ca58864143505753,usr_90ed01d3ef444cf5,100.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-15T02:34:11.550Z,2026-07-15T02:34:11.550Z
+pay_95b7864d78511c1e,usr_74ed53ceef0ebfd3,400.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-14T00:25:16.677Z,2026-07-15T03:30:13.587Z
+pay_55d79a1712503c3d,usr_7f20f661091d1643,319.42,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-15T04:47:13.454Z,2026-07-15T04:47:13.454Z
+pay_18003bf03613b15d,usr_594c100c76a5dfbc,1000.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-14T13:29:35.416Z,2026-07-15T10:14:10.204Z
+pay_7ae15f5929aa34b7,usr_4f41be6923b8e0d6,250.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6653,pending,,2026-07-15T12:17:59.832Z,2026-07-15T12:17:59.832Z
+pay_7ae15f5929aa34b7,usr_4f41be6923b8e0d6,250.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6653,succeeded ,,2026-07-15T12:17:59.832Z,2026-07-15T12:18:57.166Z
+pay_e2416059ea6e74f7,usr_5e9ca5c365556116,165.07,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5962,succeeded,,2026-07-15T13:45:27.738Z,2026-07-15T13:45:41.377Z
+pay_d0c820a98c552d30,usr_320b5ab7159d880c,151.80,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0783,pending,,2026-07-15T13:54:58.994Z,2026-07-15T13:54:58.994Z
+pay_d0c820a98c552d30,usr_320b5ab7159d880c,151.80,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0783,succeeded,,2026-07-15T13:54:58.994Z,2026-07-15T13:56:07.751Z
+pay_7f785cb5c8635917,usr_decc020993cdfce8,392.69,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-15T14:04:12.902Z,2026-07-15T14:04:12.902Z
+pay_0fc4829c77857548,usr_b76091dfa2338347,100.00,0.00,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-15T01:40:20.196Z,2026-07-15T14:23:09.785Z
+pay_33823e37060085c6,usr_083ed925c90d35aa,205.12,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-15T14:45:13.211Z,2026-07-15T14:45:13.211Z
+pay_91dbd5a65505cc79,usr_a753297e752f524f,600.00,2.99,0.00,USD,debit_card,Adyen,Truist,bank,3377,succeeded,,2026-07-15T16:08:37.326Z,2026-07-15T16:08:58.371Z
+pay_0b9d5391c1cb3fe3,usr_fb3c8d94b2894d6f,288.02,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,1446,succeeded,,2026-07-15T16:24:48.070Z,2026-07-15T16:24:54.958Z
+pay_f8cd0e06421ab938,usr_d294100f823ca34a,1231.53,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,2958,pending,,2026-07-15T16:34:37.364Z,2026-07-15T16:34:37.364Z
+pay_f8cd0e06421ab938,usr_d294100f823ca34a,1231.53,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,2958,succeeded,,2026-07-15T16:34:37.364Z,2026-07-15T16:35:40.176Z
+pay_9f8711a17e6f7371,usr_030b23dbbfbe9ca3,424.99,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9576,pending,,2026-07-15T18:50:10.738Z,2026-07-15T18:50:10.738Z
+pay_9f8711a17e6f7371,usr_030b23dbbfbe9ca3,424.99,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,9576,succeeded,,2026-07-15T18:50:10.738Z,2026-07-15T18:51:39.647Z
+pay_8c527b2edace192e,usr_8be5199ee212b2e8,250.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,Pending,,2026-07-15T19:32:31.398Z,2026-07-15T19:32:31.398Z
+pay_33d93366199fcc19,usr_3e933783098bfdfb,95.23,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3660,succeeded,,2026-07-15T20:07:34.564Z,2026-07-15T20:08:10.708Z
+pay_b9c0bcedd5dc3edc,usr_5f09058e454e1370,539.67,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,2366,pending,,2026-07-15T20:41:33.670Z,2026-07-15T20:41:33.670Z
+pay_b9c0bcedd5dc3edc,usr_5f09058e454e1370,539.67,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,2366,succeeded,,2026-07-15T20:41:33.670Z,2026-07-15T20:43:00.816Z
+pay_0b7d9044c36c64f7,usr_76dc16b5a076aed6,200.00,0.00,0.00,USD,debit_card,Adyen,PNC Bank,bank,8887,succeeded,,2026-07-15T21:29:49.342Z,2026-07-15T21:30:37.717Z
+pay_55d79a1712503c3d,usr_7f20f661091d1643,319.42,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-15T04:47:13.454Z,2026-07-15T21:59:36.654Z
+pay_2aefbe72c8533409,usr_6e152f7100937ba0,250.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-15T22:36:02.710Z,2026-07-15T22:36:02.710Z
+pay_31e0c5c5eb8576be,usr_e53b7727b20921cd,350.00,2.99,0.00,USD,debit_card,Stripe,U.S. Bank,bank,9343,succeeded,,2026-07-15T22:40:03.534Z,2026-07-15T22:40:58.478Z
+pay_f6d5c5183dc78b90,usr_22681c704eb00c3d,100.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-16T00:02:21.758Z,2026-07-16T00:02:21.758Z
+pay_33823e37060085c6,usr_083ed925c90d35aa,205.12,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-15T14:45:13.211Z,2026-07-16T00:43:12.114Z
+pay_d08c2a6baec84851,usr_a33f06f4fe879e56,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-16T01:05:16.859Z,2026-07-16T01:05:16.859Z
+pay_86cf8e84c4391bbc,usr_55367ab60d574085,250.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-16T01:28:37.338Z,2026-07-16T01:28:37.338Z
+pay_4e99f4683de31075,usr_286c2d4733844055,350.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,8082,succeeded,,2026-07-16T01:29:43.671Z,2026-07-16T01:29:51.466Z
+pay_84a8a7bc03c29c0c,usr_0cb680293276ab75,100.00,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,6272,pending,,2026-07-16 01:36:33,2026-07-16 01:36:33
+pay_ca58864143505753,usr_90ed01d3ef444cf5,100.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-15T02:34:11.550Z,2026-07-16T01:36:56.087Z
+pay_84a8a7bc03c29c0c,usr_0cb680293276ab75,100.00,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,6272,succeeded,,2026-07-16 01:36:33,2026-07-16T01:38:03.012Z
+pay_15bbcad9fab5ad57,usr_d5759337549c9eb9,92.15,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8797,pending,,2026-07-16T01:39:40.766Z,2026-07-16T01:39:40.766Z
+pay_15bbcad9fab5ad57,usr_d5759337549c9eb9,92.15,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,8797,succeeded,,2026-07-16T01:39:40.766Z,2026-07-16T01:39:47.596Z
+pay_50652b7ab4320666,usr_3a1d8916ba9b9531,942.99,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-16T01:57:23.769Z,2026-07-16T01:57:23.769Z
+pay_36a8befaa8e60fe4,usr_5fcf5c22b9b03c1a,253.60,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,9638,pending,,2026-07-16T02:03:26.458Z,2026-07-16T02:03:26.458Z
+pay_36a8befaa8e60fe4,usr_5fcf5c22b9b03c1a,253.60,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,9638,succeeded,,2026-07-16T02:03:26.458Z,2026-07-16T02:04:08.299Z
+pay_326863fa5bc73425,usr_e3ebf7c10723e11e,350.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-16 02:08:40,2026-07-16 02:08:40
+pay_50652b7ab4320666,usr_3a1d8916ba9b9531,942.99,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-16T01:57:23.769Z,2026-07-16T03:11:58.779Z
+pay_cf64f9e5ec16b36a,usr_76242c71de49531a,752.32,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,8732,pending,,2026-07-16T04:37:55.480Z,2026-07-16T04:37:55.480Z
+pay_cf64f9e5ec16b36a,usr_76242c71de49531a,752.32,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,8732,failed,insufficient_funds,2026-07-16T04:37:55.480Z,2026-07-16T04:39:03.398Z
+pay_093c1797cf87aca3,usr_d99567be4b4547e6,400.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6106,succeeded,,2026-07-16T08:39:21.936Z,2026-07-16T08:40:02.642Z
+pay_59b338549bac1760,usr_01a1f7da417e9ecb,350.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-16T09:50:21.216Z,2026-07-16T09:50:21.216Z
+pay_326863fa5bc73425,usr_e3ebf7c10723e11e,350.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-16 02:08:40,2026-07-16T10:17:36.383Z
+pay_581471453903ac43,usr_11bbc208f76afb78,663.50,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,3490,succeeded,,2026-07-16T10:27:52.654Z,2026-07-16T10:28:09.561Z
+pay_8c527b2edace192e,usr_8be5199ee212b2e8,250.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-15T19:32:31.398Z,2026-07-16T11:06:49.377Z
+pay_39fc3d211d220776,usr_9ecebb21e9f407ee,500.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5757,pending,,2026-07-16T11:26:57.251Z,2026-07-16T11:26:57.251Z
+pay_39fc3d211d220776,usr_9ecebb21e9f407ee,500.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,5757,failed,card_declined,2026-07-16T11:26:57.251Z,2026-07-16T11:28:07.551Z
+pay_42efef7c67ebcadc,usr_74ed53ceef0ebfd3,142.91,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-16T11:47:48.777Z,2026-07-16T11:47:48.777Z
+pay_7f785cb5c8635917,usr_decc020993cdfce8,392.69,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-15T14:04:12.902Z,2026-07-16T13:01:54.049Z
+pay_2aefbe72c8533409,usr_6e152f7100937ba0,250.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-15T22:36:02.710Z,2026-07-16T13:07:23.122Z
+pay_6610e28dfdc61751,usr_f84763a5dc755ad2,874.27,2.99,0.00,USD,debit_card,Stripe,Truist,bank,6879,succeeded,,2026-07-16T13:19:03.100Z,2026-07-16T13:19:49.742Z
+pay_c69c4bb109d8a990,usr_8d244e3ec4dabddb,250.00,4.98,0.00,USD,debit_card,Stripe,Capital One,bank,5120,chargeback,unrecognized,2026-06-30T13:48:16.885Z,2026-07-16T14:00:08.932Z
+pay_42efef7c67ebcadc,usr_74ed53ceef0ebfd3,142.91,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-16T11:47:48.777Z,2026-07-16T15:23:48.520Z
+pay_f6d5c5183dc78b90,usr_22681c704eb00c3d,100.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-16T00:02:21.758Z,2026-07-16T15:26:29.029Z
+pay_3693578a4332d52e,usr_175a81ec112fa612,328.16,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,9201,pending,,2026-07-16T17:22:37.185Z,2026-07-16T17:22:37.185Z
+pay_3693578a4332d52e,usr_175a81ec112fa612,328.16,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,9201,succeeded,,2026-07-16T17:22:37.185Z,2026-07-16T17:23:27.961Z
+pay_86cf8e84c4391bbc,usr_55367ab60d574085,250.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-16T01:28:37.338Z,2026-07-16T17:36:53.655Z
+pay_d08c2a6baec84851,usr_a33f06f4fe879e56,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-16T01:05:16.859Z,2026-07-16T20:04:03.329Z
+pay_54ca7da11ae7aaf6,usr_f6c7a1c1c9e2dec1,745.19,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,9463,pending,,2026-07-16T20:24:35.694Z,2026-07-16T20:24:35.694Z
+pay_54ca7da11ae7aaf6,usr_f6c7a1c1c9e2dec1,745.19,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,9463,succeeded,,2026-07-16T20:24:35.694Z,2026-07-16T20:26:03.405Z
+pay_b0ab409fcf857010,usr_12988e9c3ecd2b8c,200.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5388,succeeded,,2026-07-16T20:43:40.213Z,2026-07-16T20:44:43.714Z
+pay_474ac0f73b27708c,usr_51b9aa71c7b6ba72,650.00,4.98,0.00,USD,debit_card,Stripe,Truist,bank,3444,succeeded,,2026-07-16T21:04:53.214Z,2026-07-16T21:05:34.364Z
+pay_6babb77fa9f30866,usr_63203fa90bf3ee35,186.90,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8252,pending,,2026-07-16T21:45:56.581Z,2026-07-16T21:45:56.581Z
+pay_6babb77fa9f30866,usr_63203fa90bf3ee35,186.90,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,8252,succeeded,,2026-07-16T21:45:56.581Z,2026-07-16T21:47:03.723Z
+pay_3fa9348446322f9b,usr_c95351ad124038bb,150.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3914,succeeded,,2026-07-16T23:09:18.316Z,2026-07-16T23:10:13.174Z
+pay_e687e060e217be57,usr_bb51cd747d52903f,100.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8669,succeeded,,2026-07-16T23:14:34.914Z,2026-07-16T23:15:20.367Z
+pay_8f0e0eeb8d2dd4ee,usr_3768b54abb0c686a,318.87,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-14T23:27:48.276Z,2026-07-16T23:27:48.276Z
+pay_8d8edefdc44e26cd,usr_689ab92d37c486a1,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4227,pending,,2026-07-17T00:00:09.642Z,2026-07-17T00:00:09.642Z
+pay_8d8edefdc44e26cd,usr_689ab92d37c486a1,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,4227,SUCCEEDED,,2026-07-17T00:00:09.642Z,2026-07-17T00:00:12.688Z
+pay_cd86aa94403a0961,usr_696929b20513eda8,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-17T00:19:14.824Z,2026-07-17T00:19:14.824Z
+pay_0db9e6084f0bdb1e,usr_5258e6d8bce4d414,421.39,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4172,succeeded,,2026-07-17T02:09:08.207Z,2026-07-17T02:09:25.269Z
+pay_12653d25e8b4860a,usr_0e34d6f53338efe5,300.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,7077,Succeeded,,2026-07-17T02:44:38.380Z,2026-07-17T02:44:42.163Z
+pay_9b4e645b4eb1e279,usr_a4fcc79cd49cc547,600.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-17T04:07:28.215Z,2026-07-17T04:07:28.215Z
+pay_9db7ca7e6213e549,usr_246f785c3f2209a7,350.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5085,pending,,2026-07-17T05:02:14.778Z,2026-07-17T05:02:14.778Z
+pay_9db7ca7e6213e549,usr_246f785c3f2209a7,350.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5085,succeeded,,2026-07-17T05:02:14.778Z,2026-07-17T05:02:58.262Z
+pay_4c5e0209763a2960,usr_8f4b8b0f1d1a123d,449.18,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,8742,pending,,2026-07-17T07:03:18.489Z,2026-07-17T07:03:18.489Z
+pay_4c5e0209763a2960,usr_8f4b8b0f1d1a123d,449.18,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,8742,succeeded,,2026-07-17T07:03:18.489Z,2026-07-17 07:04:01
+pay_d11650424bdf436b,usr_0ead2ebd4662477c,349.22,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,8871,pending,,2026-07-17 08:11:56,2026-07-17 08:11:56
+pay_d11650424bdf436b,usr_0ead2ebd4662477c,349.22,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,8871,succeeded,,2026-07-17 08:11:56,2026-07-17T08:12:48.392Z
+pay_c3334ba60529daa6,usr_2617b8ea9992c403,257.97,2.99,0.00,USD,debit_card,Adyen,Truist,bank,6401,pending,,2026-07-17T11:43:53.173Z,2026-07-17T11:43:53.173Z
+pay_c3334ba60529daa6,usr_2617b8ea9992c403,257.97,2.99,0.00,USD,debit_card,Adyen,Truist,bank,6401,succeeded,,2026-07-17T11:43:53.173Z,2026-07-17T11:44:06.723Z
+pay_59b338549bac1760,usr_01a1f7da417e9ecb,350.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-16T09:50:21.216Z,2026-07-17T11:50:35.310Z
+pay_6a13576c2617fad8,usr_6b52f93c2321e64e,700.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6266,succeeded,,2026-07-17T12:23:48.810Z,2026-07-17T12:24:34.090Z
+pay_5d0dd068261a21ee,usr_5ca0c428822c4d32,801.34,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2253,pending,,2026-07-17T13:56:42.223Z,2026-07-17T13:56:42.223Z
+pay_5d0dd068261a21ee,usr_5ca0c428822c4d32,801.34,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2253,succeeded,,2026-07-17T13:56:42.223Z,2026-07-17T13:57:31.113Z
+pay_cd86aa94403a0961,usr_696929b20513eda8,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-17T00:19:14.824Z,2026-07-17T14:08:16.636Z
+pay_d0d149aea47fc2f8,usr_426cd241261e5c4d,"1,250.00",4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5207,SUCCEEDED,,2026-07-17T14:34:35.940Z,2026-07-17T14:34:59.458Z
+pay_abde98fb454d0adf,usr_71b2b47ab6617c50,259.33,0.00,0.00,USD,debit_card,Adyen,PNC Bank,bank,3360,failed,card_declined,2026-07-17T14:35:13.672Z,2026-07-17T14:35:23.603Z
+pay_9b4e645b4eb1e279,usr_a4fcc79cd49cc547,600.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-17T04:07:28.215Z,2026-07-17T16:35:22.168Z
+pay_4b6ef158f7a2727e,usr_26242b40a5cb63a2,100.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-17T18:04:22.532Z,2026-07-17T18:04:22.532Z
+pay_d1814afde1466dbd,usr_34879e411a9c672a,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-17T18:33:49.417Z,2026-07-17T18:33:49.417Z
+pay_3eab0143dd3ba724,usr_830481c2f9d09e26,637.81,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2423,pending,,2026-07-17T18:39:53.115Z,2026-07-17T18:39:53.115Z
+pay_3eab0143dd3ba724,usr_830481c2f9d09e26,637.81,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2423,succeeded,,2026-07-17T18:39:53.115Z,2026-07-17T18:40:49.407Z
+pay_1236c3d9dc014af0,usr_ea4cd6078e487a8c,1258.81,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,7760,pending,,2026-07-17T19:51:18.945Z,2026-07-17T19:51:18.945Z
+pay_1236c3d9dc014af0,usr_ea4cd6078e487a8c,1258.81,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,7760,succeeded,,2026-07-17T19:51:18.945Z,2026-07-17T19:52:17.080Z
+pay_18fe7c963586ad08,usr_a9a68fe67ece9b94,289.97,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-17T19:55:37.581Z,2026-07-17T19:55:37.581Z
+pay_1657c5195e719682,usr_5fdc889f122d774d,304.39,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-17T20:05:38.270Z,2026-07-17T20:05:38.270Z
+pay_a3f92bc9c8c37b8f,usr_22681c704eb00c3d,500.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-17T21:53:05.615Z,2026-07-17T21:53:05.615Z
+pay_2f81e8130605d483,usr_7da705826bb482c7,600.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-17T22:22:51.884Z,2026-07-17T22:22:51.884Z
+pay_79f1f61e24b0922c,usr_83c224ac342921d1,218.34,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0843,succeeded,,2026-07-17T23:20:51.077Z,2026-07-17T23:21:34.523Z
+pay_4bb35e1ab112e7db,usr_d7d050be22530aa4,517.41,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,5582,pending,,2026-07-18T00:18:34.273Z,2026-07-18T00:18:34.273Z
+pay_4bb35e1ab112e7db,usr_d7d050be22530aa4,517.41,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,5582,succeeded,,2026-07-18T00:18:34.273Z,2026-07-18T00:19:33.941Z
+pay_7ae15f5929aa34b7,usr_4f41be6923b8e0d6,250.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6653,refunded,customer_request,2026-07-15T12:17:59.832Z,2026-07-18T00:33:12.383Z
+pay_a3a3b02c83a52b07,usr_6d248547852d23cd,400.00,0.00,0.00,USD,debit_card,Adyen,TD Bank,bank,0802,failed,insufficient_funds,2026-07-18T01:08:49.676Z,2026-07-18T01:10:10.823Z
+pay_a0a9ebbf172b551d,usr_5f8b00f7b92eefe0,650.00,4.98,0.00,USD,debit_card,Adyen,PNC Bank,bank,8306,pending,,2026-07-18T01:49:06.007Z,2026-07-18T01:49:06.007Z
+pay_a0a9ebbf172b551d,usr_5f8b00f7b92eefe0,650.00,4.98,0.00,USD,debit_card,Adyen,PNC Bank,bank,8306,succeeded,,2026-07-18T01:49:06.007Z,2026-07-18T01:50:20.799Z
+pay_c6f70962b5fc0b73,usr_48781777e2575b99,650.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,9834,pending,,2026-07-18T02:11:32.036Z,2026-07-18T02:11:32.036Z
+pay_c6f70962b5fc0b73,usr_48781777e2575b99,650.00,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,9834,succeeded,,2026-07-18T02:11:32.036Z,2026-07-18T02:11:55.847Z
+pay_b47b8d1240211a46,usr_4e10322fb4a4c777,400.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-18T02:16:34.327Z,2026-07-18T02:16:34.327Z
+pay_3584f851c3071f73,usr_4ef4c34d5bf86f3c,79.44,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-18T02:27:50.357Z,2026-07-18T02:27:50.357Z
+pay_41ebb404eb1e1e91,usr_b8bbcc542fc068d2,998.14,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,4533,pending,,2026-07-18T02:42:10.191Z,2026-07-18T02:42:10.191Z
+pay_41ebb404eb1e1e91,usr_b8bbcc542fc068d2,998.14,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,4533,succeeded,,2026-07-18T02:42:10.191Z,2026-07-18T02:42:58.372Z
+pay_41ebb404eb1e1e91,usr_b8bbcc542fc068d2,998.14,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,4533,succeeded,,2026-07-18T02:42:10.191Z,2026-07-18T02:42:58.372Z
+pay_672c78f0689b617b,usr_77c0fc27063c47eb,179.22,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,7112,pending,,2026-07-18T03:27:29.557Z,2026-07-18T03:27:29.557Z
+pay_672c78f0689b617b,usr_77c0fc27063c47eb,179.22,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,7112,succeeded,,2026-07-18T03:27:29.557Z,2026-07-18T03:28:10.421Z
+pay_630945951c5f0284,usr_eb9ed274ec6a37ad,350.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,1392,pending,,2026-07-18T03:44:26.065Z,2026-07-18T03:44:26.065Z
+pay_630945951c5f0284,usr_eb9ed274ec6a37ad,350.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,1392,succeeded,,2026-07-18T03:44:26.065Z,2026-07-18T03:44:56.924Z
+pay_b8e3bf8fed8ea1d5,usr_384f6e3b86804a8a,350.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,3495,pending,,2026-07-18T03:58:25.427Z,2026-07-18T03:58:25.427Z
+pay_b8e3bf8fed8ea1d5,usr_384f6e3b86804a8a,350.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,3495,succeeded,,2026-07-18T03:58:25.427Z,2026-07-18T03:58:57.209Z
+pay_be88a70b54e25c5f,usr_f8d4866f599a20f1,1247.44,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9947,succeeded,,2026-07-18T03:58:47.213Z,2026-07-18T03:59:24.956Z
+pay_6b235c252999bdfe,usr_963a4333e58295dc,260.71,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,5172,succeeded,,2026-07-18T04:03:10.616Z,2026-07-18T04:03:22.027Z
+pay_c1df04e026414ccb,usr_b7b0a8e4c2567f37,506.87,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-18T04:19:53.770Z,2026-07-18T04:19:53.770Z
+pay_a3f92bc9c8c37b8f,usr_22681c704eb00c3d,500.00,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-17T21:53:05.615Z,2026-07-18T05:20:46.874Z
+pay_5c8c094992e67dcc,usr_570210496a39aaa6,787.06,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,2434,pending,,2026-07-18T05:43:56.522Z,2026-07-18T05:43:56.522Z
+pay_5c8c094992e67dcc,usr_570210496a39aaa6,787.06,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,2434,succeeded,,2026-07-18T05:43:56.522Z,2026-07-18T05:44:12.501Z
+pay_e4e7ef2b7b8c5ca3,usr_0864155c8121f2ad,147.28,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,6826,succeeded,,2026-07-18T07:23:26.445Z,2026-07-18T07:24:54.800Z
+pay_07d35eb1b30a9ea2,usr_dc4491791d7a0bd0,200.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,6763,succeeded,,2026-07-18 07:28:51,2026-07-18T07:29:40.346Z
+pay_261b188fd6ba9c13,usr_59c1d16c1fdb563a,400.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,3668,failed,insufficient_funds,2026-07-18T08:29:26.885Z,2026-07-18T08:30:06.085Z
+pay_95442a7ba653c9d9,usr_be8dee1eabfd9148,600.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,9393,succeeded,,2026-07-18T09:15:40.261Z,2026-07-18T09:16:27.867Z
+pay_18fe7c963586ad08,usr_a9a68fe67ece9b94,289.97,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-17T19:55:37.581Z,2026-07-18T10:11:45.126Z
+pay_fa922d053db5db3b,usr_fa7bb223ce57e676,559.62,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-18T11:41:14.187Z,2026-07-18T11:41:14.187Z
+pay_7f37c973b5e65f85,usr_8d3ba57f300ffa68,664.29,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7926,succeeded,,2026-07-18T11:44:38.823Z,2026-07-18T11:45:06.589Z
+pay_7f37c973b5e65f85,usr_8d3ba57f300ffa68,664.29,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7926,succeeded,,2026-07-18T11:44:38.823Z,2026-07-18T11:45:06.589Z
+pay_d1814afde1466dbd,usr_34879e411a9c672a,1000.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-17T18:33:49.417Z,2026-07-18T11:46:23.000Z
+pay_c20bb985f5489bbd,usr_faddc9f0677adc61,650.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,3856,pending,,2026-07-18T12:16:53.415Z,2026-07-18T12:16:53.415Z
+pay_c20bb985f5489bbd,usr_faddc9f0677adc61,650.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,3856,failed,risk_blocked,2026-07-18T12:16:53.415Z,2026-07-18T12:17:04.914Z
+pay_02b5163e2b44a36d,usr_c03bfa945646d9a9,50.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-18T12:34:03.659Z,2026-07-18T12:34:03.659Z
+pay_45a2eb39f62795cf,usr_c520d50fa0ff3498,"1,050.00",2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2138,succeeded,,2026-07-18T13:08:22.217Z,2026-07-18T13:08:43.490Z
+pay_4b6ef158f7a2727e,usr_26242b40a5cb63a2,100.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-17T18:04:22.532Z,2026-07-18T13:54:29.548Z
+pay_1657c5195e719682,usr_5fdc889f122d774d,304.39,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-17T20:05:38.270Z,2026-07-18T15:21:18.025Z
+pay_2ee473f94cbc0b87,usr_689ab92d37c486a1,621.20,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-18T16:11:33.630Z,2026-07-18T16:11:33.630Z
+pay_3584f851c3071f73,usr_4ef4c34d5bf86f3c,79.44,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-18T02:27:50.357Z,2026-07-18T16:20:50.093Z
+pay_350796bb78efd1cf,usr_db95e9883398b604,592.71,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-18T16:23:49.402Z,2026-07-18T16:23:49.402Z
+pay_fa922d053db5db3b,usr_fa7bb223ce57e676,559.62,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-18T11:41:14.187Z,2026-07-18T16:59:14.648Z
+pay_e0ccb419f5afbaff,usr_c6f06a7146fc4ff2,"1,214.70",2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8056,pending,,2026-07-18T17:24:34.433Z,2026-07-18T17:24:34.433Z
+pay_e0ccb419f5afbaff,usr_c6f06a7146fc4ff2,"1,214.70",2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8056,succeeded,,2026-07-18T17:24:34.433Z,2026-07-18T17:25:51.667Z
+pay_2ee473f94cbc0b87,usr_689ab92d37c486a1,621.20,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-18T16:11:33.630Z,2026-07-18T17:41:04.245Z
+pay_b62e1372a43427ee,usr_beb9e02afe36d4f8,454.48,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,7985,pending,,2026-07-18T18:24:50.738Z,2026-07-18T18:24:50.738Z
+pay_b62e1372a43427ee,usr_beb9e02afe36d4f8,454.48,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,7985,succeeded,,2026-07-18T18:24:50.738Z,2026-07-18T18:25:36.115Z
+pay_fb5ab9eef0e47f8a,usr_6d6a53cb2f991807,850.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9330,succeeded,,2026-07-18T19:59:59.785Z,2026-07-18T20:00:10.961Z
+pay_fb5ab9eef0e47f8a,usr_6d6a53cb2f991807,850.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9330,succeeded,,2026-07-18T19:59:59.785Z,2026-07-18T20:00:10.961Z
+pay_236217395b1ffb44,usr_7f353843d25bb219,100.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1970,succeeded,,2026-07-18T21:17:32.174Z,2026-07-18T21:18:10.522Z
+pay_68995fb47ce19b3b,usr_9191b3634e2d6645,750.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-18T21:30:19.435Z,2026-07-18T21:30:19.435Z
+pay_666b3ed8dd975caa,usr_c33fc2a6abcda916,150.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4022,succeeded,,2026-07-18T22:07:50.854Z,2026-07-18T22:08:38.057Z
+pay_75fc17590a73ee99,usr_6c4596f6c012a0ff,867.67,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1773,pending,,2026-07-19T00:47:12.489Z,2026-07-19T00:47:12.489Z
+pay_75fc17590a73ee99,usr_6c4596f6c012a0ff,867.67,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1773, failed,risk_blocked,2026-07-19T00:47:12.489Z,2026-07-19T00:48:31.382Z
+pay_b47b8d1240211a46,usr_4e10322fb4a4c777,400.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-18T02:16:34.327Z,2026-07-19T01:03:45.953Z
+pay_cab602d4d798a552,usr_07feb08e08f07b8a,110.03,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,4843,pending,,2026-07-19 01:05:22,2026-07-19 01:05:22
+pay_cab602d4d798a552,usr_07feb08e08f07b8a,110.03,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,4843,succeeded,,2026-07-19 01:05:22,2026-07-19T01:06:32.409Z
+pay_0a3dce8b1593f4e6,usr_8ad303b1d77dd689,815.74,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-19T02:03:09.823Z,2026-07-19T02:03:09.823Z
+pay_650b3a7b0b47e026,usr_c982a300f95f17e6,1300.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1506,succeeded,,2026-07-19T02:05:17.245Z,2026-07-19T02:06:12.263Z
+pay_6610e28dfdc61751,usr_f84763a5dc755ad2,874.27,2.99,0.00,USD,debit_card,Stripe,Truist,bank,6879,refunded,customer_request,2026-07-16T13:19:03.100Z,2026-07-19T02:17:06.392Z
+pay_68995fb47ce19b3b,usr_9191b3634e2d6645,750.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-18T21:30:19.435Z,2026-07-19T03:07:52.762Z
+pay_9bef11e0342f361c,usr_6e6a3d5b2154be4a,100.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,2391,succeeded,,2026-07-19T03:17:50.703Z,2026-07-19T03:18:59.768Z
+pay_f0096976eb26e6c4,usr_db0e09ffb6e3f5d3,225.38,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-19T03:34:47.430Z,2026-07-19T03:34:47.430Z
+pay_c1df04e026414ccb,usr_b7b0a8e4c2567f37,506.87,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-18T04:19:53.770Z,2026-07-19T03:37:39.142Z
+pay_3c54a5c588e30c54,usr_5269fd43a3af5ce5,350.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0413,succeeded,,2026-07-19T03:49:45.687Z,2026-07-19 03:49:48
+pay_95c1efbe10e14e09,usr_9ae48021e780ac62,250.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4237,pending,,2026-07-19T05:35:21.302Z,2026-07-19T05:35:21.302Z
+pay_95c1efbe10e14e09,usr_9ae48021e780ac62,250.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,4237,succeeded,,2026-07-19T05:35:21.302Z,2026-07-19T05:35:26.338Z
+pay_02b5163e2b44a36d,usr_c03bfa945646d9a9,50.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-18T12:34:03.659Z,2026-07-19T06:26:19.261Z
+pay_fe1f21bbbb288eaa,usr_097a575d36ce8d27,200.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-19T08:38:38.487Z,2026-07-19T08:38:38.487Z
+pay_4893906fb69ae722,usr_ecba63b35532a5c2,200.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,2376,succeeded,,2026-07-19T09:30:18.176Z,2026-07-19T09:31:12.202Z
+pay_56bd4061ce33c45c,usr_711c767385351a69,143.14,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2161,failed,insufficient_funds,2026-07-19 11:16:58,2026-07-19T11:17:48.623Z
+pay_3ffbe4da05bfbaee,usr_fba938bca922f180,400.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,7276,pending,,2026-07-19T12:50:08.242Z,2026-07-19T12:50:08.242Z
+pay_3ffbe4da05bfbaee,usr_fba938bca922f180,400.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,7276,succeeded,,2026-07-19T12:50:08.242Z,2026-07-19T12:51:21.224Z
+pay_5387cba0e95c7fa5,usr_438806fe68f06068,100.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5377,succeeded,,2026-07-19T14:19:30.169Z,2026-07-19T14:20:22.289Z
+pay_302be422b1b2f60e,usr_4223623bcc3ebdde,694.96,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3954,pending,,2026-07-19T16:57:27.325Z,2026-07-19T16:57:27.325Z
+pay_302be422b1b2f60e,usr_4223623bcc3ebdde,694.96,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3954,succeeded,,2026-07-19T16:57:27.325Z,2026-07-19T16:57:43.766Z
+pay_2451bbb341faa4db,usr_320b5ab7159d880c,304.92,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0783, pending,,2026-07-19T17:25:45.848Z,2026-07-19T17:25:45.848Z
+pay_2451bbb341faa4db,usr_320b5ab7159d880c,304.92,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0783,succeeded,,2026-07-19T17:25:45.848Z,2026-07-19T17:27:05.721Z
+pay_56e0f21b6ee6b943,usr_561da77b5d524c68,1100.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,7129,pending,,2026-07-19T17:57:51.271Z,2026-07-19T17:57:51.271Z
+pay_56e0f21b6ee6b943,usr_561da77b5d524c68,1100.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,7129,succeeded,,2026-07-19T17:57:51.271Z,2026-07-19T17:58:06.281Z
+pay_27c3ecb7c1de1932,usr_21b6d83537b5115a,1000.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-19T18:13:18.246Z,2026-07-19T18:13:18.246Z
+pay_d9361c9276957a9c,usr_a6928bbf25aae4ba,793.86,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,0287,succeeded,,2026-07-19T19:15:56.814Z,2026-07-19T19:16:25.880Z
+pay_8fd024ea235b4a72,usr_d58c449e57e0d57b,350.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0136,pending,,2026-07-19T19:38:17.876Z,2026-07-19T19:38:17.876Z
+pay_8fd024ea235b4a72,usr_d58c449e57e0d57b,350.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0136,succeeded ,,2026-07-19T19:38:17.876Z,2026-07-19T19:39:27.766Z
+pay_c8073ff48cf685a3,usr_b807eb464814e14e,1274.70,0.00,0.00,USD,debit_card,Adyen,Capital One,bank,0031,succeeded,,2026-07-19T19:40:07.136Z,2026-07-19T19:41:22.852Z
+pay_e8942f8fb932311a,usr_e5c1c54bb73f256b,145.62,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,4542,pending,,2026-07-19T20:04:03.975Z,2026-07-19T20:04:03.975Z
+pay_e8942f8fb932311a,usr_e5c1c54bb73f256b,145.62,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,4542,succeeded,,2026-07-19T20:04:03.975Z,2026-07-19T20:04:42.197Z
+pay_f0096976eb26e6c4,usr_db0e09ffb6e3f5d3,225.38,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-19T03:34:47.430Z,2026-07-19T20:14:05.418Z
+pay_313682712ef8facc,usr_cb7f47c960b5b8dd,450.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,9072,pending ,,2026-07-19T20:57:28.047Z,2026-07-19T20:57:28.047Z
+pay_313682712ef8facc,usr_cb7f47c960b5b8dd,450.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,9072,succeeded,,2026-07-19T20:57:28.047Z,2026-07-19T20:58:23.713Z
+pay_d91702cb163e3c4e,usr_3d9290f06cf7dc55,400.00,2.99,0.00,USD,debit_card,Stripe,Truist,bank,8911,succeeded,,2026-07-19T21:49:56.937Z,2026-07-19T21:51:24.305Z
+pay_8cdffa9cf784e513,usr_d01d91f7c3eb4e7b,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-19T21:53:54.337Z,2026-07-19T21:53:54.337Z
+pay_2f81e8130605d483,usr_7da705826bb482c7,600.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,EXPIRED,barcode_not_paid,2026-07-17T22:22:51.884Z,2026-07-19T22:22:51.884Z
+pay_7596da89c0af59ea,usr_f4672866ed56a2a0,200.00,2.99,0.00,USD,debit_card,Stripe,Truist,bank,9960,succeeded,,2026-07-19T22:56:43.292Z,2026-07-19T22:57:29.839Z
+pay_27c3ecb7c1de1932,usr_21b6d83537b5115a,1000.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-19T18:13:18.246Z,2026-07-20T01:05:11.987Z
+pay_85ffe03859755f33,usr_4c24a05367f5ae02,128.23,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,5121,succeeded,,2026-07-20T03:15:58.640Z,2026-07-20T03:16:20.669Z
+pay_50973b99779b884a,usr_8c2d0e27c370f2e2,1150.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7656,pending,,2026-07-20T03:17:49.556Z,2026-07-20T03:17:49.556Z
+pay_50973b99779b884a,usr_8c2d0e27c370f2e2,1150.00,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7656,succeeded,,2026-07-20T03:17:49.556Z,2026-07-20 03:17:52
+pay_bd9bd47ff88095d5,usr_631a7806296e0975,250.00,0.00,0.00,USD,debit_card,Stripe,Citibank,bank,1365,succeeded,,2026-07-20T03:22:46.633Z,2026-07-20T03:22:56.370Z
+pay_ec8721791e7aee97,usr_7303a90382749f61,400.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,5457, pending,,2026-07-20T03:45:29.929Z,2026-07-20T03:45:29.929Z
+pay_ec8721791e7aee97,usr_7303a90382749f61,400.00,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,5457,succeeded,,2026-07-20T03:45:29.929Z,2026-07-20T03:46:29.296Z
+pay_b7ba3a036e2e9bec,usr_d3752185a01989d1,200.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-20T05:23:32.215Z,2026-07-20T05:23:32.215Z
+pay_cf36864bd4037502,usr_df18e065df5864d5,618.89,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-20T06:11:20.608Z,2026-07-20T06:11:20.608Z
+pay_3d810d71e2a3fda6,usr_0ccfd7fb438279e7,106.05,0.00,0.00,USD,debit_card,Adyen,Capital One,bank,2430,pending,,2026-07-20T06:14:04.909Z,2026-07-20T06:14:04.909Z
+pay_3d810d71e2a3fda6,usr_0ccfd7fb438279e7,106.05,0.00,0.00,USD,debit_card,Adyen,Capital One,bank,2430,succeeded,,2026-07-20T06:14:04.909Z,2026-07-20T06:14:38.626Z
+pay_d6cc10c188c92056,usr_4892111c1bee4909,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-20T07:27:56.136Z,2026-07-20T07:27:56.136Z
+pay_6d12e6f2917d74e3,usr_30c0e64ad1748912,272.01,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-20T08:39:48.721Z,2026-07-20T08:39:48.721Z
+pay_b7ba3a036e2e9bec,usr_d3752185a01989d1,200.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-20T05:23:32.215Z,2026-07-20T13:44:17.571Z
+pay_08ea03ca2cbef1a6,usr_67099d55c49943ce,650.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-20T15:41:13.075Z,2026-07-20T15:41:13.075Z
+pay_350796bb78efd1cf,usr_db95e9883398b604,592.71,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,expired,barcode_not_paid,2026-07-18T16:23:49.402Z,2026-07-20T16:23:49.402Z
+pay_e1487a97006a21dc,usr_c47d336f2e8f2f7f,1000.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-20T16:50:16.800Z,2026-07-20T16:50:16.800Z
+pay_05c97399f831a70f,usr_a4ed91b84d9e3b99,150.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3613,pending,,2026-07-20T18:12:52.033Z,2026-07-20T18:12:52.033Z
+pay_05c97399f831a70f,usr_a4ed91b84d9e3b99,150.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3613,succeeded,,2026-07-20T18:12:52.033Z,2026-07-20T18:14:06.153Z
+pay_af922d03ccd231a5,usr_3bca7ff671be0c72,100.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,7800,succeeded,,2026-07-20T19:12:10.654Z,2026-07-20T19:12:14.594Z
+pay_d64e27efccaba216,usr_5616af7e1057a002,300.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-20T19:14:42.089Z,2026-07-20T19:14:42.089Z
+pay_a268ec3c64804f64,usr_d4ffa66675c8e90d,550.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,5083,pending,,2026-07-20T20:08:12.209Z,2026-07-20T20:08:12.209Z
+pay_a268ec3c64804f64,usr_d4ffa66675c8e90d,550.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,5083,succeeded,,2026-07-20T20:08:12.209Z,2026-07-20T20:09:24.971Z
+pay_312347a11464a476,usr_ea86ff039e9d5a73,945.22,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9529,succeeded,,2026-07-20T20:33:24.158Z,2026-07-20T20:34:31.165Z
+pay_e9abfdb290d71cb1,usr_5a5a50713fff2063,150.47,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6676,pending,,2026-07-20T20:36:48.157Z,2026-07-20T20:36:48.157Z
+pay_e9abfdb290d71cb1,usr_5a5a50713fff2063,150.47,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6676,succeeded,,2026-07-20T20:36:48.157Z,2026-07-20T20:37:12.889Z
+pay_8cdffa9cf784e513,usr_d01d91f7c3eb4e7b,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-19T21:53:54.337Z,2026-07-20T20:43:28.058Z
+pay_42eab22778cbeee6,usr_7c8c65ab12d5dfe5,172.81,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,4894, succeeded,,2026-07-20T21:18:14.405Z,2026-07-20T21:19:17.699Z
+pay_4daa1b3be283ac0b,usr_07bf1bb884933b3d,500.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-20T21:20:14.311Z,2026-07-20T21:20:14.311Z
+pay_cf36864bd4037502,usr_df18e065df5864d5,618.89,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-20T06:11:20.608Z,2026-07-20T21:33:43.922Z
+pay_08ea03ca2cbef1a6,usr_67099d55c49943ce,650.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-20T15:41:13.075Z,2026-07-21T00:10:45.099Z
+pay_b6cac5699d5798dc,usr_b7c315a2dc16cbae,581.91,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,0223,pending,,2026-07-21T00:37:02.679Z,2026-07-21T00:37:02.679Z
+pay_b6cac5699d5798dc,usr_b7c315a2dc16cbae,581.91,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,0223,failed,insufficient_funds,2026-07-21T00:37:02.679Z,2026-07-21 00:38:14
+pay_69174fdc53726f90,usr_f49ee85fafd580eb,680.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4650,pending,,2026-07-21T00:50:43.538Z,2026-07-21T00:50:43.538Z
+pay_69174fdc53726f90,usr_f49ee85fafd580eb,680.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4650,succeeded,,2026-07-21T00:50:43.538Z,2026-07-21T00:51:38.517Z
+pay_c86f325a9475c080,usr_d2eaef184b6797a1,499.80,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1892, pending,,2026-07-21T01:09:21.733Z,2026-07-21T01:09:21.733Z
+pay_c86f325a9475c080,usr_d2eaef184b6797a1,499.80,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1892,succeeded,,2026-07-21T01:09:21.733Z,2026-07-21T01:10:20.897Z
+pay_a00157d14b22d8bf,usr_02ed5d15edbc36d8,152.87,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,2509,pending,,2026-07-21T01:45:48.416Z,2026-07-21T01:45:48.416Z
+pay_6275088758734473,usr_37960fd9b5263f49,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-21T01:46:04.861Z,2026-07-21T01:46:04.861Z
+pay_a00157d14b22d8bf,usr_02ed5d15edbc36d8,152.87,4.98,0.00,USD,debit_card,Adyen,Capital One,bank,2509,succeeded,,2026-07-21T01:45:48.416Z,2026-07-21T01:46:48.941Z
+pay_64b86ec4762cc15d,usr_b29139a9626953e6,470.93,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9420,pending,,2026-07-21T01:51:03.940Z,2026-07-21T01:51:03.940Z
+pay_64b86ec4762cc15d,usr_b29139a9626953e6,470.93,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9420,succeeded,,2026-07-21T01:51:03.940Z,2026-07-21T01:52:20.360Z
+pay_0a3dce8b1593f4e6,usr_8ad303b1d77dd689,815.74,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-19T02:03:09.823Z,2026-07-21T02:03:09.823Z
+pay_288b06fd4b6f9344,usr_45708ada42b4d955,181.96,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,7746,pending,,2026-07-21T03:51:25.625Z,2026-07-21T03:51:25.625Z
+pay_288b06fd4b6f9344,usr_45708ada42b4d955,181.96,0.00,0.00,USD,debit_card,Adyen,U.S. Bank,bank,7746,failed,card_declined,2026-07-21T03:51:25.625Z,2026-07-21T03:52:46.734Z
+pay_6d12e6f2917d74e3,usr_30c0e64ad1748912,272.01,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-20T08:39:48.721Z,2026-07-21T07:19:33.067Z
+pay_fe1f21bbbb288eaa,usr_097a575d36ce8d27,200.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-19T08:38:38.487Z,2026-07-21T08:38:38.487Z
+pay_530b4200db6835ba,usr_01b8d47e7a5f1d32,50.00,0.00,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-21T09:41:56.842Z,2026-07-21T09:41:56.842Z
+pay_31a5baa5ceeaf17f,usr_97d905886333257a,200.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4559,pending,,2026-07-21T11:00:10.345Z,2026-07-21T11:00:10.345Z
+pay_31a5baa5ceeaf17f,usr_97d905886333257a,200.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4559,succeeded,,2026-07-21T11:00:10.345Z,2026-07-21T11:01:17.390Z
+pay_31a5baa5ceeaf17f,usr_97d905886333257a,200.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4559,succeeded,,2026-07-21T11:00:10.345Z,2026-07-21T11:01:17.390Z
+pay_e55630717a75e480,usr_5a37a5048d2e304b,150.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-21T11:24:09.113Z,2026-07-21T11:24:09.113Z
+pay_ec49f2aec9ab170a,usr_71e64bce88baef4a,600.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,3438,pending,,2026-07-21T12:10:08.083Z,2026-07-21T12:10:08.083Z
+pay_ec49f2aec9ab170a,usr_71e64bce88baef4a,600.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,3438, succeeded,,2026-07-21T12:10:08.083Z,2026-07-21T12:11:13.079Z
+pay_e1487a97006a21dc,usr_c47d336f2e8f2f7f,1000.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-20T16:50:16.800Z,2026-07-21T12:31:20.748Z
+pay_cf688f9334904c33,usr_200b290346426c45,422.81,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-21T13:00:41.800Z,2026-07-21T13:00:41.800Z
+pay_cf688f9334904c33,usr_200b290346426c45,422.81,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-21T13:00:41.800Z,2026-07-21T13:31:48.935Z
+pay_edfff9f32d3da981,usr_d173b70bec993c80,576.02,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2419,succeeded,,2026-07-21T15:05:34.655Z,2026-07-21T15:06:40.053Z
+pay_77d5e191694d1fa6,usr_6336c81561af663c,600.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7259,pending,,2026-07-21T17:50:59.776Z,2026-07-21T17:50:59.776Z
+pay_77d5e191694d1fa6,usr_6336c81561af663c,600.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7259,succeeded,,2026-07-21T17:50:59.776Z,2026-07-21T17:52:17.514Z
+pay_d7e704748e45d01d,usr_75eaa8fbca7e6bd7,364.22,4.98,0.00,USD,debit_card,Stripe,Truist,bank,9489,succeeded,,2026-07-21T18:07:10.203Z,2026-07-21T18:08:39.622Z
+pay_df393a8f47743f70,usr_eeba6ad9ea88d27d,1850.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7093,pending,,2026-07-21T18:19:26.949Z,2026-07-21T18:19:26.949Z
+pay_df393a8f47743f70,usr_eeba6ad9ea88d27d,1850.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,7093,succeeded,,2026-07-21T18:19:26.949Z,2026-07-21T18:20:18.112Z
+pay_c30e07c6be3c91a8,usr_d101929cfb664abf,250.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,3967,pending,,2026-07-21T19:33:57.751Z,2026-07-21T19:33:57.751Z
+pay_c30e07c6be3c91a8,usr_d101929cfb664abf,250.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,3967,succeeded,,2026-07-21T19:33:57.751Z,2026-07-21T19:34:18.830Z
+pay_aaf200e47cfe7a27,usr_5ced70172518ec09,1200.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,0895,pending,,2026-07-21T19:38:52.374Z,2026-07-21T19:38:52.374Z
+pay_aaf200e47cfe7a27,usr_5ced70172518ec09,1200.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,0895,failed,3ds_failed,2026-07-21T19:38:52.374Z,2026-07-21T19:39:19.039Z
+pay_6275088758734473,usr_37960fd9b5263f49,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-21T01:46:04.861Z,2026-07-21T20:34:38.921Z
+pay_c080fd648c82dd03,usr_0c00988a7ee1011a,600.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,3012,Failed,card_declined,2026-07-21T21:04:20.693Z,2026-07-21T21:04:40.041Z
+pay_5c6d6e0452c6bb44,usr_426cd241261e5c4d,1250.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5207,pending,,2026-07-21T21:40:14.166Z,2026-07-21T21:40:14.166Z
+pay_5c6d6e0452c6bb44,usr_426cd241261e5c4d,1250.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5207,succeeded,,2026-07-21T21:40:14.166Z,2026-07-21T21:41:18.773Z
+pay_cfbf4e0df465c2c4,usr_a3f5cc8d39cefff3,350.00,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,1766,succeeded,,2026-07-21T21:58:51.696Z,2026-07-21T21:59:52.136Z
+pay_36791120a54b5ccf,usr_f068d5547f24c98e,1364.86,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,3249,pending,,2026-07-21T22:19:23.296Z,2026-07-21T22:19:23.296Z
+pay_36791120a54b5ccf,usr_f068d5547f24c98e,1364.86,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,3249,failed,insufficient_funds,2026-07-21T22:19:23.296Z,2026-07-21T22:19:50.887Z
+pay_6f6061a7a21d1786,usr_0b653f5f74d90398,459.71,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7594,pending,,2026-07-21T22:38:14.869Z,2026-07-21T22:38:14.869Z
+pay_6f6061a7a21d1786,usr_0b653f5f74d90398,459.71,4.98,0.00,USD,debit_card,Stripe,Chime,neobank,7594,succeeded,,2026-07-21T22:38:14.869Z,2026-07-21T22:38:51.999Z
+pay_39636b28b1fff4e7,usr_7b5fbe413fa2bde0,116.87,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,Pending,,2026-07-21T22:39:17.006Z,2026-07-21T22:39:17.006Z
+pay_eb0f66990bfaecb4,usr_9181c8a230e31645,100.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-22T00:08:20.714Z,2026-07-22T00:08:20.714Z
+pay_d64e27efccaba216,usr_5616af7e1057a002,300.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-20T19:14:42.089Z,2026-07-22 00:25:26
+pay_040e36f8d0d89d25,usr_c63be21f836da569,300.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-22T03:17:32.295Z,2026-07-22T03:17:32.295Z
+pay_b28ee143751c3d36,usr_4892111c1bee4909,250.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-22T03:28:45.540Z,2026-07-22T03:28:45.540Z
+pay_eb0f66990bfaecb4,usr_9181c8a230e31645,100.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-22T00:08:20.714Z,2026-07-22T03:41:44.731Z
+pay_ab44591db2a5d029,usr_14b0bab5a0350f66,200.00,2.99,0.00,USD,debit_card,Stripe,TD Bank,bank,5122,pending,,2026-07-22T04:07:49.863Z,2026-07-22T04:07:49.863Z
+pay_ab44591db2a5d029,usr_14b0bab5a0350f66,200.00,2.99,0.00,USD,debit_card,Stripe,TD Bank,bank,5122,succeeded,,2026-07-22T04:07:49.863Z,2026-07-22T04:08:46.194Z
+pay_27610602da08781e,usr_242c60e4c39dd70c,1000.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,4816,succeeded,,2026-07-22T04:12:09.991Z,2026-07-22T04:12:51.777Z
+pay_dd29f0f8c10a0336,usr_47c1c01760452909,904.19,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,0440,succeeded,,2026-07-22T05:10:07.241Z,2026-07-22T05:10:44.077Z
+pay_36f90fac5577ab65,usr_cd85334734579c7f,200.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-22T05:31:39.201Z,2026-07-22T05:31:39.201Z
+pay_901334d011108519,usr_bde9a6a86c5495bf,500.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,4304,pending,,2026-07-22T06:47:49.991Z,2026-07-22T06:47:49.991Z
+pay_07cae57654839562,usr_5269fd43a3af5ce5,142.74,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0413,pending,,2026-07-22T06:47:52.027Z,2026-07-22T06:47:52.027Z
+pay_901334d011108519,usr_bde9a6a86c5495bf,500.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,4304,succeeded,,2026-07-22T06:47:49.991Z,2026-07-22T06:48:03.198Z
+pay_07cae57654839562,usr_5269fd43a3af5ce5,142.74,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0413,succeeded,,2026-07-22T06:47:52.027Z,2026-07-22T06:48:18.655Z
+pay_d6cc10c188c92056,usr_4892111c1bee4909,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-20T07:27:56.136Z,2026-07-22T07:27:56.136Z
+pay_39636b28b1fff4e7,usr_7b5fbe413fa2bde0,116.87,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-21T22:39:17.006Z,2026-07-22T07:31:44.410Z
+pay_9e1fe8077e30ac5a,usr_07d7a39309cf1063,470.40,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-22T07:49:58.691Z,2026-07-22T07:49:58.691Z
+pay_4dd147a69b4fa088,usr_798fa5ebc24cf38a,650.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,4981,pending,,2026-07-22T08:21:59.429Z,2026-07-22T08:21:59.429Z
+pay_4dd147a69b4fa088,usr_798fa5ebc24cf38a,650.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,4981,succeeded,,2026-07-22T08:21:59.429Z,2026-07-22T08:23:05.846Z
+pay_1ac49891614f6f14,usr_426cd241261e5c4d,846.03,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,5207,chargeback,product_not_received,2026-05-20T10:43:04.917Z,2026-07-22T09:41:05.665Z
+pay_e3b04f480babeb10,usr_6ac01a5cda6c59b2,850.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-22T10:26:10.365Z,2026-07-22T10:26:10.365Z
+pay_f944b9217f462ecf,usr_b2cf952da7f333b3,143.60,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-22T11:05:48.162Z,2026-07-22T11:05:48.162Z
+pay_c474e8563bdcf0ac,usr_821d138ff785cd0d,300.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9762,succeeded,,2026-07-22T13:15:35.433Z,2026-07-22T13:16:24.649Z
+pay_c474e8563bdcf0ac,usr_821d138ff785cd0d,300.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9762,succeeded,,2026-07-22T13:15:35.433Z,2026-07-22T13:16:24.649Z
+pay_50f317b67530fd28,usr_781021a1aec0df66,181.36,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,2536,succeeded,,2026-07-22T13:19:32.558Z,2026-07-22T13:20:40.134Z
+pay_f944b9217f462ecf,usr_b2cf952da7f333b3,143.60,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,, succeeded,,2026-07-22T11:05:48.162Z,2026-07-22T14:50:43.311Z
+pay_14f2dbc0a5f6a93f,usr_590bc72d1b60a402,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-22T14:51:49.565Z,2026-07-22T14:51:49.565Z
+pay_987bbab9a5ff7f8f,usr_f8d4866f599a20f1,836.56,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9947,pending,,2026-07-22T17:02:18.787Z,2026-07-22T17:02:18.787Z
+pay_987bbab9a5ff7f8f,usr_f8d4866f599a20f1,836.56,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,9947,succeeded,,2026-07-22T17:02:18.787Z,2026-07-22T17:02:59.514Z
+pay_541676281ccdd93a,usr_4892111c1bee4909,300.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-22T17:55:37.371Z,2026-07-22T17:55:37.371Z
+pay_4a7dc45861813521,usr_f427b7dab2a1f00f,607.01,4.98,0.00,USD,debit_card,Stripe,TD Bank,bank,6646,pending,,2026-07-22T18:48:22.205Z,2026-07-22T18:48:22.205Z
+pay_4a7dc45861813521,usr_f427b7dab2a1f00f,607.01,4.98,0.00,USD,debit_card,Stripe,TD Bank,bank,6646,Succeeded,,2026-07-22T18:48:22.205Z,2026-07-22T18:49:39.907Z
+pay_6fe0b269d1ab28e4,usr_419c07f3840de63d,173.36,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,5546,pending,,2026-07-22T19:09:57.284Z,2026-07-22T19:09:57.284Z
+pay_6fe0b269d1ab28e4,usr_419c07f3840de63d,173.36,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,5546,succeeded,,2026-07-22T19:09:57.284Z,2026-07-22T19:11:10.051Z
+pay_ca20c56d658944f3,usr_1841d873634d6e09,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,2902,pending,,2026-07-22T19:36:30.761Z,2026-07-22T19:36:30.761Z
+pay_ca20c56d658944f3,usr_1841d873634d6e09,250.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,2902,succeeded,,2026-07-22T19:36:30.761Z,2026-07-22T19:37:15.132Z
+pay_4675028211947c28,usr_9082140aed00e657,50.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,3507,succeeded,,2026-07-22 20:01:04,2026-07-22T20:01:53.818Z
+pay_298eb420306016d3,usr_d355441e3e3f9b1e,700.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-22T20:14:48.815Z,2026-07-22T20:14:48.815Z
+pay_e7eee44ff639bd75,usr_d294100f823ca34a,841.56,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,2958,pending,,2026-07-22T20:32:57.428Z,2026-07-22T20:32:57.428Z
+pay_e7eee44ff639bd75,usr_d294100f823ca34a,841.56,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,2958,succeeded,,2026-07-22T20:32:57.428Z,2026-07-22T20:33:56.115Z
+pay_4e52bd17d217ca52,usr_2a983090831fd302,457.63,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-22T20:58:06.876Z,2026-07-22T20:58:06.876Z
+pay_4daa1b3be283ac0b,usr_07bf1bb884933b3d,500.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-20T21:20:14.311Z,2026-07-22T21:20:14.311Z
+pay_772362991856be1a,usr_f601e005c4c4f69f,791.29,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,0200,succeeded,,2026-07-22T22:54:52.320Z,2026-07-22T22:55:40.870Z
+pay_b1b903c20932ceeb,usr_48d9548ec87ce81d,350.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-22T23:16:47.185Z,2026-07-22T23:16:47.185Z
+pay_2e6b9efef8d47fee,usr_6edaba8c6789e7d0,405.58,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-23T00:00:36.297Z,2026-07-23T00:00:36.297Z
+pay_040e36f8d0d89d25,usr_c63be21f836da569,300.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-22T03:17:32.295Z,2026-07-23T00:35:47.833Z
+pay_2fc97511e6c5b05e,usr_39185b72d1c1f266,100.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,0376,pending,,2026-07-23T01:18:23.682Z,2026-07-23T01:18:23.682Z
+pay_2fc97511e6c5b05e,usr_39185b72d1c1f266,100.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,0376,failed,card_declined,2026-07-23T01:18:23.682Z,2026-07-23T01:18:40.048Z
+pay_9e1fe8077e30ac5a,usr_07d7a39309cf1063,470.40,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,Succeeded,,2026-07-22T07:49:58.691Z,2026-07-23T01:29:33.166Z
+pay_93fd5f0f8417c076,usr_ce151855f0588da7,1650.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,9099,succeeded,,2026-07-23T01:49:47.667Z,2026-07-23T01:50:44.867Z
+pay_4e52bd17d217ca52,usr_2a983090831fd302,457.63,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-22T20:58:06.876Z,2026-07-23T01:50:51.673Z
+pay_4b4dac396c11a948,usr_3f203c2279477aa8,200.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5243,succeeded,,2026-07-23T02:34:54.424Z,2026-07-23T02:35:46.294Z
+pay_cb78e2d0184d82f6,usr_931c2818f61c1661,550.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8996,succeeded,,2026-07-23T04:43:33.236Z,2026-07-23T04:44:51.048Z
+pay_ecb99ec733072949,usr_466772ce204e178c,450.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9919,succeeded,,2026-07-23T05:07:30.768Z,2026-07-23T05:07:35.141Z
+pay_ecb99ec733072949,usr_466772ce204e178c,450.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9919,succeeded,,2026-07-23T05:07:30.768Z,2026-07-23T05:07:35.141Z
+pay_8c568252d2bdc99a,usr_26ecd1dcb75168f6,1000.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-23T06:08:05.839Z,2026-07-23T06:08:05.839Z
+pay_14f2dbc0a5f6a93f,usr_590bc72d1b60a402,450.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-22T14:51:49.565Z,2026-07-23T06:13:25.616Z
+pay_b1b903c20932ceeb,usr_48d9548ec87ce81d,350.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-22T23:16:47.185Z,2026-07-23T06:19:49.727Z
+pay_a5f83bd17fd9e08c,usr_d61b4a7d4c41c603,350.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-23T08:18:38.682Z,2026-07-23T08:18:38.682Z
+pay_36f90fac5577ab65,usr_cd85334734579c7f,200.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-22T05:31:39.201Z,2026-07-23T09:14:25.051Z
+pay_530b4200db6835ba,usr_01b8d47e7a5f1d32,50.00,0.00,3.98,USD,cash,PayNearMe,Walgreens,retailer,,expired,barcode_not_paid,2026-07-21T09:41:56.842Z,2026-07-23T09:41:56.842Z
+pay_e55630717a75e480,usr_5a37a5048d2e304b,150.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-21T11:24:09.113Z,2026-07-23T11:24:09.113Z
+pay_541676281ccdd93a,usr_4892111c1bee4909,300.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-22T17:55:37.371Z,2026-07-23T11:25:10.839Z
+pay_047426a3b04f86c1,usr_6288e5da4d8ddd2d,500.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-23T11:37:22.638Z,2026-07-23T11:37:22.638Z
+pay_f0d3570ac5fd274f,usr_22ffe9fc512e5e8e,646.18,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8042,failed,card_declined,2026-07-23T11:38:12.410Z,2026-07-23T11:39:33.084Z
+pay_8c568252d2bdc99a,usr_26ecd1dcb75168f6,1000.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-23T06:08:05.839Z,2026-07-23T12:02:33.862Z
+pay_884df1bb8c44ef78,usr_306b9fc4028835d6,642.80,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-23 13:13:10,2026-07-23 13:13:10
+pay_4152f557d05faf1a,usr_904fda438d0f24a5,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-23T14:50:00.844Z,2026-07-23T14:50:00.844Z
+pay_e3b04f480babeb10,usr_6ac01a5cda6c59b2,850.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-22T10:26:10.365Z,2026-07-23T15:01:23.838Z
+pay_3249b9272ed65b0e,usr_07feb08e08f07b8a,400.19,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,4843,pending,,2026-07-23T15:32:43.107Z,2026-07-23T15:32:43.107Z
+pay_3249b9272ed65b0e,usr_07feb08e08f07b8a,400.19,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,4843,succeeded,,2026-07-23T15:32:43.107Z,2026-07-23T15:34:12.501Z
+pay_4be8323b229c2bf2,usr_547c903018dd3aea,700.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,5417,succeeded,,2026-07-23T17:10:08.713Z,2026-07-23T17:11:08.262Z
+pay_4152f557d05faf1a,usr_904fda438d0f24a5,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-23T14:50:00.844Z,2026-07-23T17:20:15.639Z
+pay_a743c8585cc9ebad,usr_0c4e00ec5f4a1286,150.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2877,succeeded,,2026-07-23T18:30:21.718Z,2026-07-23T18:30:33.781Z
+pay_dddc55d1790172d3,usr_ebde0a19259a3037,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-23T19:15:27.196Z,2026-07-23T19:15:27.196Z
+pay_c2b4007b177eaf11,usr_936c833405a5330c,184.37,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,2699,pending,,2026-07-23T19:21:39.355Z,2026-07-23T19:21:39.355Z
+pay_c2b4007b177eaf11,usr_936c833405a5330c,184.37,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,2699,succeeded,,2026-07-23T19:21:39.355Z,2026-07-23T19:22:08.057Z
+pay_4fdc9955738c5574,usr_eacb1f6d7549c9f9,150.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,9546,pending,,2026-07-23T19:26:50.541Z,2026-07-23T19:26:50.541Z
+pay_4fdc9955738c5574,usr_eacb1f6d7549c9f9,150.00,0.00,0.00,USD,debit_card,Adyen,Citibank,bank,9546,succeeded,,2026-07-23T19:26:50.541Z,2026-07-23T19:27:37.088Z
+pay_f211c71c43f93ed4,usr_90d70dfb79cc7e5e,465.76,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,3521,pending,,2026-07-23T19:38:42.925Z,2026-07-23T19:38:42.925Z
+pay_f211c71c43f93ed4,usr_90d70dfb79cc7e5e,465.76,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,3521,failed,insufficient_funds,2026-07-23T19:38:42.925Z,2026-07-23T19:38:59.780Z
+pay_36e43f3f824fcc4f,usr_fbe532188cd39b4e,700.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-23T21:47:06.974Z,2026-07-23T21:47:06.974Z
+pay_298eb420306016d3,usr_d355441e3e3f9b1e,700.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-22T20:14:48.815Z,2026-07-23T22:23:16.940Z
+pay_8c6945f61966d6fb,usr_6f24564d9c296b78,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-23T22:48:30.506Z,2026-07-23T22:48:30.506Z
+pay_2a3b3af1cfd7daaf,usr_57116854f0882b40,350.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7983,pending,,2026-07-23T23:04:08.519Z,2026-07-23T23:04:08.519Z
+pay_2a3b3af1cfd7daaf,usr_57116854f0882b40,350.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7983,succeeded,,2026-07-23T23:04:08.519Z,2026-07-23T23:05:32.476Z
+pay_f1476b0d3ca2f973,usr_a87dd098b903b981,"1,750.00",4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0891,succeeded,,2026-07-24T00:13:52.339Z,2026-07-24T00:14:21.463Z
+pay_bd724593bb9aea6d,usr_68dd66fd9fa38f4b,1310.23,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,1450,pending,,2026-07-24T00:17:31.214Z,2026-07-24T00:17:31.214Z
+pay_2e6b9efef8d47fee,usr_6edaba8c6789e7d0,405.58,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-23T00:00:36.297Z,2026-07-24T00:18:49.243Z
+pay_bd724593bb9aea6d,usr_68dd66fd9fa38f4b,1310.23,2.99,0.00,USD,debit_card,Stripe,PNC Bank,bank,1450,succeeded,,2026-07-24T00:17:31.214Z,2026-07-24T00:18:52.179Z
+pay_a5f83bd17fd9e08c,usr_d61b4a7d4c41c603,350.00,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-23T08:18:38.682Z,2026-07-24T00:34:21.802Z
+pay_905d78ed09347129,usr_1fd5c6dd172f2203,200.00,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,3462,succeeded,,2026-07-24T01:06:24.898Z,2026-07-24T01:07:06.261Z
+pay_15ff887eb2ebc3a7,usr_9651224006103d84,284.49,0.00,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-24T01:39:10.781Z,2026-07-24T01:39:10.781Z
+pay_b28ee143751c3d36,usr_4892111c1bee4909,250.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-22T03:28:45.540Z,2026-07-24T03:28:45.540Z
+pay_dee7e0009188949a,usr_1b5982d2462270cb,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,0753,pending,,2026-07-24T04:55:45.309Z,2026-07-24T04:55:45.309Z
+pay_dee7e0009188949a,usr_1b5982d2462270cb,400.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,0753,succeeded,,2026-07-24T04:55:45.309Z,2026-07-24T04:56:16.960Z
+pay_2e9ce9648c502753,usr_3df1e70edbb5d0f9,952.37,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,2832,pending,,2026-07-24T05:31:12.637Z,2026-07-24T05:31:12.637Z
+pay_2e9ce9648c502753,usr_3df1e70edbb5d0f9,952.37,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,2832,succeeded,,2026-07-24T05:31:12.637Z,2026-07-24T05:31:30.314Z
+pay_febd219161e380c2,usr_f6c7a1c1c9e2dec1,651.97,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,9463,pending,,2026-07-24T06:27:58.053Z,2026-07-24T06:27:58.053Z
+pay_febd219161e380c2,usr_f6c7a1c1c9e2dec1,651.97,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,9463,succeeded,,2026-07-24T06:27:58.053Z,2026-07-24T06:28:20.242Z
+pay_808f3e9ad85aa8a8,usr_48f4ef125e9953d2,884.50,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-24T06:53:49.786Z,2026-07-24T06:53:49.786Z
+pay_edc2aa62098e0e11,usr_dbd3e8658f381c01,271.45,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-24T09:52:48.842Z,2026-07-24T09:52:48.842Z
+pay_808f3e9ad85aa8a8,usr_48f4ef125e9953d2,884.50,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-24T06:53:49.786Z,2026-07-24T09:54:37.549Z
+pay_9e58565eb01c1a68,usr_759cde66bacfb3d0,300.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-24T10:17:52.243Z,2026-07-24T10:17:52.243Z
+pay_884df1bb8c44ef78,usr_306b9fc4028835d6,642.80,4.98,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-23 13:13:10,2026-07-24T10:42:22.303Z
+pay_a33aaeadc9969eae,usr_6d8811bad6c3d78f,450.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,5417,succeeded,,2026-07-24T11:26:29.826Z,2026-07-24T11:26:54.734Z
+pay_15ff887eb2ebc3a7,usr_9651224006103d84,284.49,0.00,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded ,,2026-07-24T01:39:10.781Z,2026-07-24T11:32:31.882Z
+pay_36e43f3f824fcc4f,usr_fbe532188cd39b4e,700.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-23T21:47:06.974Z,2026-07-24T14:05:26.556Z
+pay_c34af9d96e76f40c,usr_886766415714fc0b,2000.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,4815,succeeded,,2026-07-24T14:05:19.376Z,2026-07-24T14:06:10.411Z
+pay_f2195b86219932b6,usr_fa8f39237032c8e2,200.00,4.98,0.00,USD,debit_card,Stripe,PNC Bank,bank,0319,pending,,2026-07-24T15:00:49.983Z,2026-07-24T15:00:49.983Z
+pay_f2195b86219932b6,usr_fa8f39237032c8e2,200.00,4.98,0.00,USD,debit_card,Stripe,PNC Bank,bank,0319,succeeded,,2026-07-24T15:00:49.983Z,2026-07-24T15:02:17.533Z
+pay_8742f3280da3980c,usr_e4347d51c1581092,481.45,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,7777,pending,,2026-07-24T16:26:46.487Z,2026-07-24T16:26:46.487Z
+pay_8742f3280da3980c,usr_e4347d51c1581092,481.45,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,7777,succeeded,,2026-07-24T16:26:46.487Z,2026-07-24T16:27:11.851Z
+pay_606ec66865e88d52,usr_ad30c94b4111e681,199.45,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,3156,pending,,2026-07-24T16:45:44.331Z,2026-07-24T16:45:44.331Z
+pay_606ec66865e88d52,usr_ad30c94b4111e681,199.45,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,3156,succeeded,,2026-07-24T16:45:44.331Z,2026-07-24T16:46:12.338Z
+pay_4c65071d823209b1,usr_3fbce063ea467d0d,800.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1479,pending,,2026-07-24T16:48:32.297Z,2026-07-24T16:48:32.297Z
+pay_4c65071d823209b1,usr_3fbce063ea467d0d,800.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1479,succeeded,,2026-07-24T16:48:32.297Z,2026-07-24T16:49:26.365Z
+pay_a3a8404b8a68f297,usr_2d9eb2d25adea2a4,150.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,8064,pending,,2026-07-24T16:57:31.051Z,2026-07-24T16:57:31.051Z
+pay_a3a8404b8a68f297,usr_2d9eb2d25adea2a4,150.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,8064,succeeded,,2026-07-24T16:57:31.051Z,2026-07-24T16:57:55.688Z
+pay_8c6945f61966d6fb,usr_6f24564d9c296b78,200.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-23T22:48:30.506Z,2026-07-24T17:51:01.396Z
+pay_f384102283e795a1,usr_4c24a05367f5ae02,300.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,5121,chargeback,product_not_received,2026-06-20T21:02:40.671Z,2026-07-24T17:54:58.899Z
+pay_0726c4ef44becadb,usr_e61bc863e08ef0a0,271.70,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-24T19:31:25.311Z,2026-07-24T19:31:25.311Z
+pay_9e58565eb01c1a68,usr_759cde66bacfb3d0,300.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-24T10:17:52.243Z,2026-07-24 19:36:36
+pay_211cf7f56035ba37,usr_dba3496ffa323f69,283.04,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0762,pending,,2026-07-24T20:48:45.053Z,2026-07-24T20:48:45.053Z
+pay_211cf7f56035ba37,usr_dba3496ffa323f69,283.04,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0762,succeeded,,2026-07-24T20:48:45.053Z,2026-07-24T20:49:26.989Z
+pay_dddc55d1790172d3,usr_ebde0a19259a3037,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-23T19:15:27.196Z,2026-07-24T20:49:44.056Z
+pay_09437f52f9b463bf,usr_9058e121f2aff86f,830.81,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1320,pending,,2026-07-24T22:38:29.307Z,2026-07-24T22:38:29.307Z
+pay_09437f52f9b463bf,usr_9058e121f2aff86f,830.81,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,1320,succeeded,,2026-07-24T22:38:29.307Z,2026-07-24T22:38:31.845Z
+pay_065de0261e218e87,usr_6772fe9f999bc859,1800.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6361,pending,,2026-07-24T22:41:52.342Z,2026-07-24T22:41:52.342Z
+pay_065de0261e218e87,usr_6772fe9f999bc859,1800.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6361,succeeded,,2026-07-24T22:41:52.342Z,2026-07-24T22:43:09.446Z
+pay_95515cbff7c52327,usr_d457530573b0220d,450.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-24T22:52:28.920Z,2026-07-24T22:52:28.920Z
+pay_0726c4ef44becadb,usr_e61bc863e08ef0a0,271.70,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-24T19:31:25.311Z,2026-07-24T23:43:05.333Z
+pay_fb92065b0ac11473,usr_e29e26e4b5e947ee,357.81,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,6341,failed,card_declined,2026-07-25T00:27:33.892Z,2026-07-25T00:27:40.251Z
+pay_e88436fcb8210612,usr_48555e7890fbd067,513.51,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6792,PENDING,,2026-07-25T02:05:48.402Z,2026-07-25T02:05:48.402Z
+pay_e88436fcb8210612,usr_48555e7890fbd067,513.51,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,6792,succeeded,,2026-07-25T02:05:48.402Z,2026-07-25T02:06:51.587Z
+pay_1d338cad178c92b7,usr_d2d07acf7f1e6dcc,250.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,5351,pending,,2026-07-25T02:37:55.639Z,2026-07-25T02:37:55.639Z
+pay_1d338cad178c92b7,usr_d2d07acf7f1e6dcc,250.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,5351,succeeded,,2026-07-25T02:37:55.639Z,2026-07-25T02:38:02.733Z
+pay_95515cbff7c52327,usr_d457530573b0220d,450.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-24T22:52:28.920Z,2026-07-25T03:00:19.695Z
+pay_edc2aa62098e0e11,usr_dbd3e8658f381c01,271.45,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-24T09:52:48.842Z,2026-07-25T05:07:31.161Z
+pay_31d0947fdf9892e4,usr_f6a646ee8dd7e052,250.00,0.00,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1374,succeeded,,2026-07-25T05:20:32.970Z,2026-07-25T05:20:49.204Z
+pay_814514be5da83f2c,usr_26f05fcffb16e5db,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-25T06:59:30.475Z,2026-07-25T06:59:30.475Z
+pay_f74e68e1f862931c,usr_2b1feecd95c127e6,900.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,5940,succeeded,,2026-07-25T09:57:32.048Z,2026-07-25T09:58:51.848Z
+pay_68d252adaacee213,usr_b781cf4c0339d965,950.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-25T10:42:34.692Z,2026-07-25T10:42:34.692Z
+pay_6f710430e2789a57,usr_386b859410e2a69d,346.76,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-25T11:01:15.080Z,2026-07-25T11:01:15.080Z
+pay_814514be5da83f2c,usr_26f05fcffb16e5db,250.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-25T06:59:30.475Z,2026-07-25T11:36:57.885Z
+pay_047426a3b04f86c1,usr_6288e5da4d8ddd2d,500.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-23T11:37:22.638Z,2026-07-25T11:37:22.638Z
+pay_c03d054ecb11b5e5,usr_7daf8db1d88a2b67,891.13,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-25T12:36:32.827Z,2026-07-25T12:36:32.827Z
+pay_ee9d44e9cb853b7a,usr_015824639d8776a0,600.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-25T12:59:08.008Z,2026-07-25T12:59:08.008Z
+pay_8e83f4c4efc5714c,usr_bc0dd6ed7b122ee5,1450.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0491,pending,,2026-07-25T15:14:00.337Z,2026-07-25T15:14:00.337Z
+pay_8e83f4c4efc5714c,usr_bc0dd6ed7b122ee5,1450.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0491,succeeded,,2026-07-25T15:14:00.337Z,2026-07-25T15:14:15.152Z
+pay_7938f8f640ca868c,usr_ea4d7ed8d04a902a,425.17,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,4033,succeeded,,2026-07-25T17:51:44.465Z,2026-07-25T17:52:40.548Z
+pay_ee9d44e9cb853b7a,usr_015824639d8776a0,600.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-25T12:59:08.008Z,2026-07-25T18:09:37.009Z
+pay_144c17eceb581656,usr_40da438d171d28b0,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-25T18:22:32.535Z,2026-07-25T18:22:32.535Z
+pay_46be89d577b2cb9f,usr_266b4b6db9ec28ff,1388.49,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9411,pending,,2026-07-25T19:33:59.428Z,2026-07-25T19:33:59.428Z
+pay_46be89d577b2cb9f,usr_266b4b6db9ec28ff,1388.49,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9411,pending,,2026-07-25T19:33:59.428Z,2026-07-25T19:33:59.428Z
+pay_46be89d577b2cb9f,usr_266b4b6db9ec28ff,1388.49,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,9411,succeeded,,2026-07-25T19:33:59.428Z,2026-07-25T19:35:15.292Z
+pay_499cc9d6e5e75ed9,usr_5a5a50713fff2063,150.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6676,pending,,2026-07-25T20:18:29.168Z,2026-07-25T20:18:29.168Z
+pay_499cc9d6e5e75ed9,usr_5a5a50713fff2063,150.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6676,succeeded,,2026-07-25T20:18:29.168Z,2026-07-25T20:19:12.512Z
+pay_3a934d2d2fbb9c1e,usr_719186d479706932,217.90,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-25T20:44:50.858Z,2026-07-25T20:44:50.858Z
+pay_4422514c195afc8a,usr_22681c704eb00c3d,544.57,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-25T21:20:45.670Z,2026-07-25T21:20:45.670Z
+pay_4422514c195afc8a,usr_22681c704eb00c3d,544.57,4.98,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-25T21:20:45.670Z,2026-07-25T22:15:58.753Z
+pay_3b064b2b1f6266e8,usr_6961929e546e035a,300.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,5296,pending,,2026-07-25T22:41:42.130Z,2026-07-25T22:41:42.130Z
+pay_3b064b2b1f6266e8,usr_6961929e546e035a,300.00,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,5296,succeeded,,2026-07-25T22:41:42.130Z,2026-07-25T22:42:17.794Z
+pay_c343846cb286aac4,usr_dbd30aec0b461173,88.14,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,9058,pending,,2026-07-26T01:51:26.765Z,2026-07-26T01:51:26.765Z
+pay_c343846cb286aac4,usr_dbd30aec0b461173,88.14,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,9058,failed,risk_blocked,2026-07-26T01:51:26.765Z,2026-07-26T01:52:29.012Z
+pay_8a002152ab530ed6,usr_df9d39102dbb45bd,200.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-26T02:47:21.729Z,2026-07-26T02:47:21.729Z
+pay_8a002152ab530ed6,usr_df9d39102dbb45bd,200.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-26T02:47:21.729Z,2026-07-26T03:45:37.686Z
+pay_e457c5343aee1690,usr_b0309415ef21db2c,950.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,6218,pending,,2026-07-26T04:14:59.292Z,2026-07-26T04:14:59.292Z
+pay_e457c5343aee1690,usr_b0309415ef21db2c,950.00,0.00,0.00,USD,debit_card,Stripe,Bank of America,bank,6218,succeeded,,2026-07-26T04:14:59.292Z,2026-07-26T04:16:05.204Z
+pay_6f710430e2789a57,usr_386b859410e2a69d,346.76,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-25T11:01:15.080Z,2026-07-26T04:54:50.173Z
+pay_8231d9a0f9aacae2,usr_dd58631b052226b9,500.00,2.99,0.00,USD,debit_card,Stripe,Citibank,bank,5004,succeeded,,2026-07-26 05:24:20,2026-07-26T05:25:32.935Z
+pay_4445fe31b032bd97,usr_15dc37a77a43475b,750.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5297,pending,,2026-07-26T05:57:25.176Z,2026-07-26T05:57:25.176Z
+pay_4445fe31b032bd97,usr_15dc37a77a43475b,750.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,5297,succeeded,,2026-07-26T05:57:25.176Z,2026-07-26T05:57:51.947Z
+pay_68d252adaacee213,usr_b781cf4c0339d965,950.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-25T10:42:34.692Z,2026-07-26T08:19:21.565Z
+pay_ae065c270d5c9c87,usr_c77278074524a8de,193.66,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-26T08:46:56.956Z,2026-07-26T08:46:56.956Z
+pay_c496df8ce198ef58,usr_841145315f1f4fae,1315.28,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9600,pending,,2026-07-26T10:53:24.788Z,2026-07-26T10:53:24.788Z
+pay_c496df8ce198ef58,usr_841145315f1f4fae,1315.28,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9600,succeeded,,2026-07-26T10:53:24.788Z,2026-07-26T10:53:47.188Z
+pay_0d18a575301ffe69,usr_92be07c4e784cabe,196.27,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,0722,pending,,2026-07-26T11:39:47.210Z,2026-07-26T11:39:47.210Z
+pay_0d18a575301ffe69,usr_92be07c4e784cabe,196.27,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,0722,succeeded,,2026-07-26T11:39:47.210Z,2026-07-26T11:40:27.123Z
+pay_3a445697f87ba5bc,usr_6919732fe88288ee,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-26T15:57:56.512Z,2026-07-26T15:57:56.512Z
+pay_d1a3834f407eb79c,usr_283ef39c51b32aa5,615.92,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7903,pending,,2026-07-26T17:05:30.118Z,2026-07-26T17:05:30.118Z
+pay_d1a3834f407eb79c,usr_283ef39c51b32aa5,615.92,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,7903,succeeded,,2026-07-26T17:05:30.118Z,2026-07-26T17:05:59.752Z
+pay_3a445697f87ba5bc,usr_6919732fe88288ee,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-26T15:57:56.512Z,2026-07-26T17:32:23.135Z
+pay_56afb340b8014d28,usr_4eab6bdd7fb82b3e,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-26T20:39:47.989Z,2026-07-26T20:39:47.989Z
+pay_e6df306995e438fd,usr_e8877987c6e7b054,305.39,0.00,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4147,pending,,2026-07-26T21:24:23.859Z,2026-07-26T21:24:23.859Z
+pay_e6df306995e438fd,usr_e8877987c6e7b054,305.39,0.00,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4147,succeeded,,2026-07-26T21:24:23.859Z,2026-07-26T21:25:26.512Z
+pay_a2f6eb855351c13f,usr_6961929e546e035a,276.59,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,5296,succeeded,,2026-07-26T23:24:20.190Z,2026-07-26T23:25:35.337Z
+pay_568827ba2c52e5da,usr_5408906f1587d203,200.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9983,succeeded,,2026-07-27T00:06:35.040Z,2026-07-27T00:07:37.393Z
+pay_0507918771fc62a4,usr_ed88bddae8180064,92.50,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6116,pending,,2026-07-27T00:50:24.999Z,2026-07-27T00:50:24.999Z
+pay_0507918771fc62a4,usr_ed88bddae8180064,92.50,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6116,succeeded,,2026-07-27T00:50:24.999Z,2026-07-27T00:50:54.705Z
+pay_35ee8e4d108affe9,usr_df9d39102dbb45bd,196.45,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-27T00:51:36.118Z,2026-07-27T00:51:36.118Z
+pay_655d896ac4c78e4b,usr_600715fffaad409b,200.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2913,pending ,,2026-07-27T01:07:05.380Z,2026-07-27T01:07:05.380Z
+pay_655d896ac4c78e4b,usr_600715fffaad409b,200.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2913,succeeded,,2026-07-27T01:07:05.380Z,2026-07-27T01:07:10.785Z
+pay_a3ba7aa08d316410,usr_4b1fa0286cf6c879,1000.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-27T01:44:10.007Z,2026-07-27T01:44:10.007Z
+pay_fd61615c1603ef10,usr_edcd7411ef85b1e2,105.93,0.00,0.00,USD,debit_card,Stripe,Citibank,bank,6367,pending,,2026-07-27T02:48:22.468Z,2026-07-27T02:48:22.468Z
+pay_fd61615c1603ef10,usr_edcd7411ef85b1e2,105.93,0.00,0.00,USD,debit_card,Stripe,Citibank,bank,6367,succeeded,,2026-07-27T02:48:22.468Z,2026-07-27T02:49:11.843Z
+pay_444a15eb786c6829,usr_a6a148c3abd4b9a0,400.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-27T04:16:51.260Z,2026-07-27T04:16:51.260Z
+pay_ae065c270d5c9c87,usr_c77278074524a8de,193.66,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-26T08:46:56.956Z,2026-07-27T04:27:41.887Z
+pay_9819c174cefeda10,usr_936c833405a5330c,150.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,2699,failed,card_declined,2026-07-27T06:08:12.561Z,2026-07-27T06:08:27.136Z
+pay_8d9eb7c9d9aecfc4,usr_7580e4e959450186,294.72,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-27T07:45:29.106Z,2026-07-27T07:45:29.106Z
+pay_710bfecd2d8b21e5,usr_be8dee1eabfd9148,850.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,9393,pending,,2026-07-27T08:15:43.166Z,2026-07-27T08:15:43.166Z
+pay_710bfecd2d8b21e5,usr_be8dee1eabfd9148,850.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,9393,failed,insufficient_funds,2026-07-27T08:15:43.166Z,2026-07-27T08:17:05.646Z
+pay_7672ba21643697b3,usr_3df76a69bc45144a,300.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,1285,pending,,2026-07-27T08:24:12.406Z,2026-07-27T08:24:12.406Z
+pay_7672ba21643697b3,usr_3df76a69bc45144a,300.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,1285,succeeded,,2026-07-27T08:24:12.406Z,2026-07-27T08:25:17.639Z
+pay_fe7d430fd3f5cd08,usr_85e810a228eda191,528.49,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7117,pending,,2026-07-27T08:29:22.689Z,2026-07-27T08:29:22.689Z
+pay_fe7d430fd3f5cd08,usr_85e810a228eda191,528.49,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7117,succeeded,,2026-07-27T08:29:22.689Z,2026-07-27T08:30:28.958Z
+pay_6267b3385a2833fd,usr_60df109ac0ff979e,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5837,pending,,2026-07-27T09:23:16.812Z,2026-07-27T09:23:16.812Z
+pay_6267b3385a2833fd,usr_60df109ac0ff979e,200.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5837,succeeded,,2026-07-27T09:23:16.812Z,2026-07-27T09:24:07.249Z
+pay_bde8a7a9d938ae6f,usr_230bc715a56b22a2,250.00,0.00,0.00,USD,debit_card,Stripe,TD Bank,bank,0579,succeeded,,2026-07-27T09:43:40.102Z,2026-07-27T09:43:59.967Z
+pay_73c2ade2d0e43fb7,usr_22ffe9fc512e5e8e,1446.55,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,8042,succeeded,,2026-07-27T09:57:38.812Z,2026-07-27T09:58:11.820Z
+pay_d5e23e811d7e70fb,usr_81d2645b8f8072b9,330.41,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-27T10:05:28.540Z,2026-07-27T10:05:28.540Z
+pay_4fe00b82d78b4efe,usr_b6b4d8e74421c1e1,478.70,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,pending,,2026-07-27T11:00:42.158Z,2026-07-27T11:00:42.158Z
+pay_5f4b1a434463d207,usr_ae1b545097330a45,900.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9734,pending,,2026-07-27T11:38:00.887Z,2026-07-27T11:38:00.887Z
+pay_5f4b1a434463d207,usr_ae1b545097330a45,900.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,9734,succeeded,,2026-07-27T11:38:00.887Z,2026-07-27T11:39:28.551Z
+pay_65cb3d888c718045,usr_bee1dc6577a319c6,1565.53,4.98,0.00,USD,debit_card,Adyen,Bank of America,bank,8893,succeeded,,2026-07-27T11:58:18.996Z,2026-07-27T11:59:21.556Z
+pay_c03d054ecb11b5e5,usr_7daf8db1d88a2b67,891.13,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,expired,barcode_not_paid,2026-07-25T12:36:32.827Z,2026-07-27T12:36:32.827Z
+pay_e1207d8710da6af6,usr_4f9c78bf010d583f,400.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,5119,pending ,,2026-07-27T12:39:23.573Z,2026-07-27T12:39:23.573Z
+pay_e1207d8710da6af6,usr_4f9c78bf010d583f,400.00,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,5119,succeeded,,2026-07-27T12:39:23.573Z,2026-07-27 12:40:29
+pay_aaa9bb86814f74c4,usr_fb8c799f836fe96e,306.54,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-27T15:51:24.740Z,2026-07-27T15:51:24.740Z
+pay_4d9999d79ce74527,usr_26cc18ad032fc3b2,650.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9835,pending,,2026-07-27T17:20:31.404Z,2026-07-27T17:20:31.404Z
+pay_4d9999d79ce74527,usr_26cc18ad032fc3b2,650.00,2.99,0.00,USD,debit_card,Adyen,Capital One,bank,9835,succeeded,,2026-07-27T17:20:31.404Z,2026-07-27 17:21:09
+pay_144c17eceb581656,usr_40da438d171d28b0,200.00,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-25T18:22:32.535Z,2026-07-27T18:22:32.535Z
+pay_45ba0ce0bd9570ec,usr_88f7f09757f2a45f,333.23,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,4827,pending,,2026-07-27T18:42:47.983Z,2026-07-27T18:42:47.983Z
+pay_2dc7cf36599eb613,usr_fd508f47652a176a,150.45,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-27T18:43:32.933Z,2026-07-27T18:43:32.933Z
+pay_45ba0ce0bd9570ec,usr_88f7f09757f2a45f,333.23,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,4827,succeeded ,,2026-07-27T18:42:47.983Z,2026-07-27T18:44:02.989Z
+pay_fc661e7d3f99efd4,usr_aa3cb8dd3e34cde1,149.63,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,7962,succeeded,,2026-07-27T19:33:55.266Z,2026-07-27T19:34:30.981Z
+pay_29f3fb7583fabcbf,usr_cac29f1dc72c3764,"1,000.00",2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-27T20:38:24.112Z,2026-07-27T20:38:24.112Z
+pay_3a934d2d2fbb9c1e,usr_719186d479706932,217.90,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-25T20:44:50.858Z,2026-07-27 20:44:50
+pay_46963d22d0826460,usr_297099127d2e11bd,200.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-27T20:45:41.744Z,2026-07-27T20:45:41.744Z
+pay_b0776108b6936141,usr_d0b6eada5b6b8e34,1450.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,0747,succeeded,,2026-07-27T21:42:44.392Z,2026-07-27T21:42:49.754Z
+pay_acd042caf0eb3878,usr_53d01efa248b7d4f,850.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,8852,pending,,2026-07-27T22:30:16.501Z,2026-07-27T22:30:16.501Z
+pay_acd042caf0eb3878,usr_53d01efa248b7d4f,850.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,8852,succeeded,,2026-07-27T22:30:16.501Z,2026-07-27T22:30:19.053Z
+pay_acd042caf0eb3878,usr_53d01efa248b7d4f,850.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,8852,succeeded,,2026-07-27T22:30:16.501Z,2026-07-27T22:30:19.053Z
+pay_86814e8e9f4ff25b,usr_e5c1c54bb73f256b,474.14,4.98,0.00,USD,debit_card,Stripe,U.S. Bank,bank,4542,succeeded,,2026-07-27T22:33:23.517Z,2026-07-27T22:33:51.115Z
+pay_4fe00b82d78b4efe,usr_b6b4d8e74421c1e1,478.70,2.99,3.98,USD,cash,PayNearMe,ACE Cash Express,retailer,,succeeded,,2026-07-27T11:00:42.158Z,2026-07-27T23:09:18.911Z
+pay_b1f059e55d1bb192,usr_6d1040a014f89da1,1496.86,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,6636,pending,,2026-07-27T23:13:25.904Z,2026-07-27T23:13:25.904Z
+pay_b1f059e55d1bb192,usr_6d1040a014f89da1,1496.86,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,6636,succeeded,,2026-07-27T23:13:25.904Z,2026-07-27T23:13:35.809Z
+pay_bde8a7a9d938ae6f,usr_230bc715a56b22a2,250.00,0.00,0.00,USD,debit_card,Stripe,TD Bank,bank,0579,refunded,customer_request,2026-07-27T09:43:40.102Z,2026-07-27T23:19:43.234Z
+pay_35ee8e4d108affe9,usr_df9d39102dbb45bd,196.45,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-27T00:51:36.118Z,2026-07-27T23:47:52.844Z
+pay_576e2d1a3509534d,usr_d5b4c4a4f9d7b9ad,344.60,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-28T00:00:15.723Z,2026-07-28T00:00:15.723Z
+pay_1aeedf406e17b9bb,usr_01a1f7da417e9ecb,850.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-28T00:25:15.559Z,2026-07-28T00:25:15.559Z
+pay_fb607cf6c0365e96,usr_10416cbc534234cf,484.29,4.98,0.00,USD,debit_card,Adyen,TD Bank,bank,8004,succeeded,,2026-07-28T00:44:05.034Z,2026-07-28T00:45:12.850Z
+pay_0bfd0198b8471cc6,usr_c02ac52a582f5c69,100.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-28T02:04:27.434Z,2026-07-28T02:04:27.434Z
+pay_d17d30521ef877b6,usr_8a9a727fb2a12a55,750.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2246,pending,,2026-07-28T02:41:39.328Z,2026-07-28T02:41:39.328Z
+pay_d17d30521ef877b6,usr_8a9a727fb2a12a55,750.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,2246,succeeded,,2026-07-28T02:41:39.328Z,2026-07-28T02:42:09.507Z
+pay_d6892fd1ac547ab7,usr_b8bbcc542fc068d2,750.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4533,pending,,2026-07-28T02:42:47.189Z,2026-07-28T02:42:47.189Z
+pay_d6892fd1ac547ab7,usr_b8bbcc542fc068d2,750.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4533,pending,,2026-07-28T02:42:47.189Z,2026-07-28T02:42:47.189Z
+pay_d6892fd1ac547ab7,usr_b8bbcc542fc068d2,750.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4533,succeeded,,2026-07-28T02:42:47.189Z,2026-07-28T02:44:01.787Z
+pay_da4df933bf3603f0,usr_b2092e71208fa98c,170.07,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5496,succeeded,,2026-07-28T05:37:47.955Z,2026-07-28T05:38:12.157Z
+pay_1aeedf406e17b9bb,usr_01a1f7da417e9ecb,850.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-28T00:25:15.559Z,2026-07-28T08:05:16.249Z
+pay_0bfd0198b8471cc6,usr_c02ac52a582f5c69,100.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-28T02:04:27.434Z,2026-07-28T09:25:26.239Z
+pay_0bfd0198b8471cc6,usr_c02ac52a582f5c69,100.00,0.00,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-28T02:04:27.434Z,2026-07-28T09:25:26.239Z
+pay_0fcd2f23331b8348,usr_594c100c76a5dfbc,950.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-28T09:31:49.531Z,2026-07-28T09:31:49.531Z
+pay_eefcb56b8eb2e27f,usr_9b8cfe0eab38ca29,269.03,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,7190,succeeded,,2026-07-28T10:27:02.072Z,2026-07-28T10:27:07.651Z
+pay_30d92e1111aba3e5,usr_518da4887d5704df,250.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,7505,pending,,2026-07-28T10:37:28.908Z,2026-07-28T10:37:28.908Z
+pay_fabe7df53aba4634,usr_6ac01a5cda6c59b2,850.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-28T10:38:36.794Z,2026-07-28T10:38:36.794Z
+pay_30d92e1111aba3e5,usr_518da4887d5704df,250.00,0.00,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,7505,succeeded,,2026-07-28T10:37:28.908Z,2026-07-28T10:38:48.990Z
+pay_8d9eb7c9d9aecfc4,usr_7580e4e959450186,294.72,0.00,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-27T07:45:29.106Z,2026-07-28T10:48:30.509Z
+pay_aaa9bb86814f74c4,usr_fb8c799f836fe96e,306.54,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-27T15:51:24.740Z,2026-07-28T12:41:28.216Z
+pay_179bfeb4f4d41ae1,usr_09b6258c931c387a,150.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,pending,,2026-07-28T14:29:46.841Z,2026-07-28T14:29:46.841Z
+pay_46963d22d0826460,usr_297099127d2e11bd,200.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-27T20:45:41.744Z,2026-07-28T15:08:59.293Z
+pay_0fcd2f23331b8348,usr_594c100c76a5dfbc,950.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-28T09:31:49.531Z,2026-07-28T17:59:10.952Z
+pay_2e01c82ec099e15e,usr_a0e5ea709985f511,540.36,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1054,succeeded,,2026-07-28T18:44:26.278Z,2026-07-28T18:45:20.229Z
+pay_4ce6f80e1b497f2c,usr_f84763a5dc755ad2,1100.00,2.99,0.00,USD,debit_card,Adyen,Truist,bank,6879,pending,,2026-07-28T19:58:42.814Z,2026-07-28T19:58:42.814Z
+pay_c69543139cc16896,usr_eccb853bcd227ff2,402.37,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,4806,pending,,2026-07-28T19:59:00.015Z,2026-07-28T19:59:00.015Z
+pay_4ce6f80e1b497f2c,usr_f84763a5dc755ad2,1100.00,2.99,0.00,USD,debit_card,Adyen,Truist,bank,6879,succeeded,,2026-07-28T19:58:42.814Z,2026-07-28T19:59:24.593Z
+pay_c69543139cc16896,usr_eccb853bcd227ff2,402.37,0.00,0.00,USD,debit_card,Adyen,Chime,neobank,4806,succeeded,,2026-07-28T19:59:00.015Z,2026-07-28T19:59:45.608Z
+pay_0fcd2f23331b8348,usr_594c100c76a5dfbc,950.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,refunded,customer_request,2026-07-28T09:31:49.531Z,2026-07-28T20:20:06.424Z
+pay_0fcd2f23331b8348,usr_594c100c76a5dfbc,950.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,refunded,customer_request,2026-07-28T09:31:49.531Z,2026-07-28T20:20:06.424Z
+pay_f7e363acb333a4e0,usr_82ff1dad2310c9fb,736.48,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6316,pending,,2026-07-28T20:35:44.314Z,2026-07-28T20:35:44.314Z
+pay_f7e363acb333a4e0,usr_82ff1dad2310c9fb,736.48,0.00,0.00,USD,debit_card,Stripe,Wells Fargo,bank,6316,succeeded,,2026-07-28T20:35:44.314Z,2026-07-28T20:36:57.116Z
+pay_56afb340b8014d28,usr_4eab6bdd7fb82b3e,150.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-26T20:39:47.989Z,2026-07-28T20:39:47.989Z
+pay_2dc7cf36599eb613,usr_fd508f47652a176a,150.45,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-27T18:43:32.933Z,2026-07-28T20:42:19.320Z
+pay_576e2d1a3509534d,usr_d5b4c4a4f9d7b9ad,344.60,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-28T00:00:15.723Z,2026-07-28T20:47:19.073Z
+pay_bae199f866ba627e,usr_70972046fa7cf893,1350.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3876,pending,,2026-07-28T21:35:42.214Z,2026-07-28T21:35:42.214Z
+pay_bae199f866ba627e,usr_70972046fa7cf893,1350.00,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,3876,succeeded,,2026-07-28T21:35:42.214Z,2026-07-28T21:36:09.927Z
+pay_e2bcb8da84feb9db,usr_6b52f93c2321e64e,611.05,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6266,pending,,2026-07-28T22:26:28.336Z,2026-07-28T22:26:28.336Z
+pay_e2bcb8da84feb9db,usr_6b52f93c2321e64e,611.05,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,6266,succeeded,,2026-07-28T22:26:28.336Z,2026-07-28T22:26:57.641Z
+pay_dfc8f613b311ea70,usr_2263ad62b096a5b5,550.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending ,,2026-07-28T22:46:41.180Z,2026-07-28T22:46:41.180Z
+pay_29f3fb7583fabcbf,usr_cac29f1dc72c3764,"1,000.00",2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-27T20:38:24.112Z,2026-07-28T22:52:01.475Z
+pay_92548bedbf889eb9,usr_32ffe2944d57d880,350.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-28T23:41:04.669Z,2026-07-28T23:41:04.669Z
+pay_302d2f266b67a3aa,usr_8ad303b1d77dd689,682.13,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-29T00:13:25.098Z,2026-07-29T00:13:25.098Z
+pay_376fd67fad50a229,usr_bdecfa9d84b0249a,400.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1212,pending,,2026-07-29T01:10:15.870Z,2026-07-29T01:10:15.870Z
+pay_376fd67fad50a229,usr_bdecfa9d84b0249a,400.00,4.98,0.00,USD,debit_card,Stripe,Wells Fargo,bank,1212,succeeded,,2026-07-29T01:10:15.870Z,2026-07-29T01:10:56.712Z
+pay_9f19351363d3b9cb,usr_29e6c348a47d0a49,989.54,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,4166,pending,,2026-07-29T01:21:07.661Z,2026-07-29T01:21:07.661Z
+pay_9f19351363d3b9cb,usr_29e6c348a47d0a49,989.54,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,4166,succeeded,,2026-07-29T01:21:07.661Z,2026-07-29T01:21:11.533Z
+pay_a3ba7aa08d316410,usr_4b1fa0286cf6c879,1000.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,expired,barcode_not_paid,2026-07-27T01:44:10.007Z,2026-07-29T01:44:10.007Z
+pay_48b74a2b7142b92d,usr_0852a95e9015144f,571.83,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-29T02:15:29.219Z,2026-07-29T02:15:29.219Z
+pay_ed88186f65a42099,usr_f91bad400b022156,200.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-29T02:50:49.019Z,2026-07-29T02:50:49.019Z
+pay_444a15eb786c6829,usr_a6a148c3abd4b9a0,400.00,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-27T04:16:51.260Z,2026-07-29T04:16:51.260Z
+pay_c583775d7ee0876e,usr_953599c6c379b61d,150.00,0.00,0.00,USD,debit_card,Stripe,PNC Bank,bank,0015,pending,,2026-07-29T08:33:36.170Z,2026-07-29T08:33:36.170Z
+pay_c583775d7ee0876e,usr_953599c6c379b61d,150.00,0.00,0.00,USD,debit_card,Stripe,PNC Bank,bank,0015,succeeded,,2026-07-29T08:33:36.170Z,2026-07-29T08:34:48.558Z
+pay_d5e23e811d7e70fb,usr_81d2645b8f8072b9,330.41,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,expired,barcode_not_paid,2026-07-27T10:05:28.540Z,2026-07-29T10:05:28.540Z
+pay_179bfeb4f4d41ae1,usr_09b6258c931c387a,150.00,2.99,3.98,USD,cash,PayNearMe,Dollar General,retailer,,succeeded,,2026-07-28T14:29:46.841Z,2026-07-29T10:20:29.684Z
+pay_48b74a2b7142b92d,usr_0852a95e9015144f,571.83,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-29T02:15:29.219Z,2026-07-29T11:56:32.097Z
+pay_333cc41a230124fc,usr_33304e33deb0de7d,183.03,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,7454,pending,,2026-07-29T12:32:18.937Z,2026-07-29T12:32:18.937Z
+pay_333cc41a230124fc,usr_33304e33deb0de7d,183.03,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,7454,succeeded,,2026-07-29T12:32:18.937Z,2026-07-29T12:32:42.635Z
+pay_331255403666df96,usr_79705db63b97810d,463.24,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,7846,succeeded,,2026-07-29T13:41:13.728Z,2026-07-29T13:42:25.837Z
+pay_fabe7df53aba4634,usr_6ac01a5cda6c59b2,850.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-28T10:38:36.794Z,2026-07-29T14:16:27.042Z
+pay_302d2f266b67a3aa,usr_8ad303b1d77dd689,682.13,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-29T00:13:25.098Z,2026-07-29T14:39:51.446Z
+pay_23d56b4530facda8,usr_1e18446ba3e910bf,184.24,0.00,0.00,USD,debit_card,Adyen,Bank of America,bank,0030,succeeded,,2026-07-29T16:47:34.088Z,2026-07-29T16:48:01.531Z
+pay_9e18a92058923edb,usr_5f8b00f7b92eefe0,650.00,4.98,0.00,USD,debit_card,Adyen,PNC Bank,bank,8306,succeeded,,2026-07-29T16:59:38.847Z,2026-07-29T17:00:05.962Z
+pay_dfc8f613b311ea70,usr_2263ad62b096a5b5,550.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-28T22:46:41.180Z,2026-07-29T17:15:53.705Z
+pay_4e060eb69478f4e7,usr_17d821b8bb93cd40,946.27,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,3470,succeeded,,2026-07-29T18:19:17.014Z,2026-07-29T18:20:07.206Z
+pay_ed88186f65a42099,usr_f91bad400b022156,200.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-29T02:50:49.019Z,2026-07-29T18:46:56.220Z
+pay_ab1e7c580c6bd89f,usr_03848bb1b073366e,150.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-29T19:12:41.738Z,2026-07-29T19:12:41.738Z
+pay_24036bce03760eb6,usr_de943130b514db32,334.68,2.99,0.00,USD,debit_card,Stripe,U.S. Bank,bank,9628,succeeded,,2026-07-29T21:06:11.859Z,2026-07-29T21:07:04.540Z
+pay_cb59fbbd00911403,usr_022456cb3e9800fb,250.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,9137,Failed,risk_blocked,2026-07-29T21:38:13.753Z,2026-07-29T21:39:01.236Z
+pay_ce4cb1a5522748a7,usr_1e14fe0431208bde,219.90,2.99,0.00,USD,debit_card,Stripe,Truist,bank,3409,failed,insufficient_funds,2026-07-29T21:46:16.418Z,2026-07-29T21:46:45.147Z
+pay_a1f4c944c6c7b718,usr_21ee0f6c408669bb,150.00,0.00,0.00,USD,debit_card,Stripe,Citibank,bank,2476,succeeded,,2026-07-29T22:08:50.766Z,2026-07-29T22:09:51.205Z
+pay_0227810cdfa76b70,usr_34879e411a9c672a,1000.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-29T22:39:43.690Z,2026-07-29T22:39:43.690Z
+pay_2971a8c595162cb8,usr_bbdf95735d911692,250.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-30T02:44:24.327Z,2026-07-30T02:44:24.327Z
+pay_8ced32dfc0153141,usr_47a4e115aeca599c,200.00,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-30T03:03:34.896Z,2026-07-30T03:03:34.896Z
+pay_940aaf55ce798090,usr_8cdc718dc4057420,350.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-30T03:23:44.353Z,2026-07-30T03:23:44.353Z
+pay_007e8acb11231c63,usr_3a1d8916ba9b9531,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-30T06:05:22.688Z,2026-07-30T06:05:22.688Z
+pay_cf9dedbb22eb4db2,usr_5cf9d973f929eda0,450.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-30T08:04:05.458Z,2026-07-30T08:04:05.458Z
+pay_f1b04350d59896ac,usr_438806fe68f06068,263.01,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5377,succeeded,,2026-07-30T10:28:53.953Z,2026-07-30 10:30:06
+pay_3cfb96d4654a575c,usr_11bbc208f76afb78,389.08,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-30T10:41:18.032Z,2026-07-30T10:41:18.032Z
+pay_2971a8c595162cb8,usr_bbdf95735d911692,250.00,4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-30T02:44:24.327Z,2026-07-30T11:00:03.417Z
+pay_cf9dedbb22eb4db2,usr_5cf9d973f929eda0,450.00,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-30T08:04:05.458Z,2026-07-30T12:01:08.689Z
+pay_6ada32f08874da31,usr_5d1ddcb7a5a7e280,256.87,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-30T12:14:02.340Z,2026-07-30T12:14:02.340Z
+pay_4473c9ff1cce5680,usr_a87dd098b903b981,650.00,4.98,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,0891,succeeded,,2026-07-30T13:17:02.717Z,2026-07-30T13:17:40.662Z
+pay_3ebd83444162a21d,usr_db3b630d643fa780,244.07,4.98,0.00,USD,debit_card,Stripe,Bank of America,bank,3532,succeeded,,2026-07-30T13:24:18.751Z,2026-07-30T13:24:57.561Z
+pay_2efb2f221d75bc15,usr_10f35eeba3520153,550.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,4468,pending,,2026-07-30T15:19:23.031Z,2026-07-30T15:19:23.031Z
+pay_2efb2f221d75bc15,usr_10f35eeba3520153,550.00,2.99,0.00,USD,debit_card,Adyen,Wells Fargo,bank,4468,succeeded,,2026-07-30T15:19:23.031Z,2026-07-30T15:20:29.832Z
+pay_cb23215ef689592c,usr_e946033f79b22b20,1154.84,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,7059,pending,,2026-07-30 15:44:09,2026-07-30 15:44:09
+pay_cb23215ef689592c,usr_e946033f79b22b20,1154.84,4.98,0.00,USD,debit_card,Adyen,U.S. Bank,bank,7059,succeeded,,2026-07-30 15:44:09,2026-07-30T15:45:13.556Z
+pay_9a211b780064c134,usr_94350cb1724af3fb,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-30T16:31:51.120Z,2026-07-30T16:31:51.120Z
+pay_cb4bf8109926df13,usr_97f333229323338b,800.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6687,succeeded,,2026-07-30T17:15:22.759Z,2026-07-30T17:16:27.954Z
+pay_007e8acb11231c63,usr_3a1d8916ba9b9531,"1,000.00",4.98,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-30T06:05:22.688Z,2026-07-30T17:27:16.812Z
+pay_940aaf55ce798090,usr_8cdc718dc4057420,350.00,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-30T03:23:44.353Z,2026-07-30T18:00:59.422Z
+pay_72f50c95be64a7a5,usr_0678fe134bcd6e4d,272.99,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-30T18:09:44.875Z,2026-07-30T18:09:44.875Z
+pay_636a1b00d3a077e0,usr_fb3c8d94b2894d6f,500.00,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,1446,succeeded,,2026-07-30T18:14:35.502Z,2026-07-30T18:15:42.462Z
+pay_aba6e05baf4e71c4,usr_725321827d488d20,100.00,2.99,0.00,USD,debit_card,Adyen,PNC Bank,bank,9160,succeeded,,2026-07-30T18:20:30.160Z,2026-07-30T18:21:00.824Z
+pay_54bb13383ff8733a,usr_35abe59350888c74,418.07,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,6041,succeeded,,2026-07-30T18:34:21.759Z,2026-07-30T18:34:40.527Z
+pay_5447837e012a621b,usr_e1cbad8534f17153,1050.00,4.98,0.00,USD,debit_card,Adyen,Wells Fargo,bank,1364,succeeded,,2026-07-30T20:40:36.152Z,2026-07-30T20:41:45.411Z
+pay_8c1bb76cddb8727a,usr_48f4ef125e9953d2,1000.00,4.98,3.98,USD,cash,PayNearMe,Walmart,retailer,,pending,,2026-07-30T20:47:29.447Z,2026-07-30T20:47:29.447Z
+pay_43cc0f3ad5d75d73,usr_9a4d5aaf6b4a426a,200.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,7031,pending,,2026-07-30T20:49:01.324Z,2026-07-30T20:49:01.324Z
+pay_43cc0f3ad5d75d73,usr_9a4d5aaf6b4a426a,200.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,7031,succeeded,,2026-07-30T20:49:01.324Z,2026-07-30T20:50:24.157Z
+pay_e957d46bdd5c5b49,usr_5ca0c428822c4d32,350.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2253,pending,,2026-07-30T20:59:39.205Z,2026-07-30T20:59:39.205Z
+pay_e957d46bdd5c5b49,usr_5ca0c428822c4d32,350.00,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,2253,succeeded,,2026-07-30T20:59:39.205Z,2026-07-30T21:00:02.213Z
+pay_4d2e13e0da8cbfe9,usr_a76f7d3c62522f26,800.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6909,pending,,2026-07-30T21:10:22.200Z,2026-07-30T21:10:22.200Z
+pay_4d2e13e0da8cbfe9,usr_a76f7d3c62522f26,800.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6909,succeeded,,2026-07-30T21:10:22.200Z,2026-07-30T21:11:18.338Z
+pay_4d2e13e0da8cbfe9,usr_a76f7d3c62522f26,800.00,2.99,0.00,USD,debit_card,Adyen,Chime,neobank,6909,succeeded,,2026-07-30T21:10:22.200Z,2026-07-30T21:11:18.338Z
+pay_0227810cdfa76b70,usr_34879e411a9c672a,1000.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-29T22:39:43.690Z,2026-07-30T21:41:58.383Z
+pay_22234a7398d2055f,usr_76242c71de49531a,581.15,2.99,0.00,USD,debit_card,Stripe,Chime,neobank,8732,succeeded,,2026-07-30T21:41:34.398Z,2026-07-30T21:42:12.883Z
+pay_3fb4ceefefc7ca2e,usr_48d160c69cdc546c,282.79,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-30T21:54:38.268Z,2026-07-30T21:54:38.268Z
+pay_36685f5aa25d2f8e,usr_651c9898571ece45,150.00,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,2624,pending,,2026-07-30T22:04:18.300Z,2026-07-30T22:04:18.300Z
+pay_36685f5aa25d2f8e,usr_651c9898571ece45,150.00,4.98,0.00,USD,debit_card,Adyen,Citibank,bank,2624,succeeded,,2026-07-30T22:04:18.300Z,2026-07-30T22:05:37.420Z
+pay_d7460071501e29d6,usr_a27a2bda1713742b,539.34,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8074,pending,,2026-07-30T22:34:58.039Z,2026-07-30T22:34:58.039Z
+pay_d7460071501e29d6,usr_a27a2bda1713742b,539.34,2.99,0.00,USD,debit_card,Stripe,Bank of America,bank,8074,succeeded,,2026-07-30T22:34:58.039Z,2026-07-30T22:35:00.856Z
+pay_5b4370098b894a9c,usr_01308be0fcea9a96,596.31,4.98,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,0266,succeeded,,2026-07-30T22:48:07.503Z,2026-07-30T22:48:25.366Z
+pay_ab1e7c580c6bd89f,usr_03848bb1b073366e,150.00,0.00,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-29T19:12:41.738Z,2026-07-30T23:02:30.004Z
+pay_92548bedbf889eb9,usr_32ffe2944d57d880,350.00,4.98,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,expired,barcode_not_paid,2026-07-28T23:41:04.669Z,2026-07-30T23:41:04.669Z
+pay_76ea6a64bc70b730,usr_c520d50fa0ff3498,1300.00,2.99,0.00,USD,debit_card,Stripe,JPMorgan Chase,bank,2138,succeeded,,2026-07-31T00:27:19.892Z,2026-07-31T00:28:16.870Z
+pay_3fb4ceefefc7ca2e,usr_48d160c69cdc546c,282.79,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-30T21:54:38.268Z,2026-07-31T00:38:29.141Z
+pay_137256a866f21422,usr_6808593fdfed2c43,200.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-31T00:42:42.128Z,2026-07-31T00:42:42.128Z
+pay_a064aed1c5b45002,usr_0da761fd4f7c1491,250.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3264,pending,,2026-07-31T01:24:59.593Z,2026-07-31T01:24:59.593Z
+pay_a064aed1c5b45002,usr_0da761fd4f7c1491,250.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,3264,succeeded,,2026-07-31T01:24:59.593Z,2026-07-31T01:25:28.732Z
+pay_d7cb2d0db4963d6f,usr_d0f64c6dfa2bdff7,150.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1700,pending,,2026-07-31T02:02:20.697Z,2026-07-31T02:02:20.697Z
+pay_d7cb2d0db4963d6f,usr_d0f64c6dfa2bdff7,150.00,0.00,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,1700,succeeded,,2026-07-31T02:02:20.697Z,2026-07-31T02:02:50.366Z
+pay_e0775de16832c902,usr_19b38619d1fb55b1,558.66,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,pending,,2026-07-31T02:32:48.591Z,2026-07-31T02:32:48.591Z
+pay_936bf81e07c94460,usr_87f89f6211a1e557,100.00,0.00,3.98,USD,cash,PayNearMe,Walgreens,retailer,,pending,,2026-07-31T02:45:40.927Z,2026-07-31T02:45:40.927Z
+pay_78cc5bda611c7fb8,usr_a4fcc79cd49cc547,800.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-31T03:34:54.936Z,2026-07-31T03:34:54.936Z
+pay_78cc5bda611c7fb8,usr_a4fcc79cd49cc547,800.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-31T03:34:54.936Z,2026-07-31T04:20:04.637Z
+pay_72f50c95be64a7a5,usr_0678fe134bcd6e4d,272.99,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,succeeded,,2026-07-30T18:09:44.875Z,2026-07-31T06:10:31.227Z
+pay_081a51c9b95c6cf6,usr_06cc2bbacef4b59b,184.67,4.98,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-31T06:12:31.989Z,2026-07-31T06:12:31.989Z
+pay_f00cf0ea6b7901af,usr_286cb3e002b5166d,200.00,0.00,0.00,USD,debit_card,Stripe,Chime,neobank,2999,succeeded,,2026-07-31T06:50:25.475Z,2026-07-31T06:50:38.987Z
+pay_9a211b780064c134,usr_94350cb1724af3fb,250.00,2.99,3.98,USD,cash,PayNearMe,Walmart,retailer,,succeeded,,2026-07-30T16:31:51.120Z,2026-07-31T07:32:56.134Z
+pay_137256a866f21422,usr_6808593fdfed2c43,200.00,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,succeeded,,2026-07-31T00:42:42.128Z,2026-07-31T09:40:22.296Z
+pay_3cfb96d4654a575c,usr_11bbc208f76afb78,389.08,2.99,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-30T10:41:18.032Z,2026-07-31T10:45:29.913Z
+pay_2d3055e4b92026ef,usr_d736b50e4ebc5f60,450.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4747,pending,,2026-07-31T12:25:19.268Z,2026-07-31T12:25:19.268Z
+pay_2d3055e4b92026ef,usr_d736b50e4ebc5f60,450.00,2.99,0.00,USD,debit_card,Stripe,Capital One,bank,4747,succeeded,,2026-07-31T12:25:19.268Z,2026-07-31T12:25:32.883Z
+pay_b45bfe10262606fc,usr_5b4b946636feb3a6,400.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,7557,pending,,2026-07-31T13:27:08.370Z,2026-07-31T13:27:08.370Z
+pay_b45bfe10262606fc,usr_5b4b946636feb3a6,400.00,4.98,0.00,USD,debit_card,Adyen,Chime,neobank,7557,failed,insufficient_funds,2026-07-31T13:27:08.370Z,2026-07-31T13:27:59.952Z
+pay_936bf81e07c94460,usr_87f89f6211a1e557,100.00,0.00,3.98,USD,cash,PayNearMe,Walgreens,retailer,,succeeded,,2026-07-31T02:45:40.927Z,2026-07-31T14:54:37.507Z
+pay_e51d03582dbdc474,usr_09811a969b0188fe,300.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-31T14:58:58.300Z,2026-07-31T14:58:58.300Z
+pay_6ada32f08874da31,usr_5d1ddcb7a5a7e280,256.87,0.00,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-30T12:14:02.340Z,2026-07-31T15:44:18.021Z
+pay_b8f1b10035031424,usr_3f203c2279477aa8,212.85,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,5243,succeeded,,2026-07-31T18:24:25.367Z,2026-07-31T18:25:05.251Z
+pay_c150898b9983c7dc,usr_65363c77787fb578,400.70,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7198,pending,,2026-07-31T18:35:46.910Z,2026-07-31T18:35:46.910Z
+pay_c150898b9983c7dc,usr_65363c77787fb578,400.70,2.99,0.00,USD,debit_card,Stripe,Wells Fargo,bank,7198,succeeded,,2026-07-31T18:35:46.910Z,2026-07-31T18:37:15.014Z
+pay_0ef6f14b3212183e,usr_230bc715a56b22a2,150.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,0579,pending,,2026-07-31T18:37:26.844Z,2026-07-31T18:37:26.844Z
+pay_0ef6f14b3212183e,usr_230bc715a56b22a2,150.00,2.99,0.00,USD,debit_card,Adyen,TD Bank,bank,0579,succeeded,,2026-07-31T18:37:26.844Z,2026-07-31T18:38:39.799Z
+pay_718db7161f7a22b0,usr_cfb93e61cfee8fff,423.84,2.99,3.98,USD,cash,PayNearMe,CVS Pharmacy,retailer,,pending,,2026-07-31T19:09:28.250Z,2026-07-31T19:09:28.250Z
+pay_fef8e67f4aac2ff4,usr_029cfbdab37b574e,100.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2445,pending,,2026-07-31T20:53:31.171Z,2026-07-31T20:53:31.171Z
+pay_fef8e67f4aac2ff4,usr_029cfbdab37b574e,100.00,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,2445,succeeded,,2026-07-31T20:53:31.171Z,2026-07-31T20:54:38.549Z
+pay_09fcb0812ba17b8f,usr_3fbce063ea467d0d,775.86,2.99,0.00,USD,debit_card,Adyen,Bank of America,bank,1479,succeeded,,2026-07-31 21:48:05,2026-07-31T21:48:39.043Z
+pay_5c0dd483cdfe541b,usr_438806fe68f06068,450.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5377,pending,,2026-07-31T22:02:39.505Z,2026-07-31T22:02:39.505Z
+pay_5c0dd483cdfe541b,usr_438806fe68f06068,450.00,2.99,0.00,USD,debit_card,Adyen,JPMorgan Chase,bank,5377,succeeded,,2026-07-31T22:02:39.505Z,2026-07-31T22:03:52.069Z
+pay_41f66363ae619d38,usr_f2e20d2fcaf3c094,100.00,2.99,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,Pending,,2026-07-31T22:09:40.030Z,2026-07-31T22:09:40.030Z
+pay_e0775de16832c902,usr_19b38619d1fb55b1,558.66,2.99,3.98,USD,cash,PayNearMe,Family Dollar,retailer,,succeeded,,2026-07-31T02:32:48.591Z,2026-07-31T22:44:09.216Z
+pay_5e18ed13f86f5168,usr_c64d8e701ea391e2,150.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,2938,pending,,2026-07-31T22:51:07.820Z,2026-07-31T22:51:07.820Z
+pay_5e18ed13f86f5168,usr_c64d8e701ea391e2,150.00,2.99,0.00,USD,debit_card,Adyen,Citibank,bank,2938,succeeded,,2026-07-31T22:51:07.820Z,2026-07-31T22:52:23.650Z
+pay_aec527db3ec41f8e,usr_88ccddbc6f0d7229,338.38,0.00,3.98,USD,cash,PayNearMe,7-Eleven,retailer,,pending,,2026-07-31T23:06:46.618Z,2026-07-31T23:06:46.618Z

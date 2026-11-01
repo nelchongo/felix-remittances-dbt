@@ -1,0 +1,13 @@
+# Versions verified together on Python 3.13 (dbt build, YAML snapshots, MetricFlow saved queries,
+# derived offset metrics, mf --explain/--csv). Change only as a set.
+dbt-core==1.12.6
+dbt-duckdb==1.11.1
+dbt-metricflow==0.15.0
+metricflow==0.213.0
+duckdb==2.0.0
+pandas==3.1.0
+streamlit==1.66.1
+plotly==7.1.0
+pytest==9.2.0
+sqlfluff==4.5.0
+sqlfluff-templater-dbt==4.5.0

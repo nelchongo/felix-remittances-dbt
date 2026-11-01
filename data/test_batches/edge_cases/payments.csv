@@ -1,0 +1,7 @@
+payment_id,user_id,amount,fee_amount,store_fee_amount,currency,payment_method,payment_processor,funding_institution,funding_institution_type,card_last4,status,failure_reason,created_at,updated_at
+pay_edge_negative_amount,usr_83eb9c885316d79f,-50.00,0.00,0.00,USD,debit_card,Stripe,Capital One,bank,3955,succeeded,,2026-10-01T12:00:00.000Z,2026-10-01T12:00:00.000Z
+pay_edge_unknown_method,usr_83eb9c885316d79f,201.44,0.00,0.00,USD,zelle,Stripe,Capital One,bank,3955,succeeded,,2026-10-01T12:00:00.000Z,2026-10-01T12:00:00.000Z
+pay_edge_unknown_status,usr_83eb9c885316d79f,201.44,0.00,0.00,USD,debit_card,Stripe,Capital One,bank,3955,on_hold,,2026-10-01T12:00:00.000Z,2026-10-01T12:00:00.000Z
+pay_edge_orphan_user,usr_does_not_exist,201.44,0.00,0.00,USD,debit_card,Stripe,Capital One,bank,3955,succeeded,,2026-10-01T12:00:00.000Z,2026-10-01T12:00:00.000Z
+pay_edge_cash_chargeback,usr_83eb9c885316d79f,201.44,0.00,0.00,USD,cash,PayNearMe,Walmart,retailer,,chargeback,,2026-10-01T12:00:00.000Z,2026-10-01T12:00:00.000Z
+pay_edge_bad_timestamp,usr_83eb9c885316d79f,201.44,0.00,0.00,USD,debit_card,Stripe,Capital One,bank,3955,succeeded,,01/10/2026 12:00,01/10/2026 12:00
