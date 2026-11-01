@@ -43,3 +43,21 @@ models:
       - { name: is_completed, description: "True if the attempt completed (money delivered).", data_type: boolean }
       - { name: is_failed, description: "True if the attempt failed.", data_type: boolean }
       - { name: is_processing, description: "True if the attempt is still processing.", data_type: boolean }
+
+  - name: int_payout_providers__reliability
+    description: >
+      Q4 label. One row per payout provider with attempt counts and `reliability_tier` from the share of failed
+      attempts (thresholds in `var('provider_failure_tiers')`); `insufficient_data` below
+      `provider_min_attempts` attempts. The share itself is not stored: `payout_attempt_failure_rate` is a metric.
+    columns:
+      - { name: provider_name, description: '{{ doc("col_provider_name") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: n_attempts, description: "Payout attempts through the provider.", data_type: integer }
+      - { name: n_failed_attempts, description: "Failed attempts.", data_type: integer }
+      - { name: n_completed_attempts, description: "Completed attempts.", data_type: integer }
+      - name: reliability_tier
+        description: "`healthy` (< 5% failed), `watch` (5–10%), `critical` (>= 10%), `insufficient_data`."
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [healthy, watch, critical, insufficient_data] }

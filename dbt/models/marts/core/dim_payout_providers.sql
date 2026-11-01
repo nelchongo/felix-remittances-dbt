@@ -1,9 +1,13 @@
 -- Payout providers (Type 1) with the corridors and payout methods they serve.
--- `reliability_tier` (Q4 label) is added in Phase 5 from int_payout_providers__reliability.
+-- `reliability_tier` is the Q4 label from int_payout_providers__reliability.
 with
 
 attempts as (
     select * from {{ ref('stg_felix_backend__disbursements') }}
+),
+
+reliability as (
+    select * from {{ ref('int_payout_providers__reliability') }}
 ),
 
 providers as (
@@ -19,13 +23,14 @@ providers as (
 
 final as (
     select
-        {{ dbt_utils.generate_surrogate_key(['provider_name']) }} as payout_provider_sk,
-        provider_name,
-        corridors_served,
-        payout_methods_served,
-        first_attempt_at,
-        cast(null as varchar) as reliability_tier
+        {{ dbt_utils.generate_surrogate_key(['providers.provider_name']) }} as payout_provider_sk,
+        providers.provider_name,
+        providers.corridors_served,
+        providers.payout_methods_served,
+        providers.first_attempt_at,
+        coalesce(reliability.reliability_tier, 'insufficient_data') as reliability_tier
     from providers
+    left join reliability on providers.provider_name = reliability.provider_name
 )
 
 select * from final

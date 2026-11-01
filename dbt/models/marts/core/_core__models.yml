@@ -35,11 +35,25 @@ models:
           - accepted_values:
               arguments: { values: [pending, approved, rejected, unknown] }
       - { name: signed_up_at, description: "When the user signed up, UTC.", data_type: timestamp }
-      - { name: volume_segment, description: "Q2 label (Type 1): `top_50pct`, `middle`, `long_tail` by cumulative share of volume. Filled in Phase 5.", data_type: varchar }
-      - { name: volume_rank, description: "Rank of the user by lifetime sent volume (1 = largest). Filled in Phase 5.", data_type: integer }
-      - { name: cluster_id, description: "Q5: sender cluster (connected component of the user ↔ beneficiary graph). Filled in Phase 5.", data_type: varchar }
-      - { name: primary_payment_method, description: "Payment method the user used most. Filled in Phase 5.", data_type: varchar }
-      - { name: first_transfer_month, description: "Month of the user's first succeeded transfer (cohort). Filled in Phase 5.", data_type: date }
+      - name: volume_segment
+        description: >
+          Q2 label (Type 1). Senders ranked by lifetime volume: `top_50pct` (the users who make up the first 50%
+          of volume, crossing user included), `middle_30pct` (next 30%), `tail_20pct` (the rest).
+          `no_transfers` for users without a succeeded transfer. Thresholds in `var('volume_segments')`.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [top_50pct, middle_30pct, tail_20pct, no_transfers, unknown] }
+      - { name: volume_rank, description: "Rank of the user by lifetime sent volume (1 = largest). NULL for users without transfers.", data_type: integer }
+      - { name: cluster_id, description: "Q5: sender cluster, FK-like link to `dim_sender_clusters.cluster_id` (smallest user_id of the component).", data_type: varchar }
+      - name: cluster_type
+        description: "Q5 label (Type 1) of the user's cluster: `individual`, `household`, `high_fan_in` (AML review), or `no_transfers`."
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [individual, household, high_fan_in, no_transfers, unknown] }
+      - { name: primary_payment_method, description: "Payment method of most of the user's succeeded transfers.", data_type: varchar }
+      - { name: first_transfer_month, description: "Month of the user's first succeeded transfer (acquisition cohort).", data_type: date }
       - { name: valid_from, description: "Start of the version's validity (inclusive). 1900-01-01 for the first version.", data_type: timestamp }
       - { name: valid_to, description: "End of the version's validity (exclusive). 9999-12-31 for the current version.", data_type: timestamp }
       - { name: is_current, description: "True for the current version of the user.", data_type: boolean }
@@ -141,7 +155,14 @@ models:
       - { name: corridors_served, description: "Comma-separated destination countries the provider pays out to.", data_type: varchar }
       - { name: payout_methods_served, description: "Comma-separated payout methods the provider offers.", data_type: varchar }
       - { name: first_attempt_at, description: "First payout attempt through the provider, UTC.", data_type: timestamp }
-      - { name: reliability_tier, description: "Q4 label from the attempt failure rate: `healthy`, `watch`, `critical` (or `insufficient_data`). Filled in Phase 5.", data_type: varchar }
+      - name: reliability_tier
+        description: >
+          Q4 label from the share of failed payout attempts: `healthy` (< 5%), `watch` (5–10%), `critical` (>= 10%),
+          or `insufficient_data` below `provider_min_attempts` attempts. Thresholds in `var('provider_failure_tiers')`.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [healthy, watch, critical, insufficient_data, unknown] }
 
   - name: dim_corridors
     description: Corridors (destination countries) with name, payout currency and region (from the `corridors` var). Type 1.

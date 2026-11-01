@@ -28,3 +28,151 @@ models:
         description: When the current attribute combination was first observed, UTC. The snapshot's `updated_at`.
         data_type: timestamp
         data_tests: [not_null]
+
+  - name: int_customers__volume_ranking
+    description: >
+      Q2 label. One row per sender (at least one succeeded payment) with lifetime volume, `volume_rank` and
+      `volume_segment`. The segment uses the cumulative share of volume *before* the user, so the user who
+      crosses the 50% line belongs to the top segment. Thresholds in `var('volume_segments')`.
+    data_tests:
+      - share_at_least:
+          arguments:
+            value_column: lifetime_volume_usd
+            condition: "volume_segment = 'top_50pct'"
+            min_share: 0.5
+    columns:
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: lifetime_volume_usd, description: "Σ send amount of the user's succeeded payments, USD.", data_type: "decimal(38,2)" }
+      - { name: n_transfers, description: "Succeeded payments of the user.", data_type: bigint }
+      - { name: volume_rank, description: "1 = largest sender by lifetime volume (ties broken by user_id).", data_type: integer, data_tests: [unique, not_null] }
+      - { name: cumulative_volume_usd, description: "Running total of lifetime volume down to this user, in rank order.", data_type: "decimal(38,2)" }
+      - { name: total_volume_usd, description: "Lifetime volume of all senders.", data_type: "decimal(38,2)" }
+      - name: volume_segment
+        description: "`top_50pct`, `middle_30pct` or `tail_20pct`."
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [top_50pct, middle_30pct, tail_20pct] }
+
+  - name: int_customers__activity_lifecycle
+    description: >
+      Q3 labels and the ingredients of `fct_customer_activity_monthly`. One row per sender × month from the
+      cohort month to the last month with data. Recurring = active in M and in >= `recurring_min_active_months`
+      of the previous `recurring_lookback_months` months. Inactive users are `at_risk` up to
+      `churn_after_inactive_days` days after their last transfer, then `churned`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: { combination_of_columns: [user_id, activity_month] }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "not is_recurring or is_active" }
+    columns:
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar, data_tests: [not_null] }
+      - { name: activity_month, description: "Month (first day).", data_type: date, data_tests: [not_null] }
+      - { name: cohort_month, description: "Month of the user's first succeeded transfer.", data_type: date }
+      - { name: months_since_first_transfer, description: "Months since the cohort month.", data_type: integer }
+      - name: lifecycle_status
+        description: "`new`, `recurring`, `returning`, `at_risk` or `churned`."
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [new, recurring, returning, at_risk, churned] }
+      - { name: is_active, description: "True if the user had a succeeded transfer in the month.", data_type: boolean }
+      - { name: is_recurring, description: "True if recurring this month.", data_type: boolean }
+      - { name: is_new, description: "True in the cohort month.", data_type: boolean }
+      - { name: is_returning, description: "True when active but not recurring and not new.", data_type: boolean }
+      - { name: is_at_risk, description: "True when inactive with a recent last transfer.", data_type: boolean }
+      - { name: is_churned, description: "True when inactive for longer than the churn window.", data_type: boolean }
+      - { name: is_newly_churned, description: "True in the month the user becomes churned.", data_type: boolean }
+      - { name: was_active_last_month, description: "True if active the previous month.", data_type: boolean }
+      - { name: days_since_last_transfer, description: "Days from the latest transfer to the end of the month.", data_type: integer }
+      - { name: n_transfers, description: "Succeeded transfers in the month.", data_type: integer }
+      - { name: volume_usd, description: "Volume sent in the month, USD.", data_type: "decimal(18,2)" }
+      - { name: fee_revenue_usd, description: "Fees earned in the month, USD.", data_type: "decimal(18,2)" }
+      - { name: fx_revenue_usd, description: "FX revenue in the month, USD.", data_type: "decimal(18,4)" }
+      - { name: chargeback_loss_usd, description: "Chargeback losses on the month's payments, USD.", data_type: "decimal(18,2)" }
+      - { name: net_revenue_usd, description: '{{ doc("col_net_revenue_usd") }}', data_type: "decimal(18,4)" }
+      - { name: cumulative_net_revenue_usd, description: "Net revenue from the cohort month to this month (semi-additive).", data_type: "decimal(18,4)" }
+
+  - name: int_customers__sender_graph_components
+    description: >
+      Q5 label. One row per sender with its cluster: the connected component of the user ↔ beneficiary graph,
+      found with a recursive CTE. `cluster_id` = smallest user_id in the component. `high_fan_in` when a
+      beneficiary of the component receives from >= `mule_min_senders` senders.
+    columns:
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: cluster_id, description: "Smallest user_id of the component.", data_type: varchar, data_tests: [not_null] }
+      - name: cluster_type
+        description: "`individual`, `household` or `high_fan_in`."
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [individual, household, high_fan_in] }
+      - { name: cluster_n_users, description: "Senders in the cluster.", data_type: integer }
+      - { name: cluster_n_beneficiaries, description: "Beneficiaries paid by the cluster.", data_type: integer }
+      - { name: cluster_max_senders_per_beneficiary, description: "Largest sender count of a beneficiary in the cluster.", data_type: integer }
+
+unit_tests:
+  - name: volume_ranking_crossing_user_is_top
+    description: >
+      Volumes 40/30/20/10: the second user crosses 50% (cumulative 70%) and is still `top_50pct`,
+      the third is `middle_30pct` (starts at 70% < 80%), the fourth `tail_20pct`. Failed payments are ignored.
+    model: int_customers__volume_ranking
+    given:
+      - input: ref('int_payments__lifecycle')
+        rows:
+          - { payment_id: p1, user_id: u1, send_amount_usd: 40, is_succeeded: true }
+          - { payment_id: p2, user_id: u2, send_amount_usd: 30, is_succeeded: true }
+          - { payment_id: p3, user_id: u3, send_amount_usd: 20, is_succeeded: true }
+          - { payment_id: p4, user_id: u4, send_amount_usd: 10, is_succeeded: true }
+          - { payment_id: p5, user_id: u4, send_amount_usd: 999, is_succeeded: false }
+    expect:
+      rows:
+        - { user_id: u1, volume_rank: 1, volume_segment: top_50pct }
+        - { user_id: u2, volume_rank: 2, volume_segment: top_50pct }
+        - { user_id: u3, volume_rank: 3, volume_segment: middle_30pct }
+        - { user_id: u4, volume_rank: 4, volume_segment: tail_20pct }
+
+  - name: sender_graph_merges_transitively
+    description: >
+      u1 and u2 share b1, u2 and u3 share b2: one household cluster with id u1 even though u1 and u3 share
+      nothing. u4 sends alone and is an individual.
+    model: int_customers__sender_graph_components
+    given:
+      - input: ref('stg_felix_backend__receipts')
+        rows:
+          - { receipt_id: r1, user_id: u1, beneficiary_id: b1 }
+          - { receipt_id: r2, user_id: u2, beneficiary_id: b1 }
+          - { receipt_id: r3, user_id: u2, beneficiary_id: b2 }
+          - { receipt_id: r4, user_id: u3, beneficiary_id: b2 }
+          - { receipt_id: r5, user_id: u4, beneficiary_id: b3 }
+    expect:
+      rows:
+        - { user_id: u1, cluster_id: u1, cluster_type: household, cluster_n_users: 3 }
+        - { user_id: u2, cluster_id: u1, cluster_type: household, cluster_n_users: 3 }
+        - { user_id: u3, cluster_id: u1, cluster_type: household, cluster_n_users: 3 }
+        - { user_id: u4, cluster_id: u4, cluster_type: individual, cluster_n_users: 1 }
+
+  - name: activity_lifecycle_recurring_and_at_risk
+    description: >
+      Transfers in Jan, Feb, Mar and May: Jan new, Feb returning (1 of the previous 3 months active),
+      Mar recurring (2 of 3), Apr at_risk (inactive, last transfer 46 days before month end),
+      May recurring again (Feb and Mar active).
+    model: int_customers__activity_lifecycle
+    given:
+      - input: ref('int_payments__lifecycle')
+        rows:
+          - { payment_id: p1, user_id: u1, send_amount_usd: 100, fee_amount_usd: 0, is_succeeded: true, is_charged_back: false, succeeded_at: "2025-01-15 10:00:00" }
+          - { payment_id: p2, user_id: u1, send_amount_usd: 100, fee_amount_usd: 2.99, is_succeeded: true, is_charged_back: false, succeeded_at: "2025-02-15 10:00:00" }
+          - { payment_id: p3, user_id: u1, send_amount_usd: 100, fee_amount_usd: 2.99, is_succeeded: true, is_charged_back: false, succeeded_at: "2025-03-15 10:00:00" }
+          - { payment_id: p4, user_id: u1, send_amount_usd: 100, fee_amount_usd: 2.99, is_succeeded: true, is_charged_back: false, succeeded_at: "2025-05-15 10:00:00" }
+      - input: ref('int_remittances__joined')
+        rows:
+          - { payment_id: p1, fx_revenue_usd: 1.0 }
+    expect:
+      rows:
+        - { activity_month: "2025-01-01", lifecycle_status: new, is_active: true, is_recurring: false, months_since_first_transfer: 0, cumulative_net_revenue_usd: 1.0 }
+        - { activity_month: "2025-02-01", lifecycle_status: returning, is_active: true, is_recurring: false, months_since_first_transfer: 1, cumulative_net_revenue_usd: 3.99 }
+        - { activity_month: "2025-03-01", lifecycle_status: recurring, is_active: true, is_recurring: true, months_since_first_transfer: 2, cumulative_net_revenue_usd: 6.98 }
+        - { activity_month: "2025-04-01", lifecycle_status: at_risk, is_active: false, is_recurring: false, months_since_first_transfer: 3, cumulative_net_revenue_usd: 6.98 }
+        - { activity_month: "2025-05-01", lifecycle_status: recurring, is_active: true, is_recurring: true, months_since_first_transfer: 4, cumulative_net_revenue_usd: 9.97 }
