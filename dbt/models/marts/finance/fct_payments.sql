@@ -1,18 +1,14 @@
 -- Transaction fact, one row per payment (final state). Ingredients only: additive amounts and 0/1 flags.
--- Incremental merge on payment_id. Each run re-processes payments created in the last
--- var('chargeback_maturity_days') days and any payment updated since the last run, so late
--- chargebacks and refunds update their row.
+-- Incremental merge on payment_id. A run re-processes:
+--   * payments with a source row loaded since the last run (`_loaded_at` is load time, not business time), so
+--     late or out-of-order chargebacks, refunds, receipts and payout attempts always reach their row;
+--   * payments created in the last var('chargeback_maturity_days') days, so values that depend on other rows
+--     (first transfer, point-in-time user and beneficiary versions) catch up with late-arriving data.
+-- A merge never deletes: when the loader removes rows from raw, run.py builds with --full-refresh.
 with
 
 payments as (
-    select lifecycle.* from {{ ref('int_payments__lifecycle') }} as lifecycle
-    {% if is_incremental() %}
-        where
-            lifecycle.created_at is null
-            or lifecycle.created_at >= (select max(current_table.created_at) from {{ this }} as current_table)
-            - interval '{{ var("chargeback_maturity_days") }} days'
-            or lifecycle.last_updated_at > (select max(current_table.last_updated_at) from {{ this }} as current_table)
-    {% endif %}
+    select * from {{ ref('int_payments__lifecycle') }}
 ),
 
 remittances as (
@@ -80,7 +76,8 @@ final as (
         payments.is_refunded,
         payments.is_charged_back,
         payments.is_pending,
-        payments.is_first_transfer
+        payments.is_first_transfer,
+        greatest(payments._loaded_at, remittances._loaded_at) as _loaded_at
     from payments
     left join remittances on payments.payment_id = remittances.payment_id
     left join users
@@ -96,3 +93,10 @@ final as (
 )
 
 select * from final
+{% if is_incremental() %}
+    where
+        _loaded_at > (select max(current_table._loaded_at) from {{ this }} as current_table)
+        or created_at is null
+        or created_at >= (select max(current_table.created_at) from {{ this }} as current_table)
+        - interval '{{ var("chargeback_maturity_days") }} days'
+{% endif %}

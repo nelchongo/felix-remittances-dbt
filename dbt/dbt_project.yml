@@ -1,5 +1,5 @@
 # Félix remittances: dbt project (DuckDB). See docs/DESIGN.md §9.
-# No dbt seeds: sources are loaded into `raw` by scripts/load_raw.py and small
+# No dbt seeds: sources are loaded into `raw` by src/load_raw.py and small
 # reference data lives in `vars` (turned into SQL by the `values_from_var` macro).
 name: felix
 version: "1.0.0"
@@ -70,7 +70,7 @@ vars:
   provider_min_attempts: 100
   # Q5: a beneficiary with this many unrelated senders makes its cluster `high_fan_in`
   mule_min_senders: 10
-  # Q6 / incremental lookback for late chargebacks
+  # Q6 maturity window; also the incremental facts' lookback for values that depend on other rows
   chargeback_maturity_days: 90
   # Q8: cap on expected lifetime for projected LTV
   ltv_horizon_months: 12

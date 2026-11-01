@@ -256,3 +256,8 @@ in extras, not in the dbt core, so v6 trims them without dropping any requiremen
   `docs/edge_cases.md` (now DESIGN.md §15.1 and §18)
 - [x] README reduced to the step-by-step guide; `run.py answers` writes only `docs/answers.md`, whose summary table
   replaces the README answers block
+- [x] Every Python file except `run.py` moved to `src/` (`dashboard/app.py` → `src/dashboard.py`, `tests_py/` →
+  `src/tests/`, `scripts/*` → `src/*`); the compiled metric SQL moved to `warehouse/compiled/` (generated, git-ignored)
+- [x] Incremental audit: a business-time watermark (`last_updated_at` > max) missed 12 late-arriving chargebacks and
+  refunds in both facts. Now the facts merge on a load-time watermark (`_loaded_at`) plus the maturity lookback, a load
+  that deletes raw rows triggers `--full-refresh`, and `run.py check-incremental` (CI) compares them with a full refresh

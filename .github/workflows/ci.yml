@@ -44,6 +44,8 @@ jobs:
         run: python run.py lint
       - name: dbt test + pytest (semantic layer reconciliation, dashboard)
         run: python run.py test
+      - name: Incremental facts equal a full refresh after late-arriving data
+        run: python run.py check-incremental
       - name: Edge-case batch fails exactly the expected tests
         run: python run.py check-edge-cases
       - name: Upload the generated answers

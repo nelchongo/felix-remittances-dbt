@@ -13,7 +13,8 @@ resolutions as (
     select
         disbursement_id,
         min(updated_at) filter (where status = 'completed') as completed_at,
-        min(updated_at) filter (where status = 'failed') as failed_at
+        min(updated_at) filter (where status = 'failed') as failed_at,
+        max(_loaded_at) as _loaded_at
     from disbursement_events
     group by disbursement_id
 ),
@@ -35,6 +36,7 @@ ranked as (
         resolutions.completed_at,
         resolutions.failed_at,
         coalesce(resolutions.completed_at, resolutions.failed_at) as resolved_at,
+        resolutions._loaded_at,
         row_number() over (
             partition by disbursements.receipt_id order by disbursements.attempt_number desc
         ) = 1 as is_final_attempt
@@ -65,7 +67,8 @@ final as (
         attempt_number > 1 as is_retry,
         final_status = 'completed' as is_completed,
         final_status = 'failed' as is_failed,
-        final_status = 'processing' as is_processing
+        final_status = 'processing' as is_processing,
+        _loaded_at
     from ranked
 )
 

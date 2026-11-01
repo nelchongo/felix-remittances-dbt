@@ -85,7 +85,7 @@ models:
       - { name: final_status, description: 'Current status. {{ doc("col_payment_status") }}', data_type: varchar }
       - { name: created_at, description: '{{ doc("col_created_at") }}', data_type: timestamp }
       - { name: succeeded_at, description: "When the payment succeeded, UTC. Time dimension of volume and revenue metrics.", data_type: timestamp }
-      - { name: last_updated_at, description: "When the current status was written, UTC. Drives the incremental filter.", data_type: timestamp }
+      - { name: last_updated_at, description: "When the current status was written, UTC.", data_type: timestamp }
       - name: send_amount_usd
         description: '{{ doc("col_send_amount_usd") }} Set on every payment; volume metrics filter `is_succeeded`.'
         data_type: "decimal(18,2)"
@@ -101,6 +101,7 @@ models:
       - { name: is_charged_back, description: "1 if the card payment was charged back.", data_type: boolean, config: { meta: { additivity: additive } } }
       - { name: is_pending, description: "1 if the payment is still pending.", data_type: boolean, config: { meta: { additivity: additive } } }
       - { name: is_first_transfer, description: "1 for the user's first succeeded payment (free transfer).", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: _loaded_at, description: '{{ doc("col_latest_loaded_at") }}', data_type: timestamp, data_tests: [not_null] }
 
   - name: fct_chargebacks
     description: >

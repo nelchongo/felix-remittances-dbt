@@ -43,6 +43,7 @@ models:
       - { name: is_completed, description: "True if the attempt completed (money delivered).", data_type: boolean }
       - { name: is_failed, description: "True if the attempt failed.", data_type: boolean }
       - { name: is_processing, description: "True if the attempt is still processing.", data_type: boolean }
+      - { name: _loaded_at, description: '{{ doc("col_latest_loaded_at") }}', data_type: timestamp }
 
   - name: int_payout_providers__reliability
     description: >

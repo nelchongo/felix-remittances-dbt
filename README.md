@@ -30,14 +30,14 @@ This one command does what the brief asks, in order:
 
 | Brief step | What runs | Where |
 |---|---|---|
-| Ingest the CSVs as raw data, **no seeds** | a Python loader writes the CSVs as text into schema `raw`, month by month | `scripts/load_raw.py` |
+| Ingest the CSVs as raw data, **no seeds** | a Python loader writes the CSVs as text into schema `raw`, month by month | `src/load_raw.py` |
 | First layer: dedupe and schema patterns | `dbt build` staging models: types, normalised codes, CDC dedupe | `dbt/models/staging/` |
 | Intermediate layer by business context | payment lifecycle, remittance joins, provider reliability, sender clusters | `dbt/models/intermediate/` |
 | Data modelling | Kimball marts (`core`, `finance`, `operations`, `growth`, `risk`) and SCD2 snapshots | `dbt/models/marts/`, `dbt/snapshots/` |
 | Metrics | MetricFlow metrics and saved queries, written to `docs/answers.md` | `dbt/models/semantic/` |
 | Data tests | about 250 dbt tests run inside `dbt build` | YAML next to each model, `dbt/tests/` |
 
-The run should end with `Done. PASS=287 WARN=1 ERROR=0` and `Wrote docs/answers.md`. The one warning is
+The run should end with `Done. PASS=289 WARN=1 ERROR=0` and `Wrote docs/answers.md`. The one warning is
 intentional: the source data has 4 receipts whose payment doesn't exist.
 
 ## 3. Read the answers
@@ -62,11 +62,12 @@ a table view under it.
 ```bash
 python run.py test               # dbt test + pytest (MetricFlow reconciles with the facts; the dashboard renders)
 python run.py lint               # ruff on Python, sqlfluff on dbt SQL
+python run.py check-incremental  # loads the monthly batches with late rows: incremental facts = full refresh
 python run.py check-edge-cases   # loads 6 bad rows: exactly 7 tests must fail and 1 must warn
-python run.py all                # rebuild from the clean baseline (check-edge-cases leaves the bad rows loaded)
+python run.py all                # rebuild from the clean baseline (the two checks leave their data loaded)
 ```
 
-[`docs/DESIGN.md` §15](docs/DESIGN.md) explains which row breaks which test.
+[`docs/DESIGN.md` §15](docs/DESIGN.md) explains which row breaks which test and how the incremental facts work.
 
 ## 6. Optional: load new monthly data
 

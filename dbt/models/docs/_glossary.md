@@ -3,7 +3,7 @@
 {# ---------------------------------------------------------------- lineage (raw) #}
 
 {% docs col_source_file %}
-Landing file the row was loaded from, e.g. `payments__2026-07.csv`. Added by `scripts/load_raw.py`.
+Landing file the row was loaded from, e.g. `payments__2026-07.csv`. Added by `src/load_raw.py`.
 Used by the loader to delete and reload the rows of a changed or removed file.
 {% enddocs %}
 
@@ -17,6 +17,11 @@ Batch the landing file belongs to: the `__<batch>` suffix of the file name (`bas
 
 {% docs col_loaded_at %}
 UTC timestamp of the loader run that inserted the row. Drives source freshness.
+{% enddocs %}
+
+{% docs col_latest_loaded_at %}
+Latest `_loaded_at` among the source rows behind this row: load time, not business time. The incremental facts
+use it as their watermark, so a late or out-of-order CDC row reaches its fact row whatever its business timestamps.
 {% enddocs %}
 
 {# ---------------------------------------------------------------- identifiers #}

@@ -15,7 +15,7 @@ models:
       meta: { owner: data-platform@felixpago.com, grain: "one row per user version (+ unknown member)", scd_type: 2 }
     data_tests:
       - scd2_no_overlap:
-          arguments: { key: user_id }
+          arguments: { key: user_id, source_relation: ref('stg_felix_backend__users') }
     columns:
       - name: user_sk
         description: Surrogate key of the user version (snapshot `dbt_scd_id`). `'-1'` = unknown member.
@@ -67,7 +67,7 @@ models:
       meta: { owner: data-platform@felixpago.com, grain: "one row per beneficiary version (+ unknown member)", scd_type: 2 }
     data_tests:
       - scd2_no_overlap:
-          arguments: { key: beneficiary_id }
+          arguments: { key: beneficiary_id, source_relation: ref('int_beneficiaries__attribute_changes') }
     columns:
       - name: beneficiary_sk
         description: Surrogate key of the beneficiary version (snapshot `dbt_scd_id`). `'-1'` = unknown member.

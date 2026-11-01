@@ -19,7 +19,8 @@ attempt_summary as (
         receipt_id,
         count(*) as n_attempts,
         count(*) filter (where is_failed) as n_failed_attempts,
-        min(attempted_at) as first_attempt_at
+        min(attempted_at) as first_attempt_at,
+        max(_loaded_at) as _loaded_at
     from attempts
     group by receipt_id
 ),
@@ -80,7 +81,8 @@ joined as (
         payments.chargeback_at,
         coalesce(payments.is_charged_back, false) as is_charged_back,
         coalesce(payments.is_refunded, false) as is_refunded,
-        payments.payment_id is null as is_payment_missing
+        payments.payment_id is null as is_payment_missing,
+        greatest(receipts._loaded_at, payments._loaded_at, attempt_summary._loaded_at) as _loaded_at
     from receipts
     left join payments on receipts.payment_id = payments.payment_id
     left join attempt_summary on receipts.receipt_id = attempt_summary.receipt_id
@@ -130,7 +132,8 @@ final as (
             as is_delivered,
         is_charged_back,
         is_refunded,
-        is_payment_missing
+        is_payment_missing,
+        _loaded_at
     from joined
 )
 

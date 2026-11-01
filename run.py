@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import shutil
@@ -52,6 +53,9 @@ EDGE_CASE_RESULTS = {
     ("fail", "not_null_stg_felix_backend__payment_events_updated_at"),
     ("warn", "relationships_stg_felix_backend__payment_events_user_id__user_id__ref_stg_felix_backend__users_"),
 }
+
+# Incremental models checked against a full refresh by `check-incremental` (model -> schema).
+INCREMENTAL_FACTS = {"fct_payments": "finance", "fct_remittances": "operations"}
 
 
 # --------------------------------------------------------------------------------------
@@ -175,8 +179,8 @@ def cmd_setup(_: argparse.Namespace) -> None:
     dbt("debug")
 
 
-def cmd_build(_: argparse.Namespace) -> None:
-    dbt("build")
+def cmd_build(args: argparse.Namespace) -> None:
+    dbt("build", *(["--full-refresh"] if getattr(args, "full_refresh", False) else []))
 
 
 def cmd_snapshot(_: argparse.Namespace) -> None:
@@ -205,7 +209,9 @@ def cmd_load(_: argparse.Namespace) -> None:
     from src.load_raw import load
 
     require_landing()
-    load(db_path(), LANDING_DIR)
+    if rows_deleted(load(db_path(), LANDING_DIR)):
+        print("Rows were removed from raw (changed or removed landing files). Incremental facts never delete rows,")
+        print("so rebuild them from scratch: python run.py build --full-refresh")
 
 
 def cmd_replay(_: argparse.Namespace) -> None:
@@ -226,27 +232,103 @@ def cmd_replay(_: argparse.Namespace) -> None:
     load(db_path(), LANDING_DIR, replay="monthly", on_month=after_month)
 
 
-def cmd_add_batch(args: argparse.Namespace) -> None:
-    """Copy data/test_batches/<batch>/<table>.csv to data/landing/<table>/<table>__<batch>.csv,
-    then load, snapshot and build."""
-    from src.load_raw import TABLES, load
+def rows_deleted(summaries: list) -> int:
+    """Rows the loader removed from raw (files that changed or left data/landing)."""
+    return sum(summary.rows_deleted for summary in summaries)
 
-    batch_dir = TEST_BATCHES_DIR / args.batch
+
+def copy_batch(batch: str) -> None:
+    """Copy data/test_batches/<batch>/<table>.csv to data/landing/<table>/<table>__<batch>.csv."""
+    from src.load_raw import TABLES
+
+    batch_dir = TEST_BATCHES_DIR / batch
     if not batch_dir.is_dir():
         available = ", ".join(sorted(p.name for p in TEST_BATCHES_DIR.iterdir() if p.is_dir()))
-        sys.exit(f"error: no test batch named {args.batch!r}. Available: {available}")
+        sys.exit(f"error: no test batch named {batch!r}. Available: {available}")
     require_landing()
     copied = []
     for table in TABLES:
         source = batch_dir / f"{table}.csv"
         if source.is_file():
             (LANDING_DIR / table).mkdir(exist_ok=True)
-            shutil.copy2(source, LANDING_DIR / table / f"{table}__{args.batch}.csv")
+            shutil.copy2(source, LANDING_DIR / table / f"{table}__{batch}.csv")
             copied.append(table)
-    print(f"Copied batch {args.batch!r} into data/landing: {', '.join(copied)}")
-    load(db_path(), LANDING_DIR)
+    print(f"Copied batch {batch!r} into data/landing: {', '.join(copied)}")
+
+
+def load_snapshot_build() -> None:
+    """Load data/landing incrementally, snapshot, then build. A load that removed rows from raw rebuilds the
+    incremental facts from scratch, because a merge never deletes rows."""
+    from src.load_raw import load
+
+    deleted = rows_deleted(load(db_path(), LANDING_DIR))
     dbt("snapshot")
-    dbt("build")
+    if deleted:
+        print(f"The load removed {deleted} rows from raw: building with --full-refresh.")
+    dbt("build", *(["--full-refresh"] if deleted else []))
+
+
+def cmd_add_batch(args: argparse.Namespace) -> None:
+    """Copy a test batch into data/landing, then load, snapshot and build."""
+    copy_batch(args.batch)
+    load_snapshot_build()
+
+
+def cmd_check_incremental(_: argparse.Namespace) -> None:
+    """Check that the incremental facts equal a full refresh after late-arriving data. The three monthly
+    batches are loaded in order, except the July chargebacks and refunds of baseline payments, which arrive
+    last: their business time is older than anything the facts already hold, and their payments are older
+    than the lookback window. The batches stay loaded: run `reset-data` afterwards."""
+    import duckdb
+
+    with (SOURCE_DIR / "payments.csv").open(newline="", encoding="utf-8") as fh:
+        baseline_payments = {row["payment_id"] for row in csv.DictReader(fh)}
+
+    copy_batch("2026-07")
+    july = LANDING_DIR / "payments" / "payments__2026-07.csv"
+    with july.open(newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        header, rows = reader.fieldnames, list(reader)
+    late = [
+        row for row in rows
+        if row["payment_id"] in baseline_payments and row["status"].strip().lower() in ("chargeback", "refunded")
+    ]
+    write_csv(july, header, [row for row in rows if row not in late])
+    load_snapshot_build()
+    for batch in ("2026-08", "2026-09"):
+        copy_batch(batch)
+        load_snapshot_build()
+    print(f"Late arrival: {len(late)} July chargebacks/refunds of baseline payments, loaded after September.")
+    write_csv(LANDING_DIR / "payments" / "payments__2026-07-late.csv", header, late)
+    load_snapshot_build()
+
+    with duckdb.connect(str(db_path())) as con:
+        con.execute("create schema if not exists check_incremental")
+        for model, schema in INCREMENTAL_FACTS.items():
+            con.execute(f"create or replace table check_incremental.{model} as select * from {schema}.{model}")
+    dbt("run", "--full-refresh", "--select", *INCREMENTAL_FACTS)
+    differences = 0
+    with duckdb.connect(str(db_path())) as con:
+        for model, schema in INCREMENTAL_FACTS.items():
+            incremental, full = f"check_incremental.{model}", f"{schema}.{model}"
+            only_incremental, only_full = (
+                con.execute(f"select count(*) from (select * from {a} except all select * from {b})").fetchone()[0]
+                for a, b in ((incremental, full), (full, incremental))
+            )
+            rows = con.execute(f"select count(*) from {full}").fetchone()[0]
+            print(f"{model}: {rows} rows; {only_incremental} only in the incremental build, {only_full} only in the full refresh")
+            differences += only_incremental + only_full
+        con.execute("drop schema check_incremental cascade")
+    if differences:
+        sys.exit("error: the incremental facts differ from a full refresh")
+    print("OK: the incremental facts equal a full refresh.")
+
+
+def write_csv(path: Path, header: list[str], rows: list[dict]) -> None:
+    with path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def cmd_check_edge_cases(_: argparse.Namespace) -> None:
@@ -343,6 +425,7 @@ COMMANDS: list[tuple[str, str, object]] = [
     ("add-batch", "copy a test batch into landing, load it, snapshot and build", cmd_add_batch),
     ("reset-data", "restore data/landing from data/source and delete the warehouse", cmd_reset_data),
     ("compile-metrics", "compile the dashboard's saved queries to warehouse/compiled/*.sql", cmd_compile_metrics),
+    ("check-incremental", "load the monthly batches with late-arriving rows and compare the incremental facts with a full refresh", cmd_check_incremental),
     ("check-edge-cases", "load the edge-case batch and check that exactly the expected tests fail", cmd_check_edge_cases),
     ("answers", "run the saved queries and write docs/answers.md", cmd_answers),
     ("dashboard", "start the Streamlit dashboard", cmd_dashboard),
@@ -362,6 +445,8 @@ def build_parser() -> argparse.ArgumentParser:
         p = sub.add_parser(name, help=help_text, description=help_text)
         if name == "add-batch":
             p.add_argument("batch", help="folder name under data/test_batches/ (e.g. 2026-07, edge_cases)")
+        if name == "build":
+            p.add_argument("--full-refresh", action="store_true", help="rebuild the incremental facts from scratch")
         p.set_defaults(func=func)
     return parser
 

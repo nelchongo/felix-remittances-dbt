@@ -152,7 +152,8 @@ macros:
   - name: test_scd2_no_overlap
     description: >
       SCD2 integrity: per key, every version has `valid_from < valid_to`, versions never overlap, and
-      exactly one version is current (`valid_to` = 9999-12-31).
+      exactly one version is current (`valid_to` = 9999-12-31). With `source_relation`, a key that is no longer
+      in the snapshot's source may have none: `hard_deletes: invalidate` closed its last version.
     arguments:
       - name: model
         type: relation
@@ -169,6 +170,9 @@ macros:
       - name: current_valid_to
         type: string
         description: SQL literal marking the current version (default 9999-12-31).
+      - name: source_relation
+        type: relation
+        description: The snapshot's source. Optional; when set, keys deleted from it may have no current version.
 
   - name: safe_divide
     description: "`numerator / denominator`, NULL when the denominator is 0 or NULL. Used inside label logic only; ratios are never stored."
