@@ -73,13 +73,13 @@ dbt source freshness                               # runs (warnings are fine)
 > Do Phase 2 (DESIGN §10, §12, §13; data/README.md "data-quality issues"). Create the cleaning and modelling macros with docs in macros/_macros.yml, the six staging models with full YAML (every column: description, data_type, tests), and the glossary docs blocks. Run the acceptance checks.
 
 Tasks
-- [ ] Macros + `macros/_macros.yml` (description and arguments for each): `parse_timestamp` (ISO `…Z` and `YYYY-MM-DD HH:MM:SS` → UTC `timestamp`, else NULL), `clean_amount(col, scale=2)`, `normalize_enum`, `mask_pii`, `dedupe_latest(relation, partition_by, order_by)`
-- [ ] `stg_felix_backend__users`: latest version per `user_id`, `lower(email)`
-- [ ] `stg_felix_backend__payment_events` (every distinct version) and `stg_felix_backend__payments` (latest)
-- [ ] `stg_felix_backend__receipts` (dedupe exact rows; keep `reference_fx_rate`)
-- [ ] `stg_felix_backend__disbursement_events` and `stg_felix_backend__disbursements` (latest per `disbursement_id`)
-- [ ] `models/docs/_glossary.md`: `{% docs %}` blocks for shared columns (user_id, payment_id, send_amount_usd, fx_revenue_usd, statuses…)
-- [ ] Tests:
+- [x] Macros + `macros/_macros.yml` (description and arguments for each): `parse_timestamp` (ISO `…Z` and `YYYY-MM-DD HH:MM:SS` → UTC `timestamp`, else NULL), `clean_amount(col, scale=2)`, `normalize_enum`, `mask_pii`, `dedupe_latest(relation, partition_by, order_by)`
+- [x] `stg_felix_backend__users`: latest version per `user_id`, `lower(email)`
+- [x] `stg_felix_backend__payment_events` (every distinct version) and `stg_felix_backend__payments` (latest)
+- [x] `stg_felix_backend__receipts` (dedupe exact rows; keep `reference_fx_rate`)
+- [x] `stg_felix_backend__disbursement_events` and `stg_felix_backend__disbursements` (latest per `disbursement_id`)
+- [x] `models/docs/_glossary.md`: `{% docs %}` blocks for shared columns (user_id, payment_id, send_amount_usd, fx_revenue_usd, statuses…)
+- [x] Tests:
   - PK unique/not_null
   - `accepted_values`: payment_method `[debit_card, cash]`; payment status `[pending, succeeded, failed, expired, refunded, chargeback]`; disbursement status `[processing, completed, failed]`; funding_institution_type `[bank, neobank, retailer]`; payout_method
   - not_null on parsed timestamps (catches unparseable ones)

@@ -1,0 +1,345 @@
+version: 2
+
+# Staging: one model per source entity. Typed, cleaned with macros and deduplicated.
+# `*_events` models keep every distinct CDC version; the others keep the latest version per key.
+# Source-data problems are `warn`; structural rules the marts rely on are `error`.
+
+models:
+  # ------------------------------------------------------------------------------------------- users
+  - name: stg_felix_backend__users
+    description: >
+      Senders, one row per `user_id`: the latest profile version by `updated_at`. Emails are lower-cased,
+      timestamps parsed to UTC, exact duplicates removed. Version history is captured by the `snp_users` snapshot.
+    columns:
+      - name: user_id
+        description: '{{ doc("col_user_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: first_name
+        description: Sender first name.
+        data_type: varchar
+        config: { meta: { pii: true } }
+      - name: last_name
+        description: Sender last name.
+        data_type: varchar
+        config: { meta: { pii: true } }
+      - name: email
+        description: Sender email, lower-cased and trimmed.
+        data_type: varchar
+        config: { meta: { pii: true } }
+        data_tests: [not_null]
+      - name: phone_number
+        description: Sender phone number (E.164).
+        data_type: varchar
+        config: { meta: { pii: true } }
+      - name: country
+        description: Sender country (ISO-2).
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [US] }
+      - name: state
+        description: '{{ doc("col_us_state") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - name: kyc_status
+        description: '{{ doc("col_kyc_status") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [pending, approved, rejected] }
+      - name: created_at
+        description: When the user signed up, UTC.
+        data_type: timestamp
+        data_tests: [not_null]
+      - name: updated_at
+        description: '{{ doc("col_updated_at") }}'
+        data_type: timestamp
+        data_tests: [not_null]
+      - &batch_id { name: _batch_id, description: '{{ doc("col_batch_id_staging") }}', data_type: varchar }
+      - &loaded_at { name: _loaded_at, description: '{{ doc("col_loaded_at") }}', data_type: timestamp }
+
+  # ---------------------------------------------------------------------------------------- payments
+  - name: stg_felix_backend__payment_events
+    description: >
+      Payment status history: one row per distinct payment version (payment × status × `updated_at`).
+      Exact duplicate rows are removed. Domain tests live here because they must hold for every version,
+      not just the latest one.
+    columns:
+      - name: payment_event_id
+        description: Surrogate key of the version, hash of (`payment_id`, `status`, `updated_at`).
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - &user_id { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - &send_amount_usd { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)" }
+      - &fee_amount_usd { name: fee_amount_usd, description: '{{ doc("col_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - &store_fee_amount_usd { name: store_fee_amount_usd, description: '{{ doc("col_store_fee_amount_usd") }}', data_type: "decimal(18,2)" }
+      - name: currency
+        description: Pay-in currency.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [USD] }
+      - name: payment_method
+        description: '{{ doc("col_payment_method") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [debit_card, cash] }
+      - name: payment_processor
+        description: '{{ doc("col_payment_processor") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [Adyen, Stripe, PayNearMe] }
+      - &funding_institution { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - name: funding_institution_type
+        description: '{{ doc("col_funding_institution_type") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [bank, neobank, retailer] }
+      - &card_last4 { name: card_last4, description: '{{ doc("col_card_last4") }}', data_type: varchar }
+      - name: status
+        description: '{{ doc("col_payment_status") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [pending, succeeded, failed, expired, refunded, chargeback] }
+      - &payment_failure_reason { name: failure_reason, description: '{{ doc("col_payment_failure_reason") }}', data_type: varchar }
+      - name: created_at
+        description: '{{ doc("col_created_at") }}'
+        data_type: timestamp
+        data_tests: [not_null]
+      - name: updated_at
+        description: '{{ doc("col_updated_at") }}'
+        data_type: timestamp
+        data_tests: [not_null]
+      - *batch_id
+      - *loaded_at
+
+  - name: stg_felix_backend__payments
+    description: >
+      Payments, one row per `payment_id`: the latest version, i.e. the current status. Built from
+      `stg_felix_backend__payment_events`; use that model for the status history.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "send_amount_usd > 0" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "fee_amount_usd >= 0 and store_fee_amount_usd >= 0" }
+    columns:
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: user_id
+        description: '{{ doc("col_user_id") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: { to: ref('stg_felix_backend__users'), field: user_id }
+              config:
+                severity: warn  # source problem: a payment from a user missing in the users extract
+      - name: send_amount_usd
+        description: '{{ doc("col_send_amount_usd") }}'
+        data_type: "decimal(18,2)"
+        data_tests: [not_null]
+      - *fee_amount_usd
+      - *store_fee_amount_usd
+      - { name: currency, description: Pay-in currency., data_type: varchar }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - *funding_institution
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - *card_last4
+      - { name: status, description: 'Current status. {{ doc("col_payment_status") }}', data_type: varchar }
+      - *payment_failure_reason
+      - { name: created_at, description: '{{ doc("col_created_at") }}', data_type: timestamp }
+      - { name: updated_at, description: 'When the current status was written, UTC.', data_type: timestamp }
+      - *batch_id
+      - *loaded_at
+
+  # ---------------------------------------------------------------------------------------- receipts
+  - name: stg_felix_backend__receipts
+    description: >
+      Receipts, one row per `receipt_id` (exact duplicates removed). A receipt is issued for every successful
+      payment and links it to the beneficiary and the payout attempts. It carries the FX quote used for FX revenue.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "send_amount_usd > 0 and receive_amount_local > 0" }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "fx_rate > 0 and fx_rate <= reference_fx_rate" }
+    columns:
+      - name: receipt_id
+        description: '{{ doc("col_receipt_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments: { to: ref('stg_felix_backend__payments'), field: payment_id }
+              config:
+                severity: warn  # 4 known orphan receipts in the extract (data/README.md)
+      - name: user_id
+        description: '{{ doc("col_user_id") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - name: beneficiary_id
+        description: '{{ doc("col_beneficiary_id") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - name: send_amount_usd
+        description: '{{ doc("col_send_amount_usd") }}'
+        data_type: "decimal(18,2)"
+        data_tests: [not_null]
+      - name: send_currency
+        description: Send currency.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [USD] }
+      - name: fx_rate
+        description: '{{ doc("col_fx_rate") }}'
+        data_type: "decimal(18,6)"
+        data_tests: [not_null]
+      - name: reference_fx_rate
+        description: '{{ doc("col_reference_fx_rate") }}'
+        data_type: "decimal(18,6)"
+        data_tests: [not_null]
+      - name: receive_amount_local
+        description: Amount the beneficiary receives, in `receive_currency`.
+        data_type: "decimal(18,2)"
+      - name: receive_currency
+        description: Payout currency of the corridor.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [MXN, GTQ, HNL, USD, DOP, COP] }
+      - name: created_at
+        description: When the receipt was issued, UTC.
+        data_type: timestamp
+        data_tests: [not_null]
+      - *batch_id
+      - *loaded_at
+
+  # ----------------------------------------------------------------------------------- disbursements
+  - name: stg_felix_backend__disbursement_events
+    description: >
+      Payout attempt status history: one row per distinct attempt version (attempt × status × `updated_at`).
+      Exact duplicate rows are removed. Domain tests live here so they hold for every version.
+    columns:
+      - name: disbursement_event_id
+        description: Surrogate key of the version, hash of (`disbursement_id`, `status`, `updated_at`).
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: disbursement_id
+        description: '{{ doc("col_disbursement_id") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - &receipt_id { name: receipt_id, description: '{{ doc("col_receipt_id") }}', data_type: varchar }
+      - &attempt_number { name: attempt_number, description: '{{ doc("col_attempt_number") }}', data_type: integer }
+      - &provider_name { name: provider_name, description: '{{ doc("col_provider_name") }}', data_type: varchar }
+      - name: payout_method
+        description: '{{ doc("col_payout_method") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [bank_deposit, cash_pickup, mobile_wallet] }
+      - &beneficiary_id { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - &beneficiary_name
+        name: beneficiary_name
+        description: Beneficiary full name.
+        data_type: varchar
+        config: { meta: { pii: true } }
+      - name: beneficiary_country
+        description: '{{ doc("col_beneficiary_country") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [MX, GT, HN, SV, DO, CO] }
+      - &beneficiary_account_last4 { name: beneficiary_account_last4, description: Last 4 digits of the beneficiary's account or wallet., data_type: varchar }
+      - &payout_amount_local { name: payout_amount_local, description: '{{ doc("col_payout_amount_local") }}', data_type: "decimal(18,2)" }
+      - name: payout_currency
+        description: Payout currency.
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [MXN, GTQ, HNL, USD, DOP, COP] }
+      - name: status
+        description: '{{ doc("col_disbursement_status") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [processing, completed, failed] }
+      - &disbursement_failure_reason { name: failure_reason, description: "Why the attempt failed (`invalid_account`, `provider_timeout`, ...). NULL otherwise.", data_type: varchar }
+      - name: created_at
+        description: When the attempt started, UTC.
+        data_type: timestamp
+        data_tests: [not_null]
+      - name: updated_at
+        description: '{{ doc("col_updated_at") }}'
+        data_type: timestamp
+        data_tests: [not_null]
+      - *batch_id
+      - *loaded_at
+
+  - name: stg_felix_backend__disbursements
+    description: >
+      Payout attempts, one row per `disbursement_id`: the latest version (current status). Built from
+      `stg_felix_backend__disbursement_events`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: { combination_of_columns: [receipt_id, attempt_number] }
+      - dbt_utils.expression_is_true:
+          arguments: { expression: "payout_amount_local > 0" }
+    columns:
+      - name: disbursement_id
+        description: '{{ doc("col_disbursement_id") }}'
+        data_type: varchar
+        data_tests: [unique, not_null]
+      - name: receipt_id
+        description: '{{ doc("col_receipt_id") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: { to: ref('stg_felix_backend__receipts'), field: receipt_id }
+      - name: attempt_number
+        description: '{{ doc("col_attempt_number") }}'
+        data_type: integer
+        data_tests: [not_null]
+      - name: provider_name
+        description: '{{ doc("col_provider_name") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - { name: payout_method, description: '{{ doc("col_payout_method") }}', data_type: varchar }
+      - name: beneficiary_id
+        description: '{{ doc("col_beneficiary_id") }}'
+        data_type: varchar
+        data_tests: [not_null]
+      - *beneficiary_name
+      - { name: beneficiary_country, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar }
+      - *beneficiary_account_last4
+      - *payout_amount_local
+      - { name: payout_currency, description: Payout currency., data_type: varchar }
+      - { name: status, description: 'Current status. {{ doc("col_disbursement_status") }}', data_type: varchar }
+      - *disbursement_failure_reason
+      - { name: created_at, description: When the attempt started, UTC., data_type: timestamp }
+      - { name: updated_at, description: When the current status was written, UTC., data_type: timestamp }
+      - *batch_id
+      - *loaded_at

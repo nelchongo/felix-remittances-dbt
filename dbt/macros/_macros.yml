@@ -22,3 +22,61 @@ macros:
       - name: results
         type: list[any]
         description: The `results` context variable available in on-run-end hooks.
+
+  # ---------------------------------------------------------------- cleaning
+  - name: parse_timestamp
+    description: >
+      Parses a text timestamp into a UTC `timestamp`. Accepts ISO-8601 with `Z` (with or without
+      milliseconds) and naive `YYYY-MM-DD HH:MM:SS` (written in UTC by the backend). Any other format
+      returns NULL, which the `not_null` tests on staging timestamps catch.
+    arguments:
+      - name: column
+        type: string
+        description: Column (or SQL expression) holding the text timestamp.
+
+  - name: clean_amount
+    description: >
+      Converts a text amount to `decimal(18, scale)`: trims it and removes thousands separators.
+      Unparseable values return NULL. Negative values are kept so business-rule tests can flag them.
+    arguments:
+      - name: column
+        type: string
+        description: Column (or SQL expression) holding the text amount.
+      - name: scale
+        type: integer
+        description: Decimal places of the result. Default 2 (money). Use 6 for FX rates.
+
+  - name: normalize_enum
+    description: Trims and lower-cases a categorical code and turns empty strings into NULL. Pair it with `accepted_values`.
+    arguments:
+      - name: column
+        type: string
+        description: Column (or SQL expression) holding the code.
+
+  - name: mask_pii
+    description: >
+      Masks a PII value for analytics-facing models. `email` keeps the first character and the domain,
+      `phone` keeps the last 4 digits, `text` keeps the first character.
+    arguments:
+      - name: column
+        type: string
+        description: Column (or SQL expression) to mask.
+      - name: kind
+        type: string
+        description: One of `email`, `phone`, `text` (default).
+
+  # ---------------------------------------------------------------- modelling
+  - name: dedupe_latest
+    description: >
+      Returns `select * from relation` keeping one row per `partition_by`, the first by `order_by`
+      (`qualify row_number() ... = 1`). Used for exact duplicates and for the latest CDC version per key.
+    arguments:
+      - name: relation
+        type: string
+        description: CTE name or relation to dedupe.
+      - name: partition_by
+        type: string
+        description: Comma-separated key columns.
+      - name: order_by
+        type: string
+        description: Deterministic ordering; the first row per key is kept (e.g. `updated_at desc, _loaded_at desc`).
