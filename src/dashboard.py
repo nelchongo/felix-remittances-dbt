@@ -39,6 +39,8 @@ DIM_ORDER = ["date", "users", "beneficiaries", "payment_methods", "payment_proce
 TIER_COLOR = {"healthy": "#0ca30c", "watch": "#fab219", "critical": "#d03b3b", "insufficient_data": "#ec835a"}
 TIER_ICON = {"healthy": "✅", "watch": "⚠️", "critical": "⛔", "insufficient_data": "❔"}
 METHOD = {"debit_card": "Debit card", "cash": "Cash"}
+SEGMENT = {"top_50pct": "Top 50% of volume", "middle_30pct": "Middle 30%", "tail_20pct": "Tail 20%"}
+CLUSTER = {"individual": "Individual", "household": "Household", "high_fan_in": "High fan-in"}
 
 
 def mode() -> str:
@@ -155,14 +157,22 @@ def show(fig: go.Figure, table: pd.DataFrame, *, key: str, y: str | None = None,
     fig.update_yaxes(**axis, tickformat=y, rangemode="tozero")
     fig.update_traces(selector={"type": "scatter"}, line_width=2, marker_size=8)
     if headroom:  # room for labels drawn outside horizontal bars
-        top = max(max(t.x) for t in fig.data if t.type == "bar")
-        fig.update_xaxes(range=[0, float(top) * 1.3])
+        top = float(max(max(t.x) for t in fig.data if t.type == "bar"))
+        upper = top * 1.3
+        if x and "%" in x and top <= 1 < upper:  # a share never needs an axis past 100% plus room for its label
+            upper = max(top * 1.12, 1.0)
+        fig.update_xaxes(range=[0, upper])
     st.plotly_chart(fig, theme=None, key=key, config={"displayModeBar": False})
     with st.expander("Table view"):
         st.dataframe(table, hide_index=True)
 
 
-def header(name: str) -> None:
+CARD_HEIGHT, CHART_HEIGHT = 150, 360
+
+
+def question(text: str, name: str) -> None:
+    """Every tab opens the same way: the question in plain words, then how it is measured."""
+    st.subheader(text)
     st.caption(f"{descriptions().get(name, '').strip()} · saved query `{name}`")
 
 
@@ -170,15 +180,42 @@ def growth(value: float) -> str:
     return "–" if value is None or pd.isna(value) else f"{value * 100:+.1f}%"
 
 
-def tile(column, title: str, value: str, mom: float | None = None, yoy: float | None = None) -> None:
-    delta = growth(mom) if mom is not None and not pd.isna(mom) else None
-    note = " · ".join(p for p in [("M/M" if delta else ""), (f"{growth(yoy)} Y/Y" if yoy is not None else "")] if p)
-    column.metric(title, value, delta=delta, delta_description=note or None, border=True)
+def pct(value: float, digits: int = 1) -> str:
+    return "–" if value is None or pd.isna(value) else f"{value * 100:.{digits}f}%"
+
+
+def cards(*items: tuple) -> None:
+    """Four cards of the same size: (label, value) or (label, value, delta, note)."""
+    for column, (label, value, *extra) in zip(st.columns(4), items, strict=True):
+        delta, note = (extra + [None, None])[:2]
+        column.metric(label, value, delta=delta, delta_description=note, border=True, height=CARD_HEIGHT)
+
+
+def charts(left: tuple, right: tuple) -> None:
+    """Two charts side by side, same height, each with its title and table view: (title, figure, table, key, options)."""
+    for column, (title, fig, table, key, options) in zip(st.columns(2), (left, right), strict=True):
+        with column:
+            st.markdown(f"**{title}**")
+            show(fig, table, key=key, height=CHART_HEIGHT, **options)
 
 
 def line(df: pd.DataFrame, y: str, hover: str) -> go.Figure:
     return go.Figure(go.Scatter(x=df["metric_time__month"], y=df[y], mode="lines+markers",
                                 line_color=colors()["series"][0], hovertemplate=f"%{{x|%b %Y}}<br>{hover}<extra></extra>"))
+
+
+def lines(df: pd.DataFrame, series: dict[str, str], hover: str) -> go.Figure:
+    """Several series on one axis (same unit), in the fixed categorical order, with a legend."""
+    fig = go.Figure()
+    for (column, label), color in zip(series.items(), colors()["series"], strict=False):
+        fig.add_trace(go.Scatter(x=df["metric_time__month"], y=df[column], name=label, mode="lines+markers",
+                                 line_color=color, hovertemplate=f"%{{x|%b %Y}}<br>{label}: {hover}<extra></extra>"))
+    return fig
+
+
+def bars(df: pd.DataFrame, x: str, y: str, hover: str) -> go.Figure:
+    return go.Figure(go.Bar(x=df[x], y=df[y], marker_color=colors()["series"][0],
+                            hovertemplate=f"%{{x|%b %Y}}<br>{hover}<extra></extra>"))
 
 
 def hbar(df: pd.DataFrame, x: str, y: str, hover: str, colors_: list[str] | str | None = None,
@@ -187,9 +224,6 @@ def hbar(df: pd.DataFrame, x: str, y: str, hover: str, colors_: list[str] | str 
                             text=text, textposition="outside", hovertemplate=f"%{{y}}<br>{hover}<extra></extra>"))
 
 
-# --------------------------------------------------------------------------------------
-# Page
-# --------------------------------------------------------------------------------------
 def hero() -> None:
     """Brand header: the linen wordmark on a slate band with a cyan rule, as on felixpago.com."""
     logo = base64.b64encode(LOGO_ON_DARK.read_bytes()).decode()
@@ -215,156 +249,176 @@ tabs = st.tabs(["Q1 Volume", "Q2 Top 50%", "Q3 Recurring", "Q4 Providers", "Q5 C
                 "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in", "Data model"])
 
 with tabs[0]:
-    header("q1_monthly_volume")
+    question("How much money moves through Félix each month, and how much does Félix keep?", "q1_monthly_volume")
     q1 = load("q1_monthly_volume")
     last = q1.iloc[-1]
-    st.subheader(f"{last['metric_time__month']:%B %Y}")
-    a, b, d = st.columns(3)
-    tile(a, "Gross volume", fmt_money(last["gross_volume_usd"]), last["gross_volume_usd_mom_pct"], last["gross_volume_usd_yoy_pct"])
-    tile(b, "Transfers", f"{int(last['transfers']):,}")
-    tile(d, "Net revenue", fmt_money(last["net_revenue_usd"]))
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Gross volume by month**")
-        fig = go.Figure(go.Bar(x=q1["metric_time__month"], y=q1["gross_volume_usd"], marker_color=c["series"][0],
-                               hovertemplate="%{x|%b %Y}<br>$%{y:,.0f}<extra></extra>"))
-        show(fig, q1, key="q1_volume", y="$,.0f")
-    with right:
-        st.markdown("**Growth vs the same month last year**")
-        show(line(q1, "gross_volume_usd_yoy_pct", "%{y:+.1%}"), q1, key="q1_yoy", y="+.0%")
+    cards((f"Gross volume · {last['metric_time__month']:%b %Y}", fmt_money(last["gross_volume_usd"]),
+           growth(last["gross_volume_usd_mom_pct"]), f"M/M · {growth(last['gross_volume_usd_yoy_pct'])} Y/Y"),
+          ("Revenue (fees + FX)", fmt_money(last["revenue_before_losses_usd"])),
+          ("Chargeback losses", fmt_money(-last["chargeback_loss_usd"])),
+          ("Net revenue", fmt_money(last["net_revenue_usd"])))
+    charts(("Gross volume by month", bars(q1, "metric_time__month", "gross_volume_usd", "$%{y:,.0f}"), q1, "q1_volume",
+            {"y": "$,.0f"}),
+           ("Revenue, chargeback losses and net revenue by month",
+            lines(q1, {"revenue_before_losses_usd": "Revenue (fees + FX)", "chargeback_loss_usd": "Chargeback losses",
+                       "net_revenue_usd": "Net revenue"}, "$%{y:,.0f}"), q1, "q1_revenue", {"y": "$,.0f", "legend": True}))
+    st.caption("A chargeback costs the whole principal (the money was already paid out), so a handful of chargebacks "
+               "can take a large share of a month's revenue. The latest months are still maturing.")
 
 with tabs[1]:
-    header("q2_volume_concentration")
-    q2 = load("q2_volume_concentration")
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Gross volume by segment**")
-        show(hbar(q2, "gross_volume_usd", "user__volume_segment", "$%{x:,.0f}"), q2, key="q2_volume", x="$,.0f")
-    with right:
-        st.markdown("**Senders by segment**")
-        show(hbar(q2, "active_senders", "user__volume_segment", "%{x:,} senders"), q2, key="q2_senders")
+    question("Which users make up half of the volume?", "q2_volume_concentration")
+    q2 = load("q2_volume_concentration").set_index("user__volume_segment")
+    top = q2.loc["top_50pct"]
+    cards(("Senders in the top 50%", f"{int(top['active_senders']):,}"),
+          ("Their volume", fmt_money(top["gross_volume_usd"])),
+          ("Senders in the middle 30%", f"{int(q2.loc['middle_30pct', 'active_senders']):,}"),
+          ("Senders in the tail 20%", f"{int(q2.loc['tail_20pct', 'active_senders']):,}"))
+    q2 = q2.reindex(list(SEGMENT)[::-1]).reset_index()
+    q2["segment"] = q2["user__volume_segment"].map(SEGMENT)
+    table = q2.drop(columns="segment")
+    charts(("Gross volume by segment", hbar(q2, "gross_volume_usd", "segment", "$%{x:,.0f}"), table, "q2_volume",
+            {"x": "$,.0f"}),
+           ("Senders by segment", hbar(q2, "active_senders", "segment", "%{x:,} senders"), table, "q2_senders", {}))
 
 with tabs[2]:
-    header("q3_recurring_customers")
+    question("How many customers keep coming back?", "q3_recurring_customers")
     q3 = load("q3_recurring_customers")
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Recurring share of active customers**")
-        show(line(q3, "recurring_share", "%{y:.1%}"), q3, key="q3_share", y=".0%")
-    with right:
-        st.markdown("**Monthly churn rate**")
-        show(line(q3, "churn_rate", "%{y:.1%}"), q3, key="q3_churn", y=".0%")
+    last = q3.iloc[-1]
+    cards((f"Active customers · {last['metric_time__month']:%b %Y}", f"{int(last['monthly_active_customers']):,}"),
+          ("Recurring customers", f"{int(last['recurring_senders']):,}"),
+          ("Recurring share", pct(last["recurring_share"])),
+          ("Monthly churn", pct(last["churn_rate"])))
+    charts(("Recurring share of active customers", line(q3, "recurring_share", "%{y:.1%}"), q3, "q3_share",
+            {"y": ".0%"}),
+           ("Monthly churn rate", line(q3, "churn_rate", "%{y:.1%}"), q3, "q3_churn", {"y": ".0%"}))
 
 with tabs[3]:
-    header("q4_payout_providers")
+    question("Which payout providers fail most often?", "q4_payout_providers")
     q4 = load("q4_payout_providers").sort_values("payout_attempt_failure_rate")
     tiers = q4["payout_provider__reliability_tier"]
-    fig = hbar(q4, "payout_attempt_failure_rate", "attempt__provider_name", "%{x:.1%} of attempts failed",
-               [TIER_COLOR.get(t, c["neutral"]) for t in tiers],
-               [f"{r:.1%} · {TIER_ICON.get(t, '')} {t}" for r, t in zip(q4["payout_attempt_failure_rate"], tiers)])
-    show(fig, q4, key="q4_providers", x=".0%", headroom=True, height=380)
-    st.caption("Tiers: ✅ healthy < 5% · ⚠️ watch 5–10% · ⛔ critical ≥ 10% of payout attempts failed.")
+    cards(("Payout providers", f"{len(q4)}"),
+          ("✅ Healthy (< 5% failed)", f"{(tiers == 'healthy').sum()}"),
+          ("⚠️ Watch (5–10%)", f"{(tiers == 'watch').sum()}"),
+          ("⛔ Critical (≥ 10%)", f"{(tiers == 'critical').sum()}"))
+    failure = hbar(q4, "payout_attempt_failure_rate", "attempt__provider_name", "%{x:.1%} of attempts failed",
+                   [TIER_COLOR.get(t, c["neutral"]) for t in tiers],
+                   [f"{r:.1%} {TIER_ICON.get(t, '')}" for r, t in zip(q4["payout_attempt_failure_rate"], tiers)])
+    rescued = hbar(q4, "rescued_by_retry_rate", "attempt__provider_name", "%{x:.1%} rescued by a retry", None,
+                   [f"{r:.0%}" for r in q4["rescued_by_retry_rate"]])
+    charts(("Share of payout attempts that failed", failure, q4, "q4_failure", {"x": ".0%", "headroom": True}),
+           ("Failed first attempts rescued by a retry", rescued, q4, "q4_rescued", {"x": ".0%", "headroom": True}))
 
 with tabs[4]:
-    header("q5_sender_clusters")
+    question("Do groups of users send money to the same beneficiaries?", "q5_sender_clusters")
     q5 = load("q5_sender_clusters").set_index("user__cluster_type").reindex(["individual", "household", "high_fan_in"])
+    cards(("Individual senders", f"{int(q5.loc['individual', 'senders']):,}"),
+          ("Senders in households", f"{int(q5.loc['household', 'senders']):,}"),
+          ("Senders in high fan-in clusters", f"{int(q5.loc['high_fan_in', 'senders']):,}"),
+          ("Chargebacks · high fan-in vs individual",
+           f"{pct(q5.loc['high_fan_in', 'chargeback_rate'])} vs {pct(q5.loc['individual', 'chargeback_rate'])}"))
     q5 = q5.dropna(how="all").reset_index()
+    q5["cluster"] = q5["user__cluster_type"].map(CLUSTER)
     emphasis = [c["series"][0] if t == "high_fan_in" else c["neutral"] for t in q5["user__cluster_type"]]
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Senders by cluster type**")
-        show(hbar(q5, "senders", "user__cluster_type", "%{x:,} senders", emphasis), q5, key="q5_senders")
-    with right:
-        st.markdown("**Chargeback rate by cluster type**")
-        show(hbar(q5, "chargeback_rate", "user__cluster_type", "%{x:.2%}", emphasis,
-                  [f"{v:.1%}" for v in q5["chargeback_rate"]]), q5, key="q5_cb", x=".0%", headroom=True)
+    table = q5.drop(columns="cluster")
+    charts(("Senders by cluster type", hbar(q5, "senders", "cluster", "%{x:,} senders", emphasis), table, "q5_senders",
+            {}),
+           ("Chargeback rate by cluster type", hbar(q5, "chargeback_rate", "cluster", "%{x:.2%}", emphasis,
+                                                    [f"{v:.1%}" for v in q5["chargeback_rate"]]), table, "q5_cb",
+            {"x": ".0%", "headroom": True}))
+    st.caption("High fan-in: a beneficiary receives money from 10 or more unrelated senders, the AML review queue.")
 
 with tabs[5]:
-    header("q6_chargeback_rate")
+    question("How often are card payments charged back?", "q6_chargeback_rate")
     total = load("q6_chargeback_rate_total").iloc[0]
-    a, b, _ = st.columns(3)
-    tile(a, "Chargeback rate (debit card)", f"{total['chargeback_rate']:.2%}")
-    tile(b, "By amount", f"{total['chargeback_rate_amount']:.2%}")
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**By payment month (latest months still maturing)**")
-        q6 = load("q6_chargeback_rate")
-        fig = line(q6, "chargeback_rate", "%{y:.2%}")
-        fig.add_vrect(x0=q6["metric_time__month"].iloc[-3], x1=q6["metric_time__month"].iloc[-1],
-                      fillcolor=c["shade"], line_width=0)
-        show(fig, q6, key="q6_month", y=".1%")
-    with right:
-        st.markdown("**By issuing bank**")
-        banks = load("q6_chargeback_rate_by_bank").sort_values("chargeback_rate")
-        show(hbar(banks, "chargeback_rate", "payment__funding_institution", "%{x:.2%}", None,
-                  [f"{v:.1%}" for v in banks["chargeback_rate"]]), banks, key="q6_bank", x=".1%", headroom=True)
+    cards(("Chargeback rate (payments)", pct(total["chargeback_rate"], 2)),
+          ("Chargeback rate (amount)", pct(total["chargeback_rate_amount"], 2)),
+          ("Card payments charged back", f"{int(total['payments_charged_back']):,}"),
+          ("Card payments that succeeded", f"{int(total['transfers']):,}"))
+    q6 = load("q6_chargeback_rate")
+    by_month = line(q6, "chargeback_rate", "%{y:.2%}")
+    by_month.add_vrect(x0=q6["metric_time__month"].iloc[-3], x1=q6["metric_time__month"].iloc[-1],
+                       fillcolor=c["shade"], line_width=0)
+    banks = load("q6_chargeback_rate_by_bank").sort_values("chargeback_rate")
+    charts(("By payment month (shaded months are still maturing)", by_month, q6, "q6_month", {"y": ".1%"}),
+           ("By issuing bank", hbar(banks, "chargeback_rate", "payment__funding_institution", "%{x:.2%}", None,
+                                    [f"{v:.1%}" for v in banks["chargeback_rate"]]), banks, "q6_bank",
+            {"x": ".1%", "headroom": True}))
+    st.caption("Cash payments can't be charged back, so the rate is over debit card payments only.")
 
 with tabs[6]:
-    header("q7_transaction_value")
-    q7 = load("q7_transaction_value")
+    question("How much does a typical transfer send?", "q7_transaction_value")
+    q7 = load("q7_transaction_value").set_index("payment__payment_method")
+    cards(("Average ticket · debit card", fmt_money(q7.loc["debit_card", "atv_usd"])),
+          ("Median ticket · debit card", fmt_money(q7.loc["debit_card", "median_ticket_usd"])),
+          ("Average ticket · cash", fmt_money(q7.loc["cash", "atv_usd"])),
+          ("Median ticket · cash", fmt_money(q7.loc["cash", "median_ticket_usd"])))
+    q7 = q7.reset_index()
     long = q7.melt(id_vars="payment__payment_method", value_vars=["atv_usd", "median_ticket_usd"], var_name="measure")
-    long["measure"] = long["measure"].map({"atv_usd": "Average (ATV)", "median_ticket_usd": "Median"})
+    long["measure"] = long["measure"].map({"atv_usd": "Average", "median_ticket_usd": "Median"})
     long["method"] = long["payment__payment_method"].map(METHOD)
-    fig = px.bar(long, x="measure", y="value", color="method", barmode="group", text_auto="$.0f",
-                 color_discrete_map={"Debit card": c["series"][0], "Cash": c["series"][1]})
-    show(fig, q7, key="q7_ticket", y="$,.0f", legend=True)
+    tickets = px.bar(long, x="measure", y="value", color="method", barmode="group", text_auto="$.0f",
+                     color_discrete_map={"Debit card": c["series"][0], "Cash": c["series"][1]})
+    q7["method"] = q7["payment__payment_method"].map(METHOD)
+    transfers = hbar(q7, "transfers", "method", "%{x:,} transfers", None, [f"{int(v):,}" for v in q7["transfers"]])
+    charts(("Average vs median ticket by pay-in method", tickets, q7.drop(columns="method"), "q7_ticket",
+            {"y": "$,.0f", "legend": True}),
+           ("Transfers by pay-in method", transfers, q7.drop(columns="method"), "q7_transfers", {"headroom": True}))
+    st.caption("The median sits below the average: a few large senders pull the average up.")
 
 with tabs[7]:
-    header("q8_ltv")
+    question("How much is a customer worth over time?", "q8_ltv")
     ltv = load("q8_ltv").iloc[0]
     projection = load("q8_ltv_projection").dropna(subset=["projected_ltv_12m_usd"])
-    a, b, _ = st.columns(3)
-    tile(a, "Historical LTV per sender", fmt_money(ltv["historical_ltv_usd"]))
-    tile(b, f"Projected 12-month LTV ({projection['metric_time__month'].iloc[-1]:%b %Y})",
-         fmt_money(projection["projected_ltv_12m_usd"].iloc[-1]))
-    st.markdown("**Net revenue per user by cohort, N months after the first transfer**")
+    cards(("Historical LTV per sender", fmt_money(ltv["historical_ltv_usd"])),
+          (f"Projected 12-month LTV · {projection['metric_time__month'].iloc[-1]:%b %Y}",
+           fmt_money(projection["projected_ltv_12m_usd"].iloc[-1])),
+          ("Lifetime net revenue", fmt_money(ltv["net_revenue_usd"])),
+          ("Senders so far", f"{int(ltv['active_senders']):,}"))
     curve = load("q8_ltv_curve")
     curve["cohort"] = curve["customer_month__cohort_month"].astype(str).str[:7]
     ramp = c["ordinal"]  # one hue, oldest → newest cohort (most emphasis)
     quarterly = sorted(m for m in curve["cohort"].unique() if m[5:7] in {"01", "04", "07", "10"})[-len(ramp):]
     curve = curve[curve["cohort"].isin(quarterly)]
-    fig = px.line(curve, x="customer_month__months_since_first_transfer", y="ltv_per_cohort_user", color="cohort",
-                  color_discrete_sequence=ramp[-len(quarterly):], category_orders={"cohort": quarterly})
-    show(fig, curve.drop(columns="cohort"), key="q8_curve", y="$,.0f", legend=True)
+    cohorts = px.line(curve, x="customer_month__months_since_first_transfer", y="ltv_per_cohort_user", color="cohort",
+                      color_discrete_sequence=ramp[-len(quarterly):], category_orders={"cohort": quarterly})
+    charts(("Net revenue per user by cohort, N months after the first transfer", cohorts, curve.drop(columns="cohort"),
+            "q8_curve", {"y": "$,.0f", "legend": True}),
+           ("Projected 12-month LTV by month (ARPU × expected lifetime)",
+            line(projection, "projected_ltv_12m_usd", "$%{y:,.2f}"), projection, "q8_projection", {"y": "$,.0f"}))
 
 with tabs[8]:
-    header("growth_kpis_monthly")
+    question("Is the customer base growing, and is each customer worth more?", "growth_kpis_monthly")
     g = load("growth_kpis_monthly")
     last = g.iloc[-1]
-    a, b, d = st.columns(3)
-    tile(a, "Active senders", f"{int(last['active_senders']):,}", None, last["active_senders_yoy_pct"])
-    tile(b, "New senders", f"{int(last['new_senders']):,}")
-    tile(d, "ARPU", fmt_money(last["arpu_usd"]), last["arpu_usd_mom_pct"], last["arpu_usd_yoy_pct"])
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Active and new senders**")
-        long = g.melt(id_vars="metric_time__month", value_vars=["active_senders", "new_senders"], var_name="series")
-        fig = px.line(long, x="metric_time__month", y="value", color="series", markers=True,
-                      color_discrete_sequence=c["series"][:2])
-        show(fig, g, key="growth_senders", legend=True)
-    with right:
-        st.markdown("**ARPU by month**")
-        fig = go.Figure(go.Bar(x=g["metric_time__month"], y=g["arpu_usd"], marker_color=c["series"][0],
-                               hovertemplate="%{x|%b %Y}<br>$%{y:,.2f}<extra></extra>"))
-        show(fig, g, key="growth_arpu", y="$,.0f")
+    cards((f"Active senders · {last['metric_time__month']:%b %Y}", f"{int(last['active_senders']):,}",
+           growth(last["active_senders_yoy_pct"]), "Y/Y"),
+          ("New senders", f"{int(last['new_senders']):,}"),
+          ("ARPU (net revenue per active sender)", fmt_money(last["arpu_usd"]), growth(last["arpu_usd_mom_pct"]),
+           f"M/M · {growth(last['arpu_usd_yoy_pct'])} Y/Y"),
+          ("ARPU a year earlier", fmt_money(g["arpu_usd"].iloc[-13]) if len(g) > 12 else "–"))
+    charts(("Active and new senders by month", lines(g, {"active_senders": "Active senders", "new_senders": "New senders"},
+                                                     "%{y:,}"), g, "growth_senders", {"legend": True}),
+           ("ARPU by month", bars(g, "metric_time__month", "arpu_usd", "$%{y:,.2f}"), g, "growth_arpu", {"y": "$,.0f"}))
 
 with tabs[9]:
-    header("payin_performance")
+    question("Which banks decline cards, and which stores let cash barcodes expire?", "payin_performance")
     payin = load("payin_performance")
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**Card decline rate by issuing bank and processor**")
-        cards = payin.dropna(subset=["card_decline_rate"]).sort_values("card_decline_rate")
-        cards = cards.assign(bank=cards["payment__funding_institution"] + " · " + cards["payment__payment_processor"])
-        show(hbar(cards, "card_decline_rate", "bank", "%{x:.1%}"), cards.drop(columns="bank"), key="payin_cards",
-             x=".0%", height=440)
-    with right:
-        st.markdown("**Cash barcode expiry rate by store**")
-        cash = payin.dropna(subset=["cash_expiry_rate"]).sort_values("cash_expiry_rate")
-        show(hbar(cash, "cash_expiry_rate", "payment__funding_institution", "%{x:.1%}", c["series"][1]), cash,
-             key="payin_cash", x=".0%", height=440)
+    cards_ = payin.dropna(subset=["card_decline_rate"]).sort_values("card_decline_rate")
+    cash = payin.dropna(subset=["cash_expiry_rate"]).sort_values("cash_expiry_rate")
+    cards((f"Lowest card decline · {cards_['payment__funding_institution'].iloc[0]}", pct(cards_["card_decline_rate"].iloc[0])),
+          (f"Highest card decline · {cards_['payment__funding_institution'].iloc[-1]}", pct(cards_["card_decline_rate"].iloc[-1])),
+          (f"Lowest cash expiry · {cash['payment__funding_institution'].iloc[0]}", pct(cash["cash_expiry_rate"].iloc[0])),
+          (f"Highest cash expiry · {cash['payment__funding_institution'].iloc[-1]}", pct(cash["cash_expiry_rate"].iloc[-1])))
+    cards_ = cards_.assign(bank=cards_["payment__funding_institution"] + " · " + cards_["payment__payment_processor"])
+    charts(("Card decline rate by issuing bank and processor",
+            hbar(cards_, "card_decline_rate", "bank", "%{x:.1%}"), cards_.drop(columns="bank"), "payin_cards",
+            {"x": ".0%"}),
+           ("Cash barcode expiry rate by store",
+            hbar(cash, "cash_expiry_rate", "payment__funding_institution", "%{x:.1%}", c["series"][1]), cash,
+            "payin_cash", {"x": ".0%"}))
 
 with tabs[10]:
+    st.subheader("How is the warehouse modelled, and which dimensions do the marts share?")
     st.caption("Kimball data marts by business process. Facts store additive ingredients; they share the conformed "
                "dimensions in `core`, so metrics from different marts can be compared by the same user, date, "
                "corridor or provider (drill-across). Read from dbt's manifest, so it always matches the model.")

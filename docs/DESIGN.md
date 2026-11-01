@@ -534,6 +534,12 @@ linen), papaya `#f26629`, blueberry `#6060bf`; dark mode `#06a7a6`, `#e85f22`, `
 6-step single-hue teal ramp whose newest step in dark mode is the brand cyan. Status colors (provider tiers) stay
 reserved and always carry an icon and a label. The brand fonts (Plain, Saans) are licensed, so the system font stays.
 
+**Layout (v8).** Every question tab has the same shape: the question in plain words, how it is measured (the saved
+query's description), four cards of the same size, and two charts of the same height side by side, each with its
+table view. Q1 splits the money into revenue before losses (fees + FX, the `revenue_before_losses_usd` metric),
+chargeback losses and net revenue, because one chargeback costs the whole principal and can take most of a month's
+margin.
+
 **Data model tab (v8).** The last tab explains the Kimball design: a star diagram (one cluster per mart, the
 conformed dimensions in `core`) and the bus matrix. Both are read from dbt's `manifest.json`: a ✔ is a
 `relationships` test from a mart model's key to a core dimension (✔✔ = role-playing, e.g. payment date and
