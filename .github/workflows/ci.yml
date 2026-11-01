@@ -1,49 +1,54 @@
 name: ci
 
+# Every pull request to main/master must pass both checks before it can be merged (direct pushes are blocked).
+# The push trigger re-runs the checks on main after each merge so the README badge shows its state.
 on:
+  pull_request:
+    branches: [main, master]
   push:
     branches: [main]
-  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DO_NOT_TRACK: "1"
 
 jobs:
-  pipeline:
-    name: pipeline (Python ${{ matrix.python-version }})
+  checks:
+    name: checks (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.13"]
-    env:
-      DO_NOT_TRACK: "1"
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-
-      - name: Install pinned dependencies
-        run: pip install -r requirements.txt
-
+      - run: pip install -r requirements.txt
       - name: dbt deps + dbt debug
         run: python run.py setup
-
-      - name: Full pipeline (replay, build, metrics, compiled SQL, answers)
+      - name: Full pipeline (load, SCD2 replay, dbt build with every test, mf validate-configs, answers)
         run: python run.py all
-
-      - name: dbt tests + pytest (semantic layer, dashboard)
-        run: python run.py test
-
-      - name: sqlfluff
+      # After `all`, so sqlfluff also renders the incremental branches of fct_payments and fct_remittances.
+      - name: Lint (ruff on Python, sqlfluff on dbt SQL)
         run: python run.py lint
-
+      - name: dbt test + pytest (semantic layer reconciliation, dashboard)
+        run: python run.py test
       - name: Edge-case batch fails exactly the expected tests
-        run: python scripts/check_edge_cases.py
-
+        run: python run.py check-edge-cases
       - name: Upload the generated answers
-        if: always()
+        if: always() && matrix.python-version == '3.13'
         uses: actions/upload-artifact@v4
         with:
-          name: answers-py${{ matrix.python-version }}
+          name: answers
           path: docs/answers.md
