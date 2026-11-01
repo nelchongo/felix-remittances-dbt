@@ -28,6 +28,10 @@ ROOT = Path(__file__).resolve().parent
 DBT_DIR = ROOT / "dbt"
 WAREHOUSE_DIR = ROOT / "warehouse"
 DEFAULT_DB_PATH = WAREHOUSE_DIR / "felix.duckdb"
+DATA_DIR = ROOT / "data"
+SOURCE_DIR = DATA_DIR / "source"  # untouched baseline extract, never modified
+TEST_BATCHES_DIR = DATA_DIR / "test_batches"  # never modified
+LANDING_DIR = DATA_DIR / "landing"  # working copy read by the loader (git-ignored)
 
 
 # --------------------------------------------------------------------------------------
@@ -69,6 +73,15 @@ def dbt(*args: str) -> None:
     run(["dbt", *args])
 
 
+def db_path() -> Path:
+    return Path(tool_env()["DUCKDB_PATH"])
+
+
+def require_landing() -> None:
+    if not LANDING_DIR.is_dir():
+        sys.exit("error: data/landing does not exist. Run `python run.py reset-data` first.")
+
+
 def not_implemented(command: str, phase: int) -> None:
     sys.exit(f"`{command}` is not implemented yet (Phase {phase} of docs/IMPLEMENTATION_PLAN.md).")
 
@@ -89,20 +102,70 @@ def cmd_snapshot(_: argparse.Namespace) -> None:
     dbt("snapshot")
 
 
+def cmd_reset_data(_: argparse.Namespace) -> None:
+    """data/landing <- data/source (as <table>/<table>__baseline.csv) and delete the warehouse."""
+    from ingest.load_raw import TABLES
+
+    if LANDING_DIR.exists():
+        shutil.rmtree(LANDING_DIR)
+    for table in TABLES:
+        source = SOURCE_DIR / f"{table}.csv"
+        if not source.is_file():
+            sys.exit(f"error: {source.relative_to(ROOT)} is missing.")
+        (LANDING_DIR / table).mkdir(parents=True)
+        shutil.copy2(source, LANDING_DIR / table / f"{table}__baseline.csv")
+    db = db_path()
+    for path in (db, db.with_name(db.name + ".wal")):
+        path.unlink(missing_ok=True)
+    print(f"data/landing reset to the baseline ({len(TABLES)} tables). Deleted {db.name}.")
+
+
 def cmd_load(_: argparse.Namespace) -> None:
-    not_implemented("load", 1)
+    from ingest.load_raw import load
+
+    require_landing()
+    load(db_path(), LANDING_DIR)
 
 
 def cmd_replay(_: argparse.Namespace) -> None:
-    not_implemented("replay", 1)
+    """First load month by month. After each month: dbt snapshot (staging/intermediate are views,
+    so they are created once and then always see the rows loaded so far)."""
+    from ingest.load_raw import load
+
+    require_landing()
+    views_built = False
+
+    def after_month(month: str) -> None:
+        nonlocal views_built
+        if not views_built:
+            dbt("run", "--select", "staging", "intermediate")
+            views_built = True
+        dbt("--quiet", "snapshot")
+
+    load(db_path(), LANDING_DIR, replay="monthly", on_month=after_month)
 
 
 def cmd_add_batch(args: argparse.Namespace) -> None:
-    not_implemented(f"add-batch {args.batch}", 1)
+    """Copy data/test_batches/<batch>/<table>.csv to data/landing/<table>/<table>__<batch>.csv,
+    then load, snapshot and build."""
+    from ingest.load_raw import TABLES, load
 
-
-def cmd_reset_data(_: argparse.Namespace) -> None:
-    not_implemented("reset-data", 1)
+    batch_dir = TEST_BATCHES_DIR / args.batch
+    if not batch_dir.is_dir():
+        available = ", ".join(sorted(p.name for p in TEST_BATCHES_DIR.iterdir() if p.is_dir()))
+        sys.exit(f"error: no test batch named {args.batch!r}. Available: {available}")
+    require_landing()
+    copied = []
+    for table in TABLES:
+        source = batch_dir / f"{table}.csv"
+        if source.is_file():
+            (LANDING_DIR / table).mkdir(exist_ok=True)
+            shutil.copy2(source, LANDING_DIR / table / f"{table}__{args.batch}.csv")
+            copied.append(table)
+    print(f"Copied batch {args.batch!r} into data/landing: {', '.join(copied)}")
+    load(db_path(), LANDING_DIR)
+    dbt("snapshot")
+    dbt("build")
 
 
 def cmd_compile_metrics(_: argparse.Namespace) -> None:
