@@ -23,14 +23,20 @@ on-run-end:
   # Placeholder: Phase 5 writes run results to audit.dbt_run_results.
   - "{{ log_run_results(results) }}"
 
+# Sequence tags: `python run.py pipeline` builds one tag at a time, in this order:
+#   staging → intermediate → snapshot → core → marts   (dbt build --select tag:<step>)
+# Every model and snapshot carries exactly one of them (tags add up down the tree, so `marts` is set per mart
+# folder, not on marts/, which keeps core dimensions out of it).
 models:
   felix:
     staging:
       +materialized: view
       +schema: staging
+      +tags: ["staging"]
     intermediate:
       +materialized: view
       +schema: intermediate
+      +tags: ["intermediate"]
       # `protected`: usable by any model or snapshot in this project, not by other projects.
       # (`private` would only allow refs from the same group, which breaks marts and snp_beneficiaries.)
       +access: protected
@@ -41,22 +47,28 @@ models:
         enforced: true
       core:
         +schema: core
+        +tags: ["core"]
       finance:
         +schema: finance
         +group: finance
+        +tags: ["marts"]
       operations:
         +schema: operations
         +group: operations
+        +tags: ["marts"]
       growth:
         +schema: growth
         +group: growth
+        +tags: ["marts"]
       risk:
         +schema: risk
         +group: risk
+        +tags: ["marts"]
 
 snapshots:
   felix:
     +schema: snapshots
+    +tags: ["snapshot"]
 
 vars:
   # Q2: volume segments by cumulative share of volume (crossing user is included in the top segment)
