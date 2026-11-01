@@ -59,7 +59,7 @@ final as (
         completed_at,
         failed_at,
         resolved_at,
-        {{ dbt.datediff('attempted_at', 'resolved_at', 'minute') }} as minutes_to_resolve,
+        date_diff('minute', attempted_at, resolved_at) as minutes_to_resolve,
         attempt_number = 1 as is_first_attempt,
         is_final_attempt,
         attempt_number > 1 as is_retry,

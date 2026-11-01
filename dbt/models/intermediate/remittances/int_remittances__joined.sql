@@ -119,7 +119,7 @@ final as (
         delivered_at,
         refunded_at,
         chargeback_at,
-        {{ dbt.datediff('receipt_created_at', 'delivered_at', 'minute') }} as minutes_to_deliver,
+        date_diff('minute', receipt_created_at, delivered_at) as minutes_to_deliver,
         case
             when is_charged_back then 'charged_back'
             when is_refunded or final_attempt_status = 'failed' then 'failed_refunded'

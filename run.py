@@ -154,10 +154,6 @@ def load_semantic_manifest() -> dict:
     return json.loads(SEMANTIC_MANIFEST.read_text(encoding="utf-8"))
 
 
-def not_implemented(command: str, phase: int) -> None:
-    sys.exit(f"`{command}` is not implemented yet (Phase {phase} of docs/IMPLEMENTATION_PLAN.md).")
-
-
 # --------------------------------------------------------------------------------------
 # Commands
 # --------------------------------------------------------------------------------------
@@ -284,7 +280,7 @@ def cmd_test(_: argparse.Namespace) -> None:
 
 
 def cmd_lint(_: argparse.Namespace) -> None:
-    not_implemented("lint", 8)
+    run(["sqlfluff", "lint", "dbt/models"], cwd=ROOT)
 
 
 def cmd_validate_metrics() -> None:

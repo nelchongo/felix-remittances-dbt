@@ -26,7 +26,8 @@ holidays as (
         *,
         case
             when month_number = 1 and day_of_month = 1 then 'New Year''s Day'
-            when month_number = 1 and iso_day_of_week = 1 and day_of_month between 15 and 21 then 'Martin Luther King Jr. Day'
+            when month_number = 1 and iso_day_of_week = 1 and day_of_month between 15 and 21
+                then 'Martin Luther King Jr. Day'
             when month_number = 2 and iso_day_of_week = 1 and day_of_month between 15 and 21 then 'Presidents'' Day'
             when month_number = 5 and iso_day_of_week = 1 and day_of_month >= 25 then 'Memorial Day'
             when month_number = 6 and day_of_month = 19 then 'Juneteenth'

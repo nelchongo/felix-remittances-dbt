@@ -26,9 +26,9 @@ ranked as (
         user_id,
         lifetime_volume_usd,
         n_transfers,
-        row_number() over (order by lifetime_volume_usd desc, user_id) as volume_rank,
+        row_number() over (order by lifetime_volume_usd desc, user_id asc) as volume_rank,
         sum(lifetime_volume_usd) over (
-            order by lifetime_volume_usd desc, user_id rows between unbounded preceding and current row
+            order by lifetime_volume_usd desc, user_id asc rows between unbounded preceding and current row
         ) as cumulative_volume_usd,
         sum(lifetime_volume_usd) over () as total_volume_usd
     from sender_volume

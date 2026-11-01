@@ -5,12 +5,12 @@
 with
 
 payments as (
-    select * from {{ ref('int_payments__lifecycle') }}
+    select lifecycle.* from {{ ref('int_payments__lifecycle') }} as lifecycle
     {% if is_incremental() %}
-        where created_at is null
-            or created_at >= (select max(created_at) from {{ this }})
+        where lifecycle.created_at is null
+            or lifecycle.created_at >= (select max(current_table.created_at) from {{ this }} as current_table)
             - interval '{{ var("chargeback_maturity_days") }} days'
-            or last_updated_at > (select max(last_updated_at) from {{ this }})
+            or lifecycle.last_updated_at > (select max(current_table.last_updated_at) from {{ this }} as current_table)
     {% endif %}
 ),
 

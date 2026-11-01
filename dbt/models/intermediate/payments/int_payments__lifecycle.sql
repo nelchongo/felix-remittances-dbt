@@ -81,7 +81,7 @@ final as (
         refunded_at,
         chargeback_at,
         last_updated_at,
-        {{ dbt.datediff('created_at', 'succeeded_at', 'minute') }} as minutes_to_pay,
+        date_diff('minute', created_at, succeeded_at) as minutes_to_pay,
         is_succeeded,
         is_failed,
         is_expired,

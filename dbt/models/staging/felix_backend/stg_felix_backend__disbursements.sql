@@ -6,7 +6,9 @@ disbursement_events as (
 ),
 
 latest as (
-    {{ dedupe_latest('disbursement_events', 'disbursement_id', 'updated_at desc nulls last, _loaded_at desc, _batch_id desc') }}
+    {{ dedupe_latest(
+        'disbursement_events', 'disbursement_id', 'updated_at desc nulls last, _loaded_at desc, _batch_id desc'
+    ) }}
 ),
 
 final as (

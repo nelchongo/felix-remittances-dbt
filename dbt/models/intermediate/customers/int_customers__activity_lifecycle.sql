@@ -52,9 +52,16 @@ cohorts as (
     group by user_id
 ),
 
+month_bounds as (
+    select
+        min(activity_month) as first_month,
+        max(activity_month) as last_month
+    from monthly
+),
+
 months as (
     select cast(unnest(generate_series(first_month, last_month, interval 1 month)) as date) as activity_month
-    from (select min(activity_month) as first_month, max(activity_month) as last_month from monthly)
+    from month_bounds
 ),
 
 spine as (
@@ -95,7 +102,7 @@ windowed as (
         ), 0) as active_months_in_lookback,
         coalesce(lag(is_active) over (partition by user_id order by activity_month), false)
             as was_active_last_month,
-        {{ dbt.datediff('last_transfer_to_date_at', "(activity_month + interval 1 month)", 'day') }}
+        date_diff('day', last_transfer_to_date_at, (activity_month + interval 1 month))
             as days_since_last_transfer
     from filled
 ),
@@ -120,7 +127,7 @@ final as (
         user_id,
         activity_month,
         cohort_month,
-        cast({{ dbt.datediff('cohort_month', 'activity_month', 'month') }} as integer) as months_since_first_transfer,
+        cast(date_diff('month', cohort_month, activity_month) as integer) as months_since_first_transfer,
         lifecycle_status,
         is_active,
         is_recurring,

@@ -58,7 +58,7 @@ final as (
         payments.succeeded_at as payment_succeeded_at,
         payments.chargeback_at,
         cast(payments.send_amount_usd as decimal(18, 2)) as chargeback_amount_usd,
-        cast({{ dbt.datediff('payments.succeeded_at', 'payments.chargeback_at', 'day') }} as integer)
+        cast(date_diff('day', payments.succeeded_at, payments.chargeback_at) as integer)
             as days_to_chargeback
     from payments
     left join remittances on payments.payment_id = remittances.payment_id

@@ -1,6 +1,7 @@
--- Sender dimension. Type 2 (from snp_users): kyc_status, state. Type 1 (current value on every version):
--- masked email and phone, and the classification labels (Q2 volume segment, Q5 cluster). First version opens at 1900-01-01 so events
--- before the first captured change still find a version. Unknown member: user_sk = '-1'.
+-- Sender dimension. Type 2 (from snp_users): kyc_status, state.
+-- Type 1 (current value on every version): masked email and phone, and the classification labels
+-- (Q2 volume segment, Q5 cluster). The first version opens at 1900-01-01 so events before the first
+-- captured change still find a version. Unknown member: user_sk = '-1'.
 with
 
 snapshot as (

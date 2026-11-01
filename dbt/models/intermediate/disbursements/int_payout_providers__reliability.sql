@@ -27,7 +27,9 @@ final as (
         cast(n_completed_attempts as integer) as n_completed_attempts,
         case
             when n_attempts < {{ var('provider_min_attempts') }} then 'insufficient_data'
-            else {{ classify_tier(safe_divide('n_failed_attempts', 'n_attempts'), 'provider_failure_tiers', 'critical') }}
+            else {{ classify_tier(
+                safe_divide('n_failed_attempts', 'n_attempts'), 'provider_failure_tiers', 'critical'
+            ) }}
         end as reliability_tier
     from providers
 )
