@@ -49,8 +49,8 @@ python run.py dashboard          # streamlit run dashboard/app.py
 python run.py test               # dbt test + pytest tests_py
 python run.py lint               # sqlfluff lint dbt/models
 
-# direct tools (from repo root; run.py sets these env vars for you)
-export DBT_PROJECT_DIR=dbt DBT_PROFILES_DIR=dbt DO_NOT_TRACK=1
+# direct tools (from repo root; run.py sets these env vars for you). Use absolute paths: relative ones break after `cd dbt`
+export DBT_PROJECT_DIR=$PWD/dbt DBT_PROFILES_DIR=$PWD/dbt DUCKDB_PATH=$PWD/warehouse/felix.duckdb DO_NOT_TRACK=1
 dbt build --select staging+      # dbt CLI
 cd dbt && mf query --metrics gross_volume_usd,gross_volume_usd_yoy_pct --group-by metric_time__month
 ```

@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pipeline:
+    name: pipeline (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    env:
+      DO_NOT_TRACK: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install pinned dependencies
+        run: pip install -r requirements.txt
+
+      - name: dbt deps + dbt debug
+        run: python run.py setup
+
+      - name: Full pipeline (replay, build, metrics, compiled SQL, answers)
+        run: python run.py all
+
+      - name: dbt tests + pytest (semantic layer, dashboard)
+        run: python run.py test
+
+      - name: sqlfluff
+        run: python run.py lint
+
+      - name: Edge-case batch fails exactly the expected tests
+        run: python scripts/check_edge_cases.py
+
+      - name: Upload the generated answers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: answers-py${{ matrix.python-version }}
+          path: docs/answers.md

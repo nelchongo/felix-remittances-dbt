@@ -214,11 +214,11 @@ python run.py build                                          # works while the d
 > Do Phase 8. Add CI, linting, pre-commit, ADRs, the optional Makefile/Dockerfile, finalize README.md, and run a fresh-clone test. Report anything that differs from DESIGN.md.
 
 Tasks
-- [ ] `.sqlfluff` (dbt templater, duckdb dialect) + fix lint. `.pre-commit-config.yaml` (sqlfluff, end-of-file, trailing whitespace)
-- [ ] `.github/workflows/ci.yml`: Python 3.11 and 3.13 matrix → `pip install -r requirements.txt` → `python run.py all` → `python run.py test` → `python run.py lint`. Upload `docs/answers.md` as an artifact
-- [ ] ADRs: `docs/adr/0001-duckdb.md`, `0002-scd2-snapshots-replay.md`, `0003-semantic-layer-metricflow.md`, `0004-no-seeds-reference-vars.md`
-- [ ] Optional `Makefile` and `Dockerfile` (`python:3.13-slim`, `pip install -r requirements.txt`, `CMD python run.py all`), both just calling `run.py`
-- [ ] README.md: fill in screenshots, check every command, make sure the answers block is generated
+- [x] `.sqlfluff` (dbt templater, duckdb dialect) + fix lint. `.pre-commit-config.yaml` (sqlfluff, end-of-file, trailing whitespace)
+- [x] `.github/workflows/ci.yml`: Python 3.11 and 3.13 matrix → `pip install -r requirements.txt` → `python run.py all` → `python run.py test` → `python run.py lint`. Upload `docs/answers.md` as an artifact
+- [x] ADRs: `docs/adr/0001-duckdb.md`, `0002-scd2-snapshots-replay.md`, `0003-semantic-layer-metricflow.md`, `0004-no-seeds-reference-vars.md`
+- [x] Optional `Makefile` and `Dockerfile` (`python:3.13-slim`, `pip install -r requirements.txt`, `CMD python run.py all`), both just calling `run.py`
+- [x] README.md: fill in screenshots, check every command, make sure the answers block is generated
 - [ ] Fresh clone in a temp folder → follow the README literally → everything works
 
 Acceptance

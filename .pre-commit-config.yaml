@@ -1,0 +1,20 @@
+# pip install pre-commit && pre-commit install
+# data/ is excluded on purpose: the source extracts must never be modified (CLAUDE.md rule 2).
+exclude: ^(data/|dbt/target/|dbt/dbt_packages/|dashboard/compiled/)
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=2000"]
+  - repo: local
+    hooks:
+      - id: sqlfluff-lint
+        name: sqlfluff lint (dbt templater, duckdb)
+        entry: python run.py lint
+        language: system
+        pass_filenames: false
+        files: ^dbt/models/.*\.sql$
