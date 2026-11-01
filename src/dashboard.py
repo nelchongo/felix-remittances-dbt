@@ -1,4 +1,6 @@
-"""Félix remittances dashboard: the answers to the brief, one tab per question.  `python run.py dashboard`
+"""Félix remittances dashboard: the answers to the brief, one tab per question, in the Félix Pago brand.
+
+`python run.py` starts it in the background (or `python run.py dashboard` in the foreground).
 
 It shows the same saved queries as docs/answers.md. `python run.py compile-metrics` writes the SQL MetricFlow
 generates for them to warehouse/compiled/, and this app runs that SQL on a short-lived read-only DuckDB
@@ -7,6 +9,7 @@ connection: no formulas live here (plotly only draws) and `dbt build` can run wh
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 import sys
@@ -20,38 +23,36 @@ import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from src.brand import CHARTS, CYAN, FAVICON, LINEN, LOGO_ON_DARK, SLATE
 from src.render_answers import fmt_money, trim_empty_months
 
 DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
 COMPILED = ROOT / "warehouse" / "compiled"
 MANIFEST = ROOT / "dbt" / "target" / "semantic_manifest.json"
 
-# Validated reference palette (fixed order, light / dark steps). Status colors only for good / bad tiers.
-PALETTE = {
-    "light": {"series": ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"], "neutral": "#c3c2b7",
-              "grid": "#e1e0d9", "axis": "#c3c2b7", "ink": "#52514e", "shade": "rgba(137,135,129,0.12)"},
-    "dark": {"series": ["#3987e5", "#d95926", "#199e70", "#c98500"], "neutral": "#52514e",
-             "grid": "#2c2c2a", "axis": "#383835", "ink": "#c3c2b7", "shade": "rgba(137,135,129,0.18)"},
-}
+# Status colors are reserved for the good / bad tiers (never a series), always with an icon and a label.
 TIER_COLOR = {"healthy": "#0ca30c", "watch": "#fab219", "critical": "#d03b3b", "insufficient_data": "#ec835a"}
 TIER_ICON = {"healthy": "✅", "watch": "⚠️", "critical": "⛔", "insufficient_data": "❔"}
-ORDINAL_BLUE = ["#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95"]
 METHOD = {"debit_card": "Debit card", "cash": "Cash"}
 
 
+def mode() -> str:
+    return "dark" if getattr(getattr(st.context, "theme", None), "type", None) == "dark" else "light"
+
+
 def colors() -> dict:
-    theme = getattr(getattr(st.context, "theme", None), "type", None)
-    return PALETTE["dark" if theme == "dark" else "light"]
+    return CHARTS[mode()]
 
 
 # --------------------------------------------------------------------------------------
 # Data
 # --------------------------------------------------------------------------------------
-@st.cache_data(ttl=60, show_spinner=False)
-def saved_query(name: str) -> pd.DataFrame:
+@st.cache_data(show_spinner=False)
+def saved_query(name: str, warehouse_version: float) -> pd.DataFrame:
+    """Cached per warehouse version (the file's modification time), so a refresh after a build shows new data."""
     sql = COMPILED / f"{name}.sql"
     if not DB.exists() or not sql.exists():
-        raise FileNotFoundError("Run `python run.py all` first (it builds the warehouse and compiles the SQL).")
+        raise FileNotFoundError("No data yet. In the terminal, run `python run.py` and choose 1 (Run the dbt sequence).")
     try:
         with duckdb.connect(str(DB), read_only=True) as con:
             df = con.execute(sql.read_text(encoding="utf-8")).fetch_df()
@@ -65,13 +66,13 @@ def saved_query(name: str) -> pd.DataFrame:
 
 def load(name: str) -> pd.DataFrame:
     try:
-        return saved_query(name)
+        return saved_query(name, DB.stat().st_mtime if DB.exists() else 0.0)
     except FileNotFoundError as exc:
         st.info(str(exc), icon="ℹ️")
         st.stop()
 
 
-@st.cache_data(ttl=60, show_spinner=False)
+@st.cache_data(ttl=300, show_spinner=False)
 def descriptions() -> dict[str, str]:
     if not MANIFEST.exists():
         return {}
@@ -131,9 +132,26 @@ def hbar(df: pd.DataFrame, x: str, y: str, hover: str, colors_: list[str] | str 
 # --------------------------------------------------------------------------------------
 # Page
 # --------------------------------------------------------------------------------------
-st.set_page_config(page_title="Félix remittances", page_icon="💸", layout="wide")
-st.title("Félix remittances")
-st.caption("Every number is a MetricFlow saved query (`dbt/models/semantic/`), the same ones behind `docs/answers.md`.")
+def hero() -> None:
+    """Brand header: the linen wordmark on a slate band with a cyan rule, as on felixpago.com."""
+    logo = base64.b64encode(LOGO_ON_DARK.read_bytes()).decode()
+    border = f"border:1px solid {CYAN};" if mode() == "dark" else ""
+    st.markdown(
+        f"""<div style="background:{SLATE};{border}border-radius:16px;padding:20px 24px;display:flex;
+        align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:8px">
+          <img src="data:image/svg+xml;base64,{logo}" alt="Félix Pago" style="height:32px">
+          <div style="border-left:3px solid {CYAN};padding-left:16px;color:{LINEN}">
+            <div style="font-size:1.4rem;font-weight:700;line-height:1.25">Remittances analytics</div>
+            <div style="font-size:0.85rem;opacity:0.75">Take-home prototype on synthetic data · every number is a
+            MetricFlow saved query, the same ones behind docs/answers.md</div>
+          </div>
+        </div>""",
+        unsafe_allow_html=True,
+    )
+
+
+st.set_page_config(page_title="Félix Pago · Remittances analytics", page_icon=str(FAVICON), layout="wide")
+hero()
 c = colors()
 tabs = st.tabs(["Q1 Volume", "Q2 Top 50%", "Q3 Recurring", "Q4 Providers", "Q5 Clusters", "Q6 Chargebacks",
                 "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in"])
@@ -244,10 +262,11 @@ with tabs[7]:
     st.markdown("**Net revenue per user by cohort, N months after the first transfer**")
     curve = load("q8_ltv_curve")
     curve["cohort"] = curve["customer_month__cohort_month"].astype(str).str[:7]
-    quarterly = sorted(m for m in curve["cohort"].unique() if m[5:7] in {"01", "04", "07", "10"})[-8:]
+    ramp = c["ordinal"]  # one hue, oldest → newest cohort (most emphasis)
+    quarterly = sorted(m for m in curve["cohort"].unique() if m[5:7] in {"01", "04", "07", "10"})[-len(ramp):]
     curve = curve[curve["cohort"].isin(quarterly)]
     fig = px.line(curve, x="customer_month__months_since_first_transfer", y="ltv_per_cohort_user", color="cohort",
-                  color_discrete_sequence=ORDINAL_BLUE[-len(quarterly):], category_orders={"cohort": quarterly})
+                  color_discrete_sequence=ramp[-len(quarterly):], category_orders={"cohort": quarterly})
     show(fig, curve.drop(columns="cohort"), key="q8_curve", y="$,.0f", legend=True)
 
 with tabs[8]:
