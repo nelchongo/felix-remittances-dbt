@@ -373,7 +373,7 @@ The marts are now **small and clean**: facts and dimensions only. The `agg_*` ta
 models:
   felix:
     staging:      { +materialized: view, +schema: staging }
-    intermediate: { +materialized: view, +schema: intermediate, +access: private }
+    intermediate: { +materialized: view, +schema: intermediate, +access: protected }   # private would block refs from marts in other groups
     marts:
       +materialized: table
       +access: public

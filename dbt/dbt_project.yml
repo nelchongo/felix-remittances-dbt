@@ -31,10 +31,9 @@ models:
     intermediate:
       +materialized: view
       +schema: intermediate
-      # TODO(design): DESIGN §9 sets `private`, but dbt only lets a private model be referenced from a node in
-      # the same group. Intermediate models have no group, so every mart and snp_beneficiaries would fail to
-      # parse ("private to the '' group", verified on dbt 1.12.6). Proposed fix: `protected` (dbt's default).
-      +access: private
+      # `protected`: usable by any model or snapshot in this project, not by other projects.
+      # (`private` would only allow refs from the same group, which breaks marts and snp_beneficiaries.)
+      +access: protected
     marts:
       +materialized: table
       +access: public
