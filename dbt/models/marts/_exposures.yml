@@ -13,6 +13,8 @@ exposures:
       - metric('gross_volume_usd')
       - metric('gross_volume_usd_yoy_pct')
       - metric('net_revenue_usd')
+      - metric('revenue_before_losses_usd')
+      - metric('chargeback_loss_usd')
       - metric('recurring_share')
       - metric('churn_rate')
       - metric('payout_attempt_failure_rate')
