@@ -1,6 +1,0 @@
-# Streamlit settings for `python run.py dashboard` (run from the repo root).
-[browser]
-gatherUsageStats = false
-
-[server]
-runOnSave = false
