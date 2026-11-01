@@ -545,6 +545,11 @@ conformed dimensions in `core`) and the bus matrix. Both are read from dbt's `ma
 `relationships` test from a mart model's key to a core dimension (✔✔ = role-playing, e.g. payment date and
 chargeback date), so the page cannot drift from the model.
 
+**Data catalog tab (v8).** The dbt docs inside the dashboard: pick any source, model or snapshot to see its
+description, owner, grain, every column with its type and description, and its lineage two steps upstream and
+downstream. A toggle embeds the full searchable dbt docs site (`dbt docs generate --static`, one 4 MB page). The
+dbt sequence regenerates the docs in its semantic-layer step; `python run.py docs` does it on demand.
+
 **Fallback (§18.3):** if MetricFlow's compile step proves fragile in the pinned versions, the dashboard can calculate the same formulas from the base measures in a small pandas registry. Because the facts store the ingredients, both options stay open.
 
 ---

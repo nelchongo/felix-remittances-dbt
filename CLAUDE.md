@@ -54,6 +54,7 @@ python run.py all                # reset-data → the sequence: ingest (monthly 
 python run.py build              # dbt build (models + snapshots + tests)
 python run.py add-batch 2026-07  # copy a test batch into landing, load it, snapshot, build
 python run.py answers            # run saved queries → docs/answers.md
+python run.py docs               # dbt docs generate --static (shown in the dashboard's Data catalog tab)
 python run.py dashboard          # streamlit run src/dashboard.py
 python run.py test               # dbt test + pytest src/tests
 python run.py lint               # ruff (Python) + sqlfluff (dbt SQL); settings are flags in run.py, no config files

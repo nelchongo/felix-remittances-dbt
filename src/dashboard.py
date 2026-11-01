@@ -21,6 +21,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -31,6 +32,9 @@ DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
 COMPILED = ROOT / "warehouse" / "compiled"
 MANIFEST = ROOT / "dbt" / "target" / "semantic_manifest.json"
 DBT_MANIFEST = ROOT / "dbt" / "target" / "manifest.json"
+DOCS_SITE = ROOT / "dbt" / "target" / "static_index.html"  # `python run.py docs` (dbt docs generate --static)
+LAYERS = {"source": "Source (raw)", "staging": "Staging", "intermediate": "Intermediate", "snapshot": "Snapshots",
+          "core": "Core dimensions", "marts": "Marts"}
 MARTS = ["finance", "operations", "growth", "risk"]
 DIM_ORDER = ["date", "users", "beneficiaries", "payment_methods", "payment_processors", "funding_institutions",
              "payout_providers", "corridors"]  # most shared first; any other core dimension follows
@@ -117,6 +121,54 @@ def data_model(manifest_version: float) -> tuple[pd.DataFrame, dict]:
     shared = {"mart": "", "fact": "shared by"}
     shared |= {d.removeprefix("dim_"): f"{(matrix[d.removeprefix('dim_')] != '').sum()} facts" for d in dims}
     return pd.concat([matrix, pd.DataFrame([shared])], ignore_index=True), graph
+
+
+@st.cache_data(show_spinner=False)
+def catalog(manifest_version: float) -> dict[str, dict]:
+    """Every source, model and snapshot from dbt's manifest: layer, description, metadata, columns and lineage."""
+    manifest = json.loads(DBT_MANIFEST.read_text(encoding="utf-8"))
+    entries: dict[str, dict] = {}
+    for uid, node in {**manifest["nodes"], **manifest["sources"]}.items():
+        kind = node["resource_type"]
+        if kind not in ("model", "snapshot", "source"):
+            continue
+        layer = "source" if kind == "source" else next((t for t in node.get("tags", []) if t in LAYERS), "")
+        meta = node.get("config", {}).get("meta", {}) or node.get("meta", {})
+        entries[uid] = {
+            "name": f"raw.{node['name']}" if kind == "source" else node["name"],
+            "layer": layer, "kind": kind, "schema": node.get("schema", ""),
+            "materialized": "table (loaded by src/load_raw.py)" if kind == "source" else node["config"].get("materialized", ""),
+            "description": node.get("description", "").strip(),
+            "owner": meta.get("owner", ""), "grain": meta.get("grain", ""),
+            "columns": [{"column": c["name"], "type": c.get("data_type") or "", "description": c.get("description", "")}
+                        for c in node.get("columns", {}).values()],
+            "parents": [u for u in node.get("depends_on", {}).get("nodes", []) if u.split(".")[0] in ("model", "snapshot", "source")],
+        }
+    for uid, entry in entries.items():
+        entry["children"] = [other for other, e in entries.items() if uid in e["parents"]]
+    return entries
+
+
+def lineage_diagram(entries: dict, selected: str, depth: int = 2) -> str:
+    """Graphviz DOT of the selected node with `depth` levels upstream and downstream (sources, models, snapshots)."""
+    def walk(start: str, direction: str) -> set[str]:
+        seen, level = set(), {start}
+        for _ in range(depth):
+            level = {nxt for uid in level for nxt in entries[uid][direction] if nxt in entries} - seen
+            seen |= level
+        return seen
+
+    keep = walk(selected, "parents") | walk(selected, "children") | {selected}
+    c, ink = colors(), "#fefcf9" if mode() == "dark" else "#082422"
+    lines = ['digraph { rankdir=LR; bgcolor="transparent"; nodesep=0.1; ranksep=0.5;',
+             f'node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="{c["axis"]}"];',
+             f'edge [color="{c["axis"]}", arrowsize=0.5];']
+    for uid in sorted(keep):
+        e = entries[uid]
+        fill, font = (c["series"][0], "white") if uid == selected else (c["neutral"], "#082422" if mode() == "light" else ink)
+        lines.append(f'"{uid}" [label="{e["name"]}\\n{LAYERS.get(e["layer"], "")}", fillcolor="{fill}", fontcolor="{font}"];')
+    lines += [f'"{parent}" -> "{uid}";' for uid in keep for parent in entries[uid]["parents"] if parent in keep]
+    return "\n".join(lines + ["}"])
 
 
 def star_diagram(graph: dict) -> str:
@@ -246,7 +298,7 @@ st.set_page_config(page_title="Félix Pago · Remittances analytics", page_icon=
 hero()
 c = colors()
 tabs = st.tabs(["Q1 Volume", "Q2 Top 50%", "Q3 Recurring", "Q4 Providers", "Q5 Clusters", "Q6 Chargebacks",
-                "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in", "Data model"])
+                "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in", "Data model", "Data catalog"])
 
 with tabs[0]:
     question("How much money moves through Félix each month, and how much does Félix keep?", "q1_monthly_volume")
@@ -436,4 +488,37 @@ with tabs[10]:
     st.caption("✔ one foreign key to the dimension · ✔✔ role-playing (two keys, e.g. payment date and chargeback "
                "date) · `users` and `beneficiaries` are SCD2: facts join the version valid at the event time. "
                "A dimension shared by several facts is the bridge between marts.")
+
+with tabs[11]:
+    st.subheader("What is in each table, and where does its data come from?")
+    st.caption("The dbt docs: every source, model and snapshot with its description, columns and lineage, read from "
+               "dbt's manifest. `python run.py docs` refreshes them (the dbt sequence does it too).")
+    if not DBT_MANIFEST.exists():
+        st.info("No dbt manifest yet. In the terminal, run `python run.py` and choose 1 (Run sequentially).", icon="ℹ️")
+        st.stop()
+    entries = catalog(DBT_MANIFEST.stat().st_mtime)
+    kinds = pd.Series([e["kind"] for e in entries.values()])
+    cards(("Sources (raw)", f"{(kinds == 'source').sum()}"),
+          ("Models", f"{(kinds == 'model').sum()}"),
+          ("Snapshots (SCD2)", f"{(kinds == 'snapshot').sum()}"),
+          ("Documented columns", f"{sum(len(e['columns']) for e in entries.values()):,}"))
+    order = list(LAYERS)
+    options = sorted(entries, key=lambda u: (order.index(entries[u]["layer"]) if entries[u]["layer"] in order else 9,
+                                             entries[u]["name"]))
+    selected = st.selectbox("Table", options, index=options.index("model.felix.fct_payments") if "model.felix.fct_payments" in options else 0,
+                            format_func=lambda u: f"{LAYERS.get(entries[u]['layer'], '')} · {entries[u]['name']}")
+    entry = entries[selected]
+    left, right = st.columns(2)
+    with left, st.container(border=True, height=CHART_HEIGHT + 40):
+        st.markdown(f"**{entry['name']}** · `{entry['schema']}` · {entry['materialized']}")
+        facts = [f"**Owner** {entry['owner']}" if entry["owner"] else "", f"**Grain** {entry['grain']}" if entry["grain"] else ""]
+        if any(facts):
+            st.caption(" · ".join(f for f in facts if f))
+        st.markdown(entry["description"] or "_No description._")
+    with right:
+        st.dataframe(pd.DataFrame(entry["columns"]), hide_index=True, height=CHART_HEIGHT + 40)
+    st.markdown("**Lineage: two steps upstream (where the data comes from) and downstream (where it goes)**")
+    st.graphviz_chart(lineage_diagram(entries, selected), use_container_width=True)
+    if DOCS_SITE.exists() and st.toggle("Show the full dbt docs site (searchable, 4 MB)"):
+        components.html(DOCS_SITE.read_text(encoding="utf-8"), height=900, scrolling=True)
 

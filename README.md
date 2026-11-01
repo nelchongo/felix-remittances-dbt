@@ -23,7 +23,8 @@ the background, and its link is at the top of the menu.
   connected dots on the left and the live dbt output on the right.
 - **2 · Add a monthly test batch**: loads new data and runs the same sequence incrementally (about 10 seconds).
 - **3 · Run the checks**: dbt test, pytest, ruff and sqlfluff.
-- **4 · Open the dashboard**: one tab per question, in Félix Pago's colors. Refresh it after each run.
+- **4 · Open the dashboard**: one tab per question, in Félix Pago's colors, plus the data model (bus matrix) and
+  the dbt docs (every table, column and lineage). Refresh it after each run.
 
 ![Dashboard](docs/img/dashboard.png)
 
