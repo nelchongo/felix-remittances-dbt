@@ -1,7 +1,7 @@
 version: 2
 
-# The Streamlit dashboard (dashboard/app.py): one tab per question. It runs the SQL MetricFlow generates for the
-# answer saved queries (`python run.py compile-metrics` → dashboard/compiled/*.sql), so it depends on the metrics.
+# The Streamlit dashboard (src/dashboard.py): one tab per question. It runs the SQL MetricFlow generates for the
+# answer saved queries (`python run.py compile-metrics` → warehouse/compiled/*.sql), so it depends on the metrics.
 exposures:
   - name: dashboard
     label: Félix remittances dashboard

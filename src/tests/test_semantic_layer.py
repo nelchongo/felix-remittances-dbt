@@ -11,7 +11,7 @@ import math
 import pandas as pd
 import pytest
 
-from scripts.render_answers import SAVED_QUERIES
+from src.render_answers import SAVED_QUERIES
 
 
 def saved_query_names() -> list[str]:

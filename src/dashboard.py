@@ -1,7 +1,7 @@
 """Félix remittances dashboard: the answers to the brief, one tab per question.  `python run.py dashboard`
 
 It shows the same saved queries as docs/answers.md. `python run.py compile-metrics` writes the SQL MetricFlow
-generates for them to dashboard/compiled/, and this app runs that SQL on a short-lived read-only DuckDB
+generates for them to warehouse/compiled/, and this app runs that SQL on a short-lived read-only DuckDB
 connection: no formulas live here (plotly only draws) and `dbt build` can run while the app is open.
 """
 
@@ -20,10 +20,10 @@ import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from scripts.render_answers import fmt_money, trim_empty_months
+from src.render_answers import fmt_money, trim_empty_months
 
 DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
-COMPILED = ROOT / "dashboard" / "compiled"
+COMPILED = ROOT / "warehouse" / "compiled"
 MANIFEST = ROOT / "dbt" / "target" / "semantic_manifest.json"
 
 # Validated reference palette (fixed order, light / dark steps). Status colors only for good / bad tiers.

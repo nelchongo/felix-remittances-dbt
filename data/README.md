@@ -1,11 +1,11 @@
 # Sample source data
 
 Félix's brief references `payments.csv`, `receipts.csv` and `disbursements.csv`, but the files weren't attached.
-These are **synthetic stand-ins** built by `scripts/generate_sample_data.py` (deterministic, seed 42, stdlib only).
+These are **synthetic stand-ins** built by `src/generate_sample_data.py` (deterministic, seed 42, stdlib only).
 `users.csv` was added so the user-level metrics have a customer dimension.
 
 ```bash
-python scripts/generate_sample_data.py            # 2,500 users, seed 42 -> rebuilds source/, test_batches/ and landing/
+python src/generate_sample_data.py            # 2,500 users, seed 42 -> rebuilds source/, test_batches/ and landing/
 ```
 
 ## Folder layout: the original files are never edited

@@ -30,7 +30,7 @@ Processor / bank / store names are illustrative examples of the US market, not F
 
 Usage
 -----
-    python scripts/generate_sample_data.py --users 2500 --seed 42
+    python src/generate_sample_data.py --users 2500 --seed 42
 """
 from __future__ import annotations
 

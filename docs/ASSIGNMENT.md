@@ -28,7 +28,7 @@ Using these 3 csv files as data sources, please:
 - Send your project to a github repo and share it with us
 
 ## Scope added by the candidate (agreed during design)
-- The CSVs were not provided, so synthetic data was generated (`scripts/generate_sample_data.py`), plus a `users.csv` for user-level metrics.
+- The CSVs were not provided, so synthetic data was generated (`src/generate_sample_data.py`), plus a `users.csv` for user-level metrics.
 - Extra metrics: average transaction value, customer lifetime value, ARPU, MoM and YoY growth, pay-in performance (processor / bank / store).
 - Kimball data marts, SCD2 snapshots, macro library, YAML metadata, MetricFlow semantic layer, Streamlit dashboard, test-data workflow.
 - Project-wide decision: **no dbt seeds at all** (not even for reference data).
