@@ -146,3 +146,51 @@ When the record was created, UTC. Parsed from two source formats by `parse_times
 {% docs col_updated_at %}
 When this version of the record was written, UTC. Orders CDC versions.
 {% enddocs %}
+
+{# ---------------------------------------------------------------- surrogate keys (marts) #}
+
+{% docs col_user_sk %}
+FK to `dim_users.user_sk`: the user version valid at the event time (point-in-time join). `'-1'` = unknown member.
+{% enddocs %}
+
+{% docs col_beneficiary_sk %}
+FK to `dim_beneficiaries.beneficiary_sk`: the beneficiary version valid at the event time. `'-1'` = unknown member (e.g. a payment without a receipt).
+{% enddocs %}
+
+{% docs col_payment_method_sk %}
+FK to `dim_payment_methods.payment_method_sk`. `'-1'` = unknown member.
+{% enddocs %}
+
+{% docs col_payment_processor_sk %}
+FK to `dim_payment_processors.payment_processor_sk`. `'-1'` = unknown member.
+{% enddocs %}
+
+{% docs col_funding_institution_sk %}
+FK to `dim_funding_institutions.funding_institution_sk`. `'-1'` = unknown member.
+{% enddocs %}
+
+{% docs col_payout_provider_sk %}
+FK to `dim_payout_providers.payout_provider_sk`. `'-1'` = unknown member.
+{% enddocs %}
+
+{% docs col_corridor_sk %}
+FK to `dim_corridors.corridor_sk` (destination country). `'-1'` = unknown member (e.g. a payment without a receipt).
+{% enddocs %}
+
+{% docs col_destination_country %}
+Corridor (ISO-2 destination country): MX, GT, HN, SV, DO, CO. Degenerate copy of the corridor for the semantic layer. NULL when the payment has no receipt.
+{% enddocs %}
+
+{# ---------------------------------------------------------------- fact measures #}
+
+{% docs col_fee_revenue_usd %}
+Félix fee earned, in USD: the payment's fee when it succeeded, else 0. Additive.
+{% enddocs %}
+
+{% docs col_chargeback_loss_usd %}
+Principal lost to a chargeback, in USD: the send amount when the card payment was charged back, else 0. Additive.
+{% enddocs %}
+
+{% docs col_net_revenue_usd %}
+`fee_revenue_usd + fx_revenue_usd − chargeback_loss_usd`. The store fee is a pass-through and not included.
+{% enddocs %}

@@ -1,0 +1,65 @@
+version: 2
+
+# Risk mart: the sender ↔ beneficiary network (Q5).
+
+models:
+  - name: bridge_user_beneficiary
+    description: >
+      **Factless fact / bridge**, one row per sender × beneficiary pair with at least one remittance.
+      Links senders to beneficiaries and clusters for network analysis; carries the pair's transfer count and
+      volume. Keys point to the **current** versions of the SCD2 dimensions.
+    config:
+      meta:
+        owner: risk-data@felixpago.com
+        kimball_fact_type: factless_bridge
+        grain: one row per user × beneficiary pair
+    data_tests:
+      - no_derived_metrics_in_facts
+      - dbt_utils.unique_combination_of_columns:
+          arguments: { combination_of_columns: [user_id, beneficiary_id] }
+    columns:
+      - name: user_beneficiary_id
+        description: Surrogate key of the pair (hash of `user_id`, `beneficiary_id`).
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: user_sk, description: "FK to the current version in `dim_users`. `'-1'` = unknown member.", data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_users'), field: user_sk } } }] }
+      - { name: beneficiary_sk, description: "FK to the current version in `dim_beneficiaries`. `'-1'` = unknown member.", data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_beneficiaries'), field: beneficiary_sk } } }] }
+      - { name: cluster_sk, description: "FK to `dim_sender_clusters.cluster_sk`.", data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_sender_clusters'), field: cluster_sk } } }] }
+      - { name: corridor_sk, description: '{{ doc("col_corridor_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_corridors'), field: corridor_sk } } }] }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: cluster_id, description: "Sender cluster (smallest user_id of the connected component).", data_type: varchar }
+      - { name: cluster_type, description: "Q5 label of the sender's cluster: `individual`, `household`, `high_fan_in`.", data_type: varchar }
+      - { name: destination_country, description: '{{ doc("col_destination_country") }}', data_type: varchar }
+      - { name: n_transfers, description: "Remittances from the user to the beneficiary.", data_type: integer, config: { meta: { additivity: additive } } }
+      - { name: volume_usd, description: "USD sent from the user to the beneficiary.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: first_sent_at, description: "First remittance of the pair, UTC.", data_type: timestamp }
+      - { name: last_sent_at, description: "Latest remittance of the pair, UTC.", data_type: timestamp }
+
+  - name: dim_sender_clusters
+    description: >
+      Q5. Sender clusters: connected components of the sender ↔ beneficiary graph (senders are linked when
+      they pay the same beneficiary). `high_fan_in` clusters contain a beneficiary receiving from at least
+      `mule_min_senders` senders and are flagged for AML review. Type 1, rebuilt every run.
+    config:
+      meta:
+        owner: risk-data@felixpago.com
+        grain: one row per cluster (+ unknown member)
+        scd_type: 1
+    columns:
+      - name: cluster_sk
+        description: Surrogate key (hash of `cluster_id`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: cluster_id, description: "Cluster identifier: the smallest user_id in the component.", data_type: varchar, data_tests: [unique, not_null] }
+      - name: cluster_type
+        description: "`individual` (1 sender), `household` (2+ senders sharing beneficiaries), `high_fan_in` (AML review)."
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [individual, household, high_fan_in, unknown] }
+      - { name: n_users, description: "Senders in the cluster (descriptive size).", data_type: integer }
+      - { name: n_beneficiaries, description: "Beneficiaries paid by the cluster (descriptive size).", data_type: integer }
+      - { name: max_senders_per_beneficiary, description: "Largest number of senders paying one beneficiary of the cluster.", data_type: integer }

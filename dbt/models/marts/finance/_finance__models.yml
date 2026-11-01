@@ -1,0 +1,170 @@
+version: 2
+
+# Finance mart: pay-in, revenue, chargebacks. Facts hold additive ingredients only; every rate, average
+# and growth % is a MetricFlow metric in models/semantic/.
+
+models:
+  - name: fct_payments
+    description: >
+      **Transaction fact**, one row per payment in its final state. Additive amounts in USD and 0/1 flags,
+      keys to the conformed dimensions (point-in-time for users and beneficiaries) and degenerate attributes
+      for the semantic layer. Incremental merge on `payment_id` with a `chargeback_maturity_days` lookback
+      so late chargebacks and refunds update their row. Answers Q1 (volume), Q6 (chargebacks), Q7 (ticket)
+      and pay-in performance through the semantic layer.
+    config:
+      materialized: incremental
+      unique_key: payment_id
+      incremental_strategy: merge
+      on_schema_change: append_new_columns
+      meta:
+        owner: finance-data@felixpago.com
+        kimball_fact_type: transaction
+        grain: one row per payment
+    data_tests:
+      - no_derived_metrics_in_facts
+    columns:
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: receipt_id, description: "Receipt issued for the payment (NULL when it never succeeded).", data_type: varchar }
+      - name: user_sk
+        description: '{{ doc("col_user_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_users'), field: user_sk } }
+      - name: beneficiary_sk
+        description: '{{ doc("col_beneficiary_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_beneficiaries'), field: beneficiary_sk } }
+      - name: payment_method_sk
+        description: '{{ doc("col_payment_method_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_payment_methods'), field: payment_method_sk } }
+      - name: payment_processor_sk
+        description: '{{ doc("col_payment_processor_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_payment_processors'), field: payment_processor_sk } }
+      - name: funding_institution_sk
+        description: '{{ doc("col_funding_institution_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_funding_institutions'), field: funding_institution_sk } }
+      - name: corridor_sk
+        description: '{{ doc("col_corridor_sk") }}'
+        data_type: varchar
+        data_tests:
+          - not_null
+          - relationships: { arguments: { to: ref('dim_corridors'), field: corridor_sk } }
+      - name: created_date_sk
+        description: "FK to `dim_date.date_sk`: payment creation date (YYYYMMDD)."
+        data_type: integer
+        data_tests:
+          - relationships: { arguments: { to: ref('dim_date'), field: date_sk } }
+      - name: succeeded_date_sk
+        description: "FK to `dim_date.date_sk`: date the payment succeeded (role-playing date). NULL if it never did."
+        data_type: integer
+        data_tests:
+          - relationships: { arguments: { to: ref('dim_date'), field: date_sk } }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - { name: destination_country, description: '{{ doc("col_destination_country") }}', data_type: varchar }
+      - { name: final_status, description: 'Current status. {{ doc("col_payment_status") }}', data_type: varchar }
+      - { name: created_at, description: '{{ doc("col_created_at") }}', data_type: timestamp }
+      - { name: succeeded_at, description: "When the payment succeeded, UTC. Time dimension of volume and revenue metrics.", data_type: timestamp }
+      - { name: last_updated_at, description: "When the current status was written, UTC. Drives the incremental filter.", data_type: timestamp }
+      - name: send_amount_usd
+        description: '{{ doc("col_send_amount_usd") }} Set on every payment; volume metrics filter `is_succeeded`.'
+        data_type: "decimal(18,2)"
+        config: { meta: { additivity: additive, unit: USD } }
+      - { name: fee_revenue_usd, description: '{{ doc("col_fee_revenue_usd") }}', data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: fx_revenue_usd, description: '{{ doc("col_fx_revenue_usd") }} 0 when there is no receipt.', data_type: "decimal(18,4)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: chargeback_loss_usd, description: '{{ doc("col_chargeback_loss_usd") }}', data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: store_fee_usd, description: "Store commission collected on succeeded cash payments (pass-through, not revenue).", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: is_succeeded, description: "1 if the payment ever succeeded. Summed with `sum_boolean`.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_failed, description: "1 if the card payment was declined.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_expired, description: "1 if the cash barcode expired unpaid.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_refunded, description: "1 if the payment was refunded.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_charged_back, description: "1 if the card payment was charged back.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_pending, description: "1 if the payment is still pending.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_first_transfer, description: "1 for the user's first succeeded payment (free transfer).", data_type: boolean, config: { meta: { additivity: additive } } }
+
+  - name: fct_chargebacks
+    description: >
+      **Transaction fact**, one row per chargeback. Two role-playing dates: `payment_date_sk` (the cohort
+      view used by `chargeback_rate`) and `chargeback_date_sk` (when the dispute was reported, used by
+      `chargebacks_reported`).
+    config:
+      meta:
+        owner: finance-data@felixpago.com
+        kimball_fact_type: transaction
+        grain: one row per charged-back payment
+    data_tests:
+      - no_derived_metrics_in_facts
+    columns:
+      - name: payment_id
+        description: '{{ doc("col_payment_id") }}'
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests:
+          - unique
+          - not_null
+          - relationships: { arguments: { to: ref('fct_payments'), field: payment_id } }
+      - { name: receipt_id, description: '{{ doc("col_receipt_id") }}', data_type: varchar }
+      - name: user_sk
+        description: '{{ doc("col_user_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_users'), field: user_sk } } }]
+      - name: beneficiary_sk
+        description: '{{ doc("col_beneficiary_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_beneficiaries'), field: beneficiary_sk } } }]
+      - name: payment_method_sk
+        description: '{{ doc("col_payment_method_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payment_methods'), field: payment_method_sk } } }]
+      - name: payment_processor_sk
+        description: '{{ doc("col_payment_processor_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payment_processors'), field: payment_processor_sk } } }]
+      - name: funding_institution_sk
+        description: '{{ doc("col_funding_institution_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_funding_institutions'), field: funding_institution_sk } } }]
+      - name: corridor_sk
+        description: '{{ doc("col_corridor_sk") }}'
+        data_type: varchar
+        data_tests: [not_null, { relationships: { arguments: { to: ref('dim_corridors'), field: corridor_sk } } }]
+      - name: payment_date_sk
+        description: "FK to `dim_date.date_sk`: date the payment succeeded (cohort role)."
+        data_type: integer
+        data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }]
+      - name: chargeback_date_sk
+        description: "FK to `dim_date.date_sk`: date of the chargeback (reporting role)."
+        data_type: integer
+        data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }]
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - { name: destination_country, description: '{{ doc("col_destination_country") }}', data_type: varchar }
+      - { name: chargeback_reason, description: "Dispute reason (e.g. `fraudulent`, `product_not_received`).", data_type: varchar }
+      - { name: payment_succeeded_at, description: "When the disputed payment succeeded, UTC.", data_type: timestamp }
+      - { name: chargeback_at, description: "When the chargeback was recorded, UTC.", data_type: timestamp }
+      - { name: chargeback_amount_usd, description: "Disputed principal, in USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: days_to_chargeback, description: "Days from payment success to chargeback. Summed and divided by the count in the semantic layer for averages.", data_type: integer, config: { meta: { additivity: additive, unit: days } } }

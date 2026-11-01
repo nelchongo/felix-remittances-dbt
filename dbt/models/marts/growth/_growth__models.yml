@@ -1,0 +1,61 @@
+version: 2
+
+# Growth mart: customer engagement and value (Q2 via dim_users, Q3 recurrence, Q8 LTV, ARPU, MoM, YoY).
+
+models:
+  - name: fct_customer_activity_monthly
+    description: >
+      **Periodic snapshot**, one row per sender × month, from the sender's first active month (cohort) to the
+      last month with data. Additive monthly measures, the Q3 lifecycle labels and
+      `cumulative_net_revenue_usd`, which is **semi-additive**: sum it across users, never across months.
+      The LTV curve is `Σ cumulative_net_revenue_usd / Σ rows` by `cohort_month × months_since_first_transfer`
+      (computed in the semantic layer).
+    config:
+      meta:
+        owner: growth-data@felixpago.com
+        kimball_fact_type: periodic_snapshot
+        grain: one row per user per month (from the first active month)
+    data_tests:
+      - no_derived_metrics_in_facts
+      - dbt_utils.unique_combination_of_columns:
+          arguments: { combination_of_columns: [user_id, activity_month] }
+    columns:
+      - name: customer_month_id
+        description: Surrogate key of the row (hash of `user_id`, `activity_month`).
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: user_sk, description: '{{ doc("col_user_sk") }} Version valid at the end of the month.', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_users'), field: user_sk } } }] }
+      - { name: activity_month_date_sk, description: "FK to `dim_date.date_sk`: first day of the month.", data_type: integer, data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }] }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar, data_tests: [not_null] }
+      - { name: activity_month, description: "Month of the snapshot (first day). Time dimension of growth metrics.", data_type: date, data_tests: [not_null] }
+      - { name: cohort_month, description: "Month of the user's first succeeded transfer (acquisition cohort).", data_type: date }
+      - { name: months_since_first_transfer, description: "Months between the cohort month and this month (0 = cohort month). Slicing column for LTV curves.", data_type: integer }
+      - name: lifecycle_status
+        description: >
+          Q3 label: `new` (cohort month), `recurring` (active and active in >= 2 of the previous 3 months),
+          `returning` (active, not recurring), `at_risk` (inactive, last transfer <= 60 days before month end),
+          `churned` (inactive longer).
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: { values: [new, recurring, returning, at_risk, churned] }
+      - { name: is_active, description: "1 if the user had a succeeded transfer this month.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_recurring, description: "1 if the user is a recurring customer this month (Q3 definition).", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_new, description: "1 in the user's cohort month.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_returning, description: "1 if active but not recurring (and not new).", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_at_risk, description: "1 if inactive and the last transfer is recent.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_churned, description: "1 if inactive for longer than `churn_after_inactive_days`.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_newly_churned, description: "1 in the month the user becomes churned. Numerator of `churn_rate`.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: was_active_last_month, description: "1 if the user was active the previous month. Denominator of `churn_rate`.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: n_transfers, description: "Succeeded transfers in the month.", data_type: integer, config: { meta: { additivity: additive } } }
+      - { name: volume_usd, description: "Volume sent in the month (succeeded payments), USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: fee_revenue_usd, description: "Fees earned in the month, USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: fx_revenue_usd, description: "FX revenue earned in the month, USD.", data_type: "decimal(18,4)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: chargeback_loss_usd, description: "Chargeback losses on the month's payments, USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: net_revenue_usd, description: '{{ doc("col_net_revenue_usd") }} For the month.', data_type: "decimal(18,4)", config: { meta: { additivity: additive, unit: USD } } }
+      - name: cumulative_net_revenue_usd
+        description: "Net revenue from the cohort month up to and including this month. Semi-additive: sum across users, not across months."
+        data_type: "decimal(18,4)"
+        config: { meta: { additivity: semi_additive, non_additive_across: activity_month, unit: USD } }

@@ -1,0 +1,125 @@
+version: 2
+
+# Operations mart: delivery of remittances through payout providers (Q4).
+
+models:
+  - name: fct_remittances
+    description: >
+      **Accumulating snapshot**, one row per remittance (receipt), updated as it reaches its milestones:
+      payment created → succeeded → receipt → first payout attempt → delivered (or refunded / charged back).
+      Incremental merge on `receipt_id`; recent remittances and any with a new milestone are re-processed.
+    config:
+      materialized: incremental
+      unique_key: receipt_id
+      incremental_strategy: merge
+      on_schema_change: append_new_columns
+      meta:
+        owner: payout-ops-data@felixpago.com
+        kimball_fact_type: accumulating_snapshot
+        grain: one row per remittance (receipt)
+    data_tests:
+      - no_derived_metrics_in_facts
+    columns:
+      - name: receipt_id
+        description: '{{ doc("col_receipt_id") }}'
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: payment_id, description: '{{ doc("col_payment_id") }}', data_type: varchar }
+      - { name: user_sk, description: '{{ doc("col_user_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_users'), field: user_sk } } }] }
+      - { name: beneficiary_sk, description: '{{ doc("col_beneficiary_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_beneficiaries'), field: beneficiary_sk } } }] }
+      - { name: payment_method_sk, description: '{{ doc("col_payment_method_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payment_methods'), field: payment_method_sk } } }] }
+      - { name: payment_processor_sk, description: '{{ doc("col_payment_processor_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payment_processors'), field: payment_processor_sk } } }] }
+      - { name: funding_institution_sk, description: '{{ doc("col_funding_institution_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_funding_institutions'), field: funding_institution_sk } } }] }
+      - { name: payout_provider_sk, description: '{{ doc("col_payout_provider_sk") }} Provider of the final attempt.', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payout_providers'), field: payout_provider_sk } } }] }
+      - { name: corridor_sk, description: '{{ doc("col_corridor_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_corridors'), field: corridor_sk } } }] }
+      - { name: receipt_date_sk, description: "FK to `dim_date.date_sk`: date the receipt was issued.", data_type: integer, data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }] }
+      - { name: delivered_date_sk, description: "FK to `dim_date.date_sk`: delivery date (NULL until delivered).", data_type: integer, data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }] }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: destination_country, description: '{{ doc("col_destination_country") }}', data_type: varchar }
+      - { name: receive_currency, description: "Payout currency of the corridor.", data_type: varchar }
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar }
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar }
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar }
+      - { name: funding_institution_type, description: '{{ doc("col_funding_institution_type") }}', data_type: varchar }
+      - { name: final_provider_name, description: "Payout provider of the final attempt.", data_type: varchar }
+      - { name: final_payout_method, description: "Payout method of the final attempt.", data_type: varchar }
+      - name: remittance_status
+        description: "End-to-end status: `delivered`, `in_flight`, `failed_refunded`, `charged_back`."
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [delivered, in_flight, failed_refunded, charged_back] }
+      - { name: payment_created_at, description: "Milestone: payment created, UTC.", data_type: timestamp }
+      - { name: payment_succeeded_at, description: "Milestone: payment succeeded, UTC.", data_type: timestamp }
+      - { name: receipt_created_at, description: "Milestone: receipt issued, UTC.", data_type: timestamp }
+      - { name: first_attempt_at, description: "Milestone: first payout attempt started, UTC.", data_type: timestamp }
+      - { name: delivered_at, description: "Milestone: money delivered (final attempt completed), UTC.", data_type: timestamp }
+      - { name: refunded_at, description: "Milestone: payment refunded, UTC.", data_type: timestamp }
+      - { name: chargeback_at, description: "Milestone: payment charged back, UTC.", data_type: timestamp }
+      - { name: last_event_at, description: "Latest milestone reached. Drives the incremental filter.", data_type: timestamp }
+      - { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: fee_revenue_usd, description: "Félix fee of the payment, in USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: fx_revenue_usd, description: '{{ doc("col_fx_revenue_usd") }}', data_type: "decimal(18,4)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: chargeback_loss_usd, description: '{{ doc("col_chargeback_loss_usd") }}', data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - name: payout_amount_local
+        description: '{{ doc("col_payout_amount_local") }} Only add it up within one `receive_currency`.'
+        data_type: "decimal(18,2)"
+        config: { meta: { additivity: semi_additive, non_additive_across: receive_currency, unit: local currency } }
+      - { name: n_attempts, description: "Payout attempts made for the remittance.", data_type: integer, config: { meta: { additivity: additive } } }
+      - { name: n_failed_attempts, description: "Failed payout attempts.", data_type: integer, config: { meta: { additivity: additive } } }
+      - { name: minutes_to_deliver, description: "Minutes from receipt to delivery (NULL until delivered). Aggregated as a median in the semantic layer.", data_type: bigint, config: { meta: { additivity: additive, unit: minutes } } }
+      - { name: is_delivered, description: "1 when the money reached the beneficiary and the payment was not refunded or charged back.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_in_flight, description: "1 while the payout is processing or not attempted yet.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_failed_refunded, description: "1 when the payment was refunded or every attempt failed.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_charged_back, description: "1 when the payment was charged back.", data_type: boolean, config: { meta: { additivity: additive } } }
+
+  - name: fct_disbursement_attempts
+    description: >
+      **Transaction fact**, one row per payout attempt, with its provider, corridor and outcome. Q4 metrics
+      (attempt failure rate, first-attempt success, rescued by retry) are computed from its flags.
+    config:
+      meta:
+        owner: payout-ops-data@felixpago.com
+        kimball_fact_type: transaction
+        grain: one row per payout attempt
+    data_tests:
+      - no_derived_metrics_in_facts
+    columns:
+      - name: disbursement_id
+        description: '{{ doc("col_disbursement_id") }}'
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: receipt_id, description: '{{ doc("col_receipt_id") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('fct_remittances'), field: receipt_id } } }] }
+      - { name: user_sk, description: '{{ doc("col_user_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_users'), field: user_sk } } }] }
+      - { name: beneficiary_sk, description: '{{ doc("col_beneficiary_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_beneficiaries'), field: beneficiary_sk } } }] }
+      - { name: payout_provider_sk, description: '{{ doc("col_payout_provider_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_payout_providers'), field: payout_provider_sk } } }] }
+      - { name: corridor_sk, description: '{{ doc("col_corridor_sk") }}', data_type: varchar, data_tests: [not_null, { relationships: { arguments: { to: ref('dim_corridors'), field: corridor_sk } } }] }
+      - { name: attempted_date_sk, description: "FK to `dim_date.date_sk`: date the attempt started.", data_type: integer, data_tests: [{ relationships: { arguments: { to: ref('dim_date'), field: date_sk } } }] }
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: provider_name, description: '{{ doc("col_provider_name") }}', data_type: varchar }
+      - { name: payout_method, description: '{{ doc("col_payout_method") }}', data_type: varchar }
+      - { name: destination_country, description: '{{ doc("col_destination_country") }}', data_type: varchar }
+      - { name: attempt_number, description: '{{ doc("col_attempt_number") }}', data_type: integer }
+      - name: final_status
+        description: 'Current status of the attempt. {{ doc("col_disbursement_status") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [processing, completed, failed] }
+      - { name: failure_reason, description: "Why the attempt failed. NULL otherwise.", data_type: varchar }
+      - { name: attempted_at, description: "When the attempt started, UTC. Time dimension of payout metrics.", data_type: timestamp }
+      - { name: resolved_at, description: "When the attempt completed or failed, UTC.", data_type: timestamp }
+      - { name: payout_amount_usd, description: "USD principal of the remittance being paid out (repeated on each attempt).", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
+      - { name: payout_amount_local, description: '{{ doc("col_payout_amount_local") }} Only add it up within one currency.', data_type: "decimal(18,2)", config: { meta: { additivity: semi_additive, non_additive_across: destination_country, unit: local currency } } }
+      - { name: minutes_to_resolve, description: "Minutes from the start of the attempt to its resolution.", data_type: bigint, config: { meta: { additivity: additive, unit: minutes } } }
+      - { name: is_completed, description: "1 if the attempt completed.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_failed, description: "1 if the attempt failed.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_processing, description: "1 if the attempt is still processing.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_first_attempt, description: "1 for the first attempt of a receipt.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_retry, description: "1 for retries (attempt > 1).", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_final_attempt, description: "1 for the receipt's latest attempt.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: is_rescued_by_retry, description: "1 on a first attempt that failed when a later attempt delivered the money.", data_type: boolean, config: { meta: { additivity: additive } } }

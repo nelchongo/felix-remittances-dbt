@@ -1,0 +1,16 @@
+version: 2
+
+# One group per data mart (business process). Core conformed dimensions are shared and have no group.
+groups:
+  - name: finance
+    description: Pay-in, revenue, refunds and chargebacks.
+    owner: { name: Finance & Treasury data, email: finance-data@felixpago.com }
+  - name: operations
+    description: Delivery of remittances through payout providers.
+    owner: { name: Payout Operations data, email: payout-ops-data@felixpago.com }
+  - name: growth
+    description: Customer engagement and value (recurrence, ARPU, LTV).
+    owner: { name: Growth & CRM data, email: growth-data@felixpago.com }
+  - name: risk
+    description: Sender ↔ beneficiary network and AML clusters.
+    owner: { name: Risk & Compliance data, email: risk-data@felixpago.com }

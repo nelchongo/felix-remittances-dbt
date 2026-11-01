@@ -1,0 +1,48 @@
+version: 2
+
+# The Streamlit dashboard (dashboard/). Each page reads SQL compiled by MetricFlow from saved queries.
+exposures:
+  - name: dashboard_overview
+    label: Dashboard · Overview
+    type: dashboard
+    maturity: medium
+    url: http://localhost:8501
+    description: KPI tiles (volume, net revenue, active senders, ARPU, ATV, take rate) with MoM / YoY deltas.
+    depends_on: [ref('fct_payments'), ref('fct_customer_activity_monthly'), ref('dim_date')]
+    owner: { name: Data team, email: data-platform@felixpago.com }
+
+  - name: dashboard_finance
+    label: Dashboard · Finance
+    type: dashboard
+    maturity: medium
+    url: http://localhost:8501/Finance
+    description: Volume and revenue by method, ticket size, chargeback rate by bank, pay-in performance.
+    depends_on: [ref('fct_payments'), ref('fct_chargebacks'), ref('dim_users')]
+    owner: { name: Finance & Treasury data, email: finance-data@felixpago.com }
+
+  - name: dashboard_operations
+    label: Dashboard · Operations
+    type: dashboard
+    maturity: medium
+    url: http://localhost:8501/Operations
+    description: Payout provider league table by reliability tier, failure reasons, delivery time.
+    depends_on: [ref('fct_disbursement_attempts'), ref('fct_remittances'), ref('dim_payout_providers')]
+    owner: { name: Payout Operations data, email: payout-ops-data@felixpago.com }
+
+  - name: dashboard_growth
+    label: Dashboard · Growth
+    type: dashboard
+    maturity: medium
+    url: http://localhost:8501/Growth
+    description: Active and new senders, ARPU with MoM / YoY, recurring share, Pareto curve, LTV cohort curves.
+    depends_on: [ref('fct_payments'), ref('fct_customer_activity_monthly'), ref('dim_users')]
+    owner: { name: Growth & CRM data, email: growth-data@felixpago.com }
+
+  - name: dashboard_risk
+    label: Dashboard · Risk
+    type: dashboard
+    maturity: medium
+    url: http://localhost:8501/Risk
+    description: Cluster sizes, high fan-in beneficiaries, chargeback rate by cluster type.
+    depends_on: [ref('bridge_user_beneficiary'), ref('dim_sender_clusters'), ref('fct_payments'), ref('dim_users')]
+    owner: { name: Risk & Compliance data, email: risk-data@felixpago.com }
