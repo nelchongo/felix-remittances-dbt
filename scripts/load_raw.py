@@ -21,7 +21,7 @@ Most KYC approvals land days after sign-up, and without passes the monthly snaps
 The snapshots use the timestamp strategy (business-time validity), so the extra runs do not distort history.
 
 Usage:
-    python ingest/load_raw.py [--db warehouse/felix.duckdb] [--landing data/landing] [--replay monthly]
+    python scripts/load_raw.py [--db warehouse/felix.duckdb] [--landing data/landing] [--replay monthly]
 """
 
 from __future__ import annotations

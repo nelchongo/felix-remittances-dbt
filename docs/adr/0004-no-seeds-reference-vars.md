@@ -8,7 +8,7 @@ The brief says "don't use seeds for sources". Seeds are also a common shortcut f
 (payment methods, processors, corridors), which blurs the line between source data and configuration.
 
 ## Decision
-- **No `seeds/` folder at all.** Source CSVs are loaded by `ingest/load_raw.py` into the `raw` schema, with a
+- **No `seeds/` folder at all.** Source CSVs are loaded by `scripts/load_raw.py` into the `raw` schema, with a
   file-level ingestion log (new / changed / removed files) and lineage columns.
 - Small reference attributes live in `dbt_project.yml` `vars` (`payment_methods`, `payment_processors`,
   `corridors`) and are rendered as SQL by the `values_from_var` macro. Dimensions combine them with the values

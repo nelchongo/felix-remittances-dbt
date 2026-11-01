@@ -3,7 +3,7 @@
 {# ---------------------------------------------------------------- lineage (raw) #}
 
 {% docs col_source_file %}
-Landing file the row was loaded from, e.g. `payments__2026-07.csv`. Added by `ingest/load_raw.py`.
+Landing file the row was loaded from, e.g. `payments__2026-07.csv`. Added by `scripts/load_raw.py`.
 Used by the loader to delete and reload the rows of a changed or removed file.
 {% enddocs %}
 

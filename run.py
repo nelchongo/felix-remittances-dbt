@@ -172,7 +172,7 @@ def cmd_snapshot(_: argparse.Namespace) -> None:
 
 def cmd_reset_data(_: argparse.Namespace) -> None:
     """data/landing <- data/source (as <table>/<table>__baseline.csv) and delete the warehouse."""
-    from ingest.load_raw import TABLES
+    from scripts.load_raw import TABLES
 
     if LANDING_DIR.exists():
         shutil.rmtree(LANDING_DIR)
@@ -189,7 +189,7 @@ def cmd_reset_data(_: argparse.Namespace) -> None:
 
 
 def cmd_load(_: argparse.Namespace) -> None:
-    from ingest.load_raw import load
+    from scripts.load_raw import load
 
     require_landing()
     load(db_path(), LANDING_DIR)
@@ -198,7 +198,7 @@ def cmd_load(_: argparse.Namespace) -> None:
 def cmd_replay(_: argparse.Namespace) -> None:
     """First load month by month. After each month: dbt snapshot (staging/intermediate are views,
     so they are created once and then always see the rows loaded so far)."""
-    from ingest.load_raw import load
+    from scripts.load_raw import load
 
     require_landing()
     views_built = False
@@ -216,7 +216,7 @@ def cmd_replay(_: argparse.Namespace) -> None:
 def cmd_add_batch(args: argparse.Namespace) -> None:
     """Copy data/test_batches/<batch>/<table>.csv to data/landing/<table>/<table>__<batch>.csv,
     then load, snapshot and build."""
-    from ingest.load_raw import TABLES, load
+    from scripts.load_raw import TABLES, load
 
     batch_dir = TEST_BATCHES_DIR / args.batch
     if not batch_dir.is_dir():

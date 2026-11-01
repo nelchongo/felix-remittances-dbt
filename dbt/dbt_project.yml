@@ -1,5 +1,5 @@
 # Félix remittances: dbt project (DuckDB). See docs/DESIGN.md §9.
-# No dbt seeds: sources are loaded into `raw` by ingest/load_raw.py and small
+# No dbt seeds: sources are loaded into `raw` by scripts/load_raw.py and small
 # reference data lives in `vars` (turned into SQL by the `values_from_var` macro).
 name: felix
 version: "1.0.0"
