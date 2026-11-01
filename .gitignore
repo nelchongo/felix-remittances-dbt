@@ -5,8 +5,7 @@ __pycache__/
 .pytest_cache/
 
 # Warehouse & working data (recreated by run.py)
-warehouse/*.duckdb
-warehouse/*.duckdb.wal
+warehouse/
 data/landing/
 
 # dbt

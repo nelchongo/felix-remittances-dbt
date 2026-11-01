@@ -2,7 +2,7 @@
 """Single entry point for the Félix remittances project.
 
 Runs anywhere with Python only (Windows, macOS, Linux): no shell scripts, no absolute paths,
-no reliance on ~/.dbt. Every external tool (dbt, mf, streamlit, pytest, sqlfluff) is resolved
+no reliance on ~/.dbt. Every external tool (dbt, mf, streamlit, pytest, ruff, sqlfluff) is resolved
 from the active Python environment and run with the project's environment variables:
 
     DBT_PROJECT_DIR = <repo>/dbt
@@ -36,9 +36,21 @@ TEST_BATCHES_DIR = DATA_DIR / "test_batches"  # never modified
 LANDING_DIR = DATA_DIR / "landing"  # working copy read by the loader (git-ignored)
 SEMANTIC_MANIFEST = DBT_DIR / "target" / "semantic_manifest.json"
 ANSWERS_MD = ROOT / "docs" / "answers.md"
-README = ROOT / "README.md"
-ANSWERS_START, ANSWERS_END = "<!-- ANSWERS:START -->", "<!-- ANSWERS:END -->"
 COMPILED_DIR = ROOT / "dashboard" / "compiled"
+RUN_RESULTS = DBT_DIR / "target" / "run_results.json"
+
+# `add-batch edge_cases` must produce exactly these (status, test) results: one per bad row and rule.
+# What each row breaks is described in docs/DESIGN.md §15.
+EDGE_CASE_RESULTS = {
+    ("fail", "accepted_values_stg_felix_backend__payment_events_payment_method__debit_card__cash"),
+    ("fail", "accepted_values_stg_felix_backend__payment_events_status__pending__succeeded__failed__expired__refunded__chargeback"),
+    ("fail", "assert_card_last4_only_on_debit_cards"),
+    ("fail", "assert_no_cash_chargebacks"),
+    ("fail", "dbt_utils_expression_is_true_stg_felix_backend__payment_events_send_amount_usd_0"),
+    ("fail", "not_null_stg_felix_backend__payment_events_created_at"),
+    ("fail", "not_null_stg_felix_backend__payment_events_updated_at"),
+    ("warn", "relationships_stg_felix_backend__payment_events_user_id__user_id__ref_stg_felix_backend__users_"),
+}
 
 
 # --------------------------------------------------------------------------------------
@@ -236,6 +248,30 @@ def cmd_add_batch(args: argparse.Namespace) -> None:
     dbt("build")
 
 
+def cmd_check_edge_cases(_: argparse.Namespace) -> None:
+    """Load the edge-case batch and check that exactly the expected data tests fail or warn.
+    The bad rows stay in the warehouse: run `reset-data` afterwards."""
+    try:
+        cmd_add_batch(argparse.Namespace(batch="edge_cases"))
+    except SystemExit as exc:
+        if exc.code in (0, None):
+            raise
+    else:
+        sys.exit("error: the edge-case batch was expected to fail the build")
+    results = json.loads(RUN_RESULTS.read_text())["results"]
+    actual = {(r["status"], r["unique_id"].split(".")[2]) for r in results if r["status"] in ("fail", "warn", "error")}
+    errors = sorted(r["unique_id"] for r in results if r["status"] == "error")
+    for status, name in sorted(EDGE_CASE_RESULTS - actual):
+        print(f"MISSING    {status:4} {name}")
+    for status, name in sorted(actual - EDGE_CASE_RESULTS):
+        print(f"UNEXPECTED {status:4} {name}")
+    if errors:
+        print(f"model errors (should be none): {errors}")
+    if actual != EDGE_CASE_RESULTS or errors:
+        sys.exit(1)
+    print(f"OK: the edge-case batch produced exactly the {len(EDGE_CASE_RESULTS)} expected test results.")
+
+
 def cmd_compile_metrics(_: argparse.Namespace) -> None:
     """Write the SQL of every saved query to dashboard/compiled/<name>.sql. The dashboard runs these files on a
     read-only DuckDB connection and never calls MetricFlow at runtime."""
@@ -252,7 +288,7 @@ def cmd_compile_metrics(_: argparse.Namespace) -> None:
 
 
 def cmd_answers(_: argparse.Namespace) -> None:
-    """Run every saved query used by the answers and write docs/answers.md + the README block."""
+    """Run every saved query used by the answers and write docs/answers.md."""
     from scripts.render_answers import SAVED_QUERIES, render_answers
 
     dbt("parse")  # refresh target/semantic_manifest.json
@@ -260,12 +296,8 @@ def cmd_answers(_: argparse.Namespace) -> None:
     for name in SAVED_QUERIES:
         print(f"  mf query --saved-query {name}", flush=True)
         frames[name] = mf_query(saved_query=name)
-    answers_md, readme_block = render_answers(frames, load_semantic_manifest())
-    ANSWERS_MD.write_text(answers_md, encoding="utf-8")
-    readme = README.read_text(encoding="utf-8")
-    start, end = readme.index(ANSWERS_START) + len(ANSWERS_START), readme.index(ANSWERS_END)
-    README.write_text(readme[:start] + "\n" + readme_block + "\n" + readme[end:], encoding="utf-8")
-    print(f"Wrote {ANSWERS_MD.relative_to(ROOT)} and the README answers block ({len(frames)} saved queries).")
+    ANSWERS_MD.write_text(render_answers(frames, load_semantic_manifest()), encoding="utf-8")
+    print(f"Wrote {ANSWERS_MD.relative_to(ROOT)} ({len(frames)} saved queries).")
 
 
 def cmd_dashboard(_: argparse.Namespace) -> None:
@@ -280,7 +312,12 @@ def cmd_test(_: argparse.Namespace) -> None:
 
 
 def cmd_lint(_: argparse.Namespace) -> None:
-    run(["sqlfluff", "lint", "dbt/models"], cwd=ROOT)
+    """Python with ruff's default rules, then the dbt SQL with sqlfluff's defaults except AM04
+    (`select * from final` is the dbt CTE convention), ST06 (column order follows the YAML contract)
+    and LT05 (lines may run past 80 characters)."""
+    run(["ruff", "check", "."], cwd=ROOT)
+    sqlfluff = ["sqlfluff", "lint", "dbt/models", "--dialect", "duckdb", "--templater", "dbt"]
+    run([*sqlfluff, "--exclude-rules", "AM04,ST06,LT05", "--disable-progress-bar"], cwd=ROOT)
 
 
 def cmd_validate_metrics() -> None:
@@ -305,10 +342,11 @@ COMMANDS: list[tuple[str, str, object]] = [
     ("add-batch", "copy a test batch into landing, load it, snapshot and build", cmd_add_batch),
     ("reset-data", "restore data/landing from data/source and delete the warehouse", cmd_reset_data),
     ("compile-metrics", "compile the dashboard's saved queries to dashboard/compiled/*.sql", cmd_compile_metrics),
-    ("answers", "run the saved queries and write docs/answers.md + the README answers block", cmd_answers),
+    ("check-edge-cases", "load the edge-case batch and check that exactly the expected tests fail", cmd_check_edge_cases),
+    ("answers", "run the saved queries and write docs/answers.md", cmd_answers),
     ("dashboard", "start the Streamlit dashboard", cmd_dashboard),
     ("test", "dbt test + pytest tests_py", cmd_test),
-    ("lint", "sqlfluff lint dbt/models", cmd_lint),
+    ("lint", "ruff (Python) + sqlfluff (dbt SQL)", cmd_lint),
     ("all", "reset-data, replay, build, mf validate-configs, compile-metrics, answers", cmd_all),
 ]
 
