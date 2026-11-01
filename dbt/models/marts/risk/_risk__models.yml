@@ -63,4 +63,3 @@ models:
       - { name: n_users, description: "Senders in the cluster (descriptive size).", data_type: integer }
       - { name: n_beneficiaries, description: "Beneficiaries paid by the cluster (descriptive size).", data_type: integer }
       - { name: max_senders_per_beneficiary, description: "Largest number of senders paying one beneficiary of the cluster.", data_type: integer }
-      - { name: first_transfer_at, description: "First remittance sent by any sender of the cluster, UTC.", data_type: timestamp }

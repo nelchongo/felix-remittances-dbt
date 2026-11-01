@@ -45,21 +45,6 @@ metrics:
     description: Share of failed first attempts that a retry later delivered.
     type: ratio
     type_params: { numerator: rescued_by_retry, denominator: first_attempts_failed }
-  - name: remittances_issued
-    label: Remittances
-    description: Remittances (receipts) issued.
-    type: simple
-    type_params: { measure: { name: remittances_issued, fill_nulls_with: 0 } }
-  - name: remittances_delivered
-    label: Remittances delivered
-    description: Remittances delivered and not reversed.
-    type: simple
-    type_params: { measure: { name: remittances_delivered, fill_nulls_with: 0 } }
-  - name: delivery_rate
-    label: Delivery rate
-    description: Remittances delivered ÷ remittances issued (by receipt date).
-    type: ratio
-    type_params: { numerator: remittances_delivered, denominator: remittances_issued }
   - name: median_minutes_to_deliver
     label: Median minutes to deliver
     description: Median minutes from receipt to delivery, at the queried grain.
