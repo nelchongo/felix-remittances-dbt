@@ -12,6 +12,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -29,6 +30,10 @@ from src.render_answers import fmt_money, trim_empty_months
 DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
 COMPILED = ROOT / "warehouse" / "compiled"
 MANIFEST = ROOT / "dbt" / "target" / "semantic_manifest.json"
+DBT_MANIFEST = ROOT / "dbt" / "target" / "manifest.json"
+MARTS = ["finance", "operations", "growth", "risk"]
+DIM_ORDER = ["date", "users", "beneficiaries", "payment_methods", "payment_processors", "funding_institutions",
+             "payout_providers", "corridors"]  # most shared first; any other core dimension follows
 
 # Status colors are reserved for the good / bad tiers (never a series), always with an icon and a label.
 TIER_COLOR = {"healthy": "#0ca30c", "watch": "#fab219", "critical": "#d03b3b", "insufficient_data": "#ec835a"}
@@ -77,6 +82,59 @@ def descriptions() -> dict[str, str]:
     if not MANIFEST.exists():
         return {}
     return {q["name"]: q.get("description", "") for q in json.loads(MANIFEST.read_text())["saved_queries"]}
+
+
+@st.cache_data(show_spinner=False)
+def data_model(manifest_version: float) -> tuple[pd.DataFrame, dict]:
+    """The bus matrix, read from dbt's manifest: a ✔ is a `relationships` test from a mart model's key to a core
+    dimension, so the page always matches the model. Returns the matrix and {model: (mart, dims)} for the diagram."""
+    nodes = json.loads(DBT_MANIFEST.read_text(encoding="utf-8"))["nodes"]
+    models = {n["name"]: n for n in nodes.values() if n["resource_type"] == "model"}
+    dims = sorted((name for name, n in models.items() if n["schema"] == "core" and name.startswith("dim_")),
+                  key=lambda d: (DIM_ORDER.index(d[4:]) if d[4:] in DIM_ORDER else len(DIM_ORDER), d))
+    links: dict[str, dict[str, list[str]]] = {}
+    for test in nodes.values():
+        meta = test.get("test_metadata") or {}
+        if test["resource_type"] != "test" or meta.get("name") != "relationships":
+            continue
+        source = nodes.get(test.get("attached_node") or "", {}).get("name", "")
+        target = re.search(r"ref\('(\w+)'\)", str(meta.get("kwargs", {}).get("to", "")))
+        if source in models and models[source]["schema"] in MARTS and target and target[1] in dims:
+            links.setdefault(source, {}).setdefault(target[1], []).append(test.get("column_name") or "")
+    rows, graph = [], {}
+    for name in sorted(links, key=lambda n: (MARTS.index(models[n]["schema"]), n)):
+        node_meta = models[name]["config"].get("meta", {})
+        row = {"mart": models[name]["schema"], "fact": name}
+        for dim in dims:
+            keys = links[name].get(dim, [])
+            row[dim.removeprefix("dim_")] = ("✔" * len(keys)) if keys else ""
+        rows.append(row)
+        graph[name] = (models[name]["schema"], sorted(links[name]), node_meta.get("kimball_fact_type", ""),
+                       node_meta.get("grain", ""))
+    matrix = pd.DataFrame(rows)
+    shared = {"mart": "", "fact": "shared by"}
+    shared |= {d.removeprefix("dim_"): f"{(matrix[d.removeprefix('dim_')] != '').sum()} facts" for d in dims}
+    return pd.concat([matrix, pd.DataFrame([shared])], ignore_index=True), graph
+
+
+def star_diagram(graph: dict) -> str:
+    """Graphviz DOT: one cluster per mart on the left, the conformed dimensions in core on the right."""
+    graph = {name: (mart, dims) for name, (mart, dims, *_) in graph.items()}
+    c, ink = colors(), "#fefcf9" if mode() == "dark" else "#082422"
+    lines = ['digraph { rankdir=LR; bgcolor="transparent"; nodesep=0.12; ranksep=1.6; size="9,5.5";',
+             f'node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="{c["axis"]}"];',
+             f'edge [color="{c["axis"]}", arrowsize=0.5]; fontname="Helvetica"; fontcolor="{ink}";']
+    for mart in MARTS:
+        members = [name for name, (m, _) in graph.items() if m == mart]
+        lines.append(f'subgraph cluster_{mart} {{ label="{mart}"; color="{c["axis"]}"; style="rounded";')
+        lines += [f'"{name}" [fillcolor="{c["series"][0]}", fontcolor="white"];' for name in members]
+        lines.append("}")
+    dims = sorted({d for _, (_, ds) in graph.items() for d in ds})
+    lines.append(f'subgraph cluster_core {{ label="core · conformed dimensions"; color="{c["axis"]}"; style="rounded";')
+    lines += [f'"{d}" [fillcolor="{c["neutral"]}", fontcolor="{ink if mode() == "dark" else "#082422"}"];' for d in dims]
+    lines.append("}")
+    lines += [f'"{name}" -> "{d}";' for name, (_, ds) in graph.items() for d in ds]
+    return "\n".join(lines + ["}"])
 
 
 # --------------------------------------------------------------------------------------
@@ -154,7 +212,7 @@ st.set_page_config(page_title="Félix Pago · Remittances analytics", page_icon=
 hero()
 c = colors()
 tabs = st.tabs(["Q1 Volume", "Q2 Top 50%", "Q3 Recurring", "Q4 Providers", "Q5 Clusters", "Q6 Chargebacks",
-                "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in"])
+                "Q7 Ticket", "Q8 LTV", "Growth", "Pay-in", "Data model"])
 
 with tabs[0]:
     header("q1_monthly_volume")
@@ -305,3 +363,23 @@ with tabs[9]:
         cash = payin.dropna(subset=["cash_expiry_rate"]).sort_values("cash_expiry_rate")
         show(hbar(cash, "cash_expiry_rate", "payment__funding_institution", "%{x:.1%}", c["series"][1]), cash,
              key="payin_cash", x=".0%", height=440)
+
+with tabs[10]:
+    st.caption("Kimball data marts by business process. Facts store additive ingredients; they share the conformed "
+               "dimensions in `core`, so metrics from different marts can be compared by the same user, date, "
+               "corridor or provider (drill-across). Read from dbt's manifest, so it always matches the model.")
+    if not DBT_MANIFEST.exists():
+        st.info("No dbt manifest yet. In the terminal, run `python run.py` and choose 1 (Run sequentially).", icon="ℹ️")
+        st.stop()
+    matrix, graph = data_model(DBT_MANIFEST.stat().st_mtime)
+    st.markdown("**Star schemas: facts per mart → conformed dimensions**")
+    st.graphviz_chart(star_diagram(graph), use_container_width=False)
+    st.markdown("**Bus matrix: which dimensions each fact can be sliced by**")
+    st.dataframe(matrix, hide_index=True, use_container_width=True)
+    st.markdown("**Facts: Kimball type and grain**")
+    st.dataframe(pd.DataFrame([{"fact": name, "mart": mart, "type": kind, "grain": grain}
+                               for name, (mart, _, kind, grain) in graph.items()]), hide_index=True)
+    st.caption("✔ one foreign key to the dimension · ✔✔ role-playing (two keys, e.g. payment date and chargeback "
+               "date) · `users` and `beneficiaries` are SCD2: facts join the version valid at the event time. "
+               "A dimension shared by several facts is the bridge between marts.")
+

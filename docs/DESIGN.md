@@ -534,6 +534,11 @@ linen), papaya `#f26629`, blueberry `#6060bf`; dark mode `#06a7a6`, `#e85f22`, `
 6-step single-hue teal ramp whose newest step in dark mode is the brand cyan. Status colors (provider tiers) stay
 reserved and always carry an icon and a label. The brand fonts (Plain, Saans) are licensed, so the system font stays.
 
+**Data model tab (v8).** The last tab explains the Kimball design: a star diagram (one cluster per mart, the
+conformed dimensions in `core`) and the bus matrix. Both are read from dbt's `manifest.json`: a ✔ is a
+`relationships` test from a mart model's key to a core dimension (✔✔ = role-playing, e.g. payment date and
+chargeback date), so the page cannot drift from the model.
+
 **Fallback (§18.3):** if MetricFlow's compile step proves fragile in the pinned versions, the dashboard can calculate the same formulas from the base measures in a small pandas registry. Because the facts store the ingredients, both options stay open.
 
 ---

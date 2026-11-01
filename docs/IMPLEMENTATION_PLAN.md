@@ -282,3 +282,4 @@ in extras, not in the dbt core, so v6 trims them without dropping any requiremen
   (connected dots with a spinner on the left, live dbt output on the right), and the marts step fans out into the
   four groups dbt builds in parallel threads (separate processes are not possible: DuckDB has a single writer)
 - [x] `python run.py` resets the data on start, so option 1 always runs the whole sequence; README cut to a 2-minute read
+- [x] Dashboard tab **Data model**: star diagram and bus matrix generated from dbt's manifest (relationships tests)

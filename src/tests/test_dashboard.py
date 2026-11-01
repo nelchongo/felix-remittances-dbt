@@ -14,5 +14,5 @@ def test_dashboard_renders_every_tab(warehouse):
     at = AppTest.from_file(str(run.DASHBOARD_APP), default_timeout=60).run()
     assert not at.exception, [e.value for e in at.exception]
     assert not at.info, [i.value for i in at.info]  # "run python run.py all" messages
-    assert len(at.tabs) == 10
+    assert len(at.tabs) == 11
     assert len(at.get("plotly_chart")) >= 15
