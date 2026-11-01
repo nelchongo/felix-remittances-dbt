@@ -1,0 +1,31 @@
+snapshots:
+  - name: snp_users
+    relation: ref('stg_felix_backend__users')
+    description: >
+      SCD Type 2 history of users. A new version is recorded whenever `updated_at` moves (KYC status or state
+      change). Timestamp strategy, so `dbt_valid_from` is the business time of the change. History is built by
+      `run.py replay` (monthly) and the test batches. Feeds `dim_users`.
+    config:
+      schema: snapshots
+      unique_key: user_id
+      strategy: timestamp
+      updated_at: updated_at
+      hard_deletes: invalidate
+      dbt_valid_to_current: "cast('9999-12-31' as timestamp)"
+    columns:
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar }
+      - { name: first_name, description: "Sender first name.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: last_name, description: "Sender last name.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: email, description: "Sender email, lower-cased.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: phone_number, description: "Sender phone number (E.164).", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: country, description: "Sender country (ISO-2).", data_type: varchar }
+      - { name: state, description: '{{ doc("col_us_state") }}', data_type: varchar }
+      - { name: kyc_status, description: '{{ doc("col_kyc_status") }}', data_type: varchar }
+      - { name: created_at, description: "When the user signed up, UTC.", data_type: timestamp }
+      - { name: updated_at, description: '{{ doc("col_updated_at") }}', data_type: timestamp }
+      - { name: _batch_id, description: '{{ doc("col_batch_id_staging") }}', data_type: varchar }
+      - { name: _loaded_at, description: '{{ doc("col_loaded_at") }}', data_type: timestamp }
+      - &scd_id { name: dbt_scd_id, description: "Unique id of the version (hash of key and updated_at). Used as the dimension surrogate key.", data_type: varchar }
+      - &dbt_updated_at { name: dbt_updated_at, description: "Business timestamp that produced the version.", data_type: timestamp }
+      - &dbt_valid_from { name: dbt_valid_from, description: "Start of the version's validity (business time).", data_type: timestamp }
+      - &dbt_valid_to { name: dbt_valid_to, description: "End of the version's validity. 9999-12-31 for the current version.", data_type: timestamp }

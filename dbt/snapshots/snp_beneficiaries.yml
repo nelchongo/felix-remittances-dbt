@@ -1,0 +1,26 @@
+snapshots:
+  - name: snp_beneficiaries
+    relation: ref('int_beneficiaries__attribute_changes')
+    description: >
+      SCD Type 2 history of beneficiaries. A new version is recorded whenever the payout method, account,
+      name or country changes (`attributes_changed_at` moves). Feeds `dim_beneficiaries`.
+    config:
+      schema: snapshots
+      unique_key: beneficiary_id
+      strategy: timestamp
+      updated_at: attributes_changed_at
+      hard_deletes: invalidate
+      dbt_valid_to_current: "cast('9999-12-31' as timestamp)"
+    columns:
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar }
+      - { name: beneficiary_name, description: "Beneficiary full name.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: beneficiary_country, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar }
+      - { name: payout_method, description: '{{ doc("col_payout_method") }}', data_type: varchar }
+      - { name: beneficiary_account_last4, description: "Last 4 digits of the beneficiary's account or wallet.", data_type: varchar }
+      - { name: n_attribute_versions, description: "Attribute versions observed when the snapshot ran.", data_type: integer }
+      - { name: first_seen_at, description: "First time the beneficiary appeared on a payout attempt, UTC.", data_type: timestamp }
+      - { name: attributes_changed_at, description: "When this attribute combination was first observed, UTC.", data_type: timestamp }
+      - { name: dbt_scd_id, description: "Unique id of the version. Used as the dimension surrogate key.", data_type: varchar }
+      - { name: dbt_updated_at, description: "Business timestamp that produced the version.", data_type: timestamp }
+      - { name: dbt_valid_from, description: "Start of the version's validity (business time).", data_type: timestamp }
+      - { name: dbt_valid_to, description: "End of the version's validity. 9999-12-31 for the current version.", data_type: timestamp }

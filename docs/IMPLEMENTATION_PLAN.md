@@ -120,16 +120,16 @@ dbt build -s intermediate
 > Do Phase 4 (DESIGN §6.3, §11, §12). Create the YAML snapshots, the modelling macros (`scd2_point_in_time_join`, `unknown_member`, `values_from_var`), the core dimensions with full YAML and `dim_date` as the MetricFlow time spine. Wire `run.py replay` so history is built. Run the acceptance checks.
 
 Tasks
-- [ ] `snapshots/snp_users.yml`, `snapshots/snp_beneficiaries.yml` (timestamp strategy, `dbt_valid_to_current: "cast('9999-12-31' as timestamp)"`, schema `snapshots`)
-- [ ] Macros: `scd2_point_in_time_join(dim_alias, fact_key, dim_key, event_ts)`, `unknown_member(columns)` (sk `'-1'`, text `'unknown'`, numbers NULL), `values_from_var(var_name, key_column)`
-- [ ] `dim_users` (Type 2 kyc_status/state + Type 1 masked email/phone; the first version's `valid_from` = 1900-01-01; `is_current`; unknown member). Placeholder columns for labels (filled in Phase 5)
-- [ ] `dim_beneficiaries` (Type 2), `dim_payment_methods`, `dim_payment_processors`, `dim_funding_institutions`, `dim_payout_providers`, `dim_corridors` (observed values + `values_from_var`)
-- [ ] `dim_date` via `dbt_utils.date_spine` (2024-01-01 → 2027-12-31) + holiday flags. YAML `time_spine: { standard_granularity_column: date_day }` and the column `granularity: day`
-- [ ] Custom generic test `scd2_no_overlap(key, valid_from, valid_to)`: at most one version valid at any instant, and exactly one current version per key
+- [x] `snapshots/snp_users.yml`, `snapshots/snp_beneficiaries.yml` (timestamp strategy, `dbt_valid_to_current: "cast('9999-12-31' as timestamp)"`, schema `snapshots`)
+- [x] Macros: `scd2_point_in_time_join(dim_alias, fact_key, dim_key, event_ts)`, `unknown_member(columns)` (sk `'-1'`, text `'unknown'`, numbers NULL), `values_from_var(var_name, key_column)`
+- [x] `dim_users` (Type 2 kyc_status/state + Type 1 masked email/phone; the first version's `valid_from` = 1900-01-01; `is_current`; unknown member). Placeholder columns for labels (filled in Phase 5)
+- [x] `dim_beneficiaries` (Type 2), `dim_payment_methods`, `dim_payment_processors`, `dim_funding_institutions`, `dim_payout_providers`, `dim_corridors` (observed values + `values_from_var`)
+- [x] `dim_date` via `dbt_utils.date_spine` (2024-01-01 → 2027-12-31) + holiday flags. YAML `time_spine: { standard_granularity_column: date_day }` and the column `granularity: day`
+- [x] Custom generic test `scd2_no_overlap(key, valid_from, valid_to)`: at most one version valid at any instant, and exactly one current version per key
 
 Acceptance
 ```bash
-python run.py reset-data && python run.py replay && dbt build -s +core
+python run.py reset-data && python run.py replay && dbt build -s +marts.core
 # ≈ 40% of users have > 1 version; beneficiaries with changes have > 1 version
 duckdb warehouse/felix.duckdb "select count(*) from (select user_id from core.dim_users group by 1 having count(*)>1)"
 ```

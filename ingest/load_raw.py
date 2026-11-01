@@ -13,8 +13,12 @@ Each row gets lineage columns: _source_file, _file_md5, _batch_id (the `__<batch
 A file with a new column adds that column to the raw table (older rows get NULL).
 
 Replay (`--replay monthly`), first load only: rows are inserted month by month in the order of
-coalesce(updated_at, created_at), and a callback runs after each month. run.py uses it to run
+coalesce(updated_at, created_at), and a callback runs after each step. run.py uses it to run
 `dbt snapshot`, so the SCD2 snapshots get a real version history from the baseline extract.
+A snapshot only sees the latest version of a record when it runs, so for tables in VERSIONED_KEYS
+(users) a month is split into passes: pass k inserts each record's k-th version of that month.
+Most KYC approvals land days after sign-up, and without passes the monthly snapshot would miss them.
+The snapshots use the timestamp strategy (business-time validity), so the extra runs do not distort history.
 
 Usage:
     python ingest/load_raw.py [--db warehouse/felix.duckdb] [--landing data/landing] [--replay monthly]
@@ -25,7 +29,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
-import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -43,6 +46,9 @@ LOG_TABLE = f"{SCHEMA}._ingestion_log"
 # Month a row belongs to during replay: YYYY-MM prefix of updated_at (or created_at). Both source
 # timestamp formats (ISO `...Z` and `YYYY-MM-DD HH:MM:SS`) start with it. Unparseable values sort last.
 UNPARSEABLE_MONTH = "9999-12"
+# Tables whose successive versions inside one replay month are fed in separate passes (key column).
+VERSIONED_KEYS = {"users": "user_id"}
+TIMESTAMP_FORMATS = "['%Y-%m-%dT%H:%M:%S.%gZ', '%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%d %H:%M:%S']"
 
 MonthCallback = Callable[[str], None]
 
@@ -161,15 +167,32 @@ def month_key_sql(file_cols: list[str]) -> str:
     return f"coalesce(case when regexp_full_match({key}, '\\d{{4}}-\\d{{2}}') then {key} end, '{UNPARSEABLE_MONTH}')"
 
 
+def replay_scan_sql(path: Path, file_cols: list[str], table: str) -> str:
+    """The file's rows with `_replay_month` (YYYY-MM) and `_replay_pass` (1 unless the table is versioned)."""
+    month = month_key_sql(file_cols)
+    key = VERSIONED_KEYS.get(table)
+    if key and key in file_cols and "updated_at" in file_cols:
+        replay_pass = (
+            f"dense_rank() over (partition by trim({quote_ident(key)}), _replay_month "
+            f"order by try_strptime(trim(updated_at), {TIMESTAMP_FORMATS}) nulls last, updated_at)"
+        )
+    else:
+        replay_pass = "1"
+    return f"""(
+        select *, {replay_pass} as _replay_pass
+        from (select *, {month} as _replay_month from {csv_scan(path)})
+    )"""
+
+
 def insert_file(
     con: duckdb.DuckDBPyConnection,
     table: str,
     path: Path,
     md5: str,
     loaded_at: datetime,
-    where: str | None = None,
+    source_sql: str | None = None,
 ) -> int:
-    """Insert (part of) a landing file into raw.<table>. Returns the number of rows inserted."""
+    """Insert a landing file (or the subset given by `source_sql`) into raw.<table>. Returns the row count."""
     sql = f"""
         insert into {SCHEMA}.{quote_ident(table)} by name
         select
@@ -178,8 +201,7 @@ def insert_file(
             ? as _file_md5,
             ? as _batch_id,
             ? as _loaded_at
-        from {csv_scan(path)}
-        {f"where {where}" if where else ""}
+        from {source_sql or csv_scan(path)}
     """
     return con.execute(sql, [path.name, md5, batch_id_from(path), loaded_at]).fetchone()[0]
 
@@ -293,43 +315,52 @@ def replay_monthly(db_path: Path, landing: Path, on_month: MonthCallback | None 
     loaded_at = datetime.now(timezone.utc).replace(tzinfo=None)
     files = {table: landing_files(landing, table) for table in TABLES}
 
-    # 1. Create the tables and find every month present in the landing files.
-    plan: dict[str, list[tuple[Path, str, str]]] = {}  # table -> [(path, md5, month_key_sql)]
-    months: set[str] = set()
+    # 1. Create the tables and find every month (and the passes it needs) in the landing files.
+    plan: dict[str, list[tuple[Path, str, str]]] = {}  # table -> [(path, md5, replay_scan_sql)]
+    passes: dict[str, int] = {}  # month -> number of passes
     with duckdb.connect(str(db_path)) as con:
         ensure_log(con)
         for table, table_files in files.items():
             plan[table] = []
             for path in table_files.values():
-                cols = prepare_table(con, table, path)
-                key_sql = month_key_sql(cols)
-                plan[table].append((path, file_md5(path), key_sql))
-                months.update(
-                    row[0]
-                    for row in con.execute(f"select distinct {key_sql} from {csv_scan(path)}").fetchall()
-                    if row[0] != UNPARSEABLE_MONTH
-                )
-    ordered = sorted(months)
+                scan = replay_scan_sql(path, prepare_table(con, table, path), table)
+                plan[table].append((path, file_md5(path), scan))
+                for month, n in con.execute(
+                    f"select _replay_month, max(_replay_pass) from {scan} group by 1"
+                ).fetchall():
+                    passes[month] = max(passes.get(month, 1), n)
+    ordered = sorted(m for m in passes if m != UNPARSEABLE_MONTH)
     if not ordered:
         print("Nothing to replay: the landing folder has no rows.")
         return incremental_load(db_path, landing)
-    print(f"Replaying {len(ordered)} months ({ordered[0]} -> {ordered[-1]}) into {display(db_path)}")
+    # Rows with an unparseable timestamp go with the last month.
+    last = ordered[-1]
+    passes[last] = max(n for m, n in passes.items() if m >= last)
+    print(
+        f"Replaying {len(ordered)} months ({ordered[0]} -> {last}, {sum(passes[m] for m in ordered)} steps) "
+        f"into {display(db_path)}"
+    )
 
-    # 2. Insert month by month; rows with an unparseable timestamp go with the last month.
+    # 2. Insert month by month, and pass by pass inside a month.
     try:
-        for i, month in enumerate(ordered):
-            is_last = i == len(ordered) - 1
-            inserted = 0
-            with duckdb.connect(str(db_path)) as con:
-                con.begin()
-                for table, entries in plan.items():
-                    for path, md5, key_sql in entries:
-                        where = f"{key_sql} >= '{month}'" if is_last else f"{key_sql} = '{month}'"
-                        inserted += insert_file(con, table, path, md5, loaded_at, where)
-                con.commit()
-            print(f"  {month}: {inserted:,} rows", flush=True)
-            if on_month:
-                on_month(month)
+        for month in ordered:
+            month_filter = f"_replay_month >= '{month}'" if month == last else f"_replay_month = '{month}'"
+            for replay_pass in range(1, passes[month] + 1):
+                inserted = 0
+                with duckdb.connect(str(db_path)) as con:
+                    con.begin()
+                    for table, entries in plan.items():
+                        for path, md5, scan in entries:
+                            subset = (
+                                f"(select * exclude (_replay_month, _replay_pass) from {scan} "
+                                f"where {month_filter} and _replay_pass = {replay_pass})"
+                            )
+                            inserted += insert_file(con, table, path, md5, loaded_at, subset)
+                    con.commit()
+                step = month if passes[month] == 1 else f"{month} pass {replay_pass}/{passes[month]}"
+                print(f"  {step}: {inserted:,} rows", flush=True)
+                if on_month:
+                    on_month(step)
     except BaseException:
         print("Replay failed: removing the partially loaded rows so the next load starts clean.")
         with duckdb.connect(str(db_path)) as con:

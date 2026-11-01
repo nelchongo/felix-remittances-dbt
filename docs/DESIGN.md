@@ -89,7 +89,7 @@ data/
 └── landing/           # working copy the loader reads: landing/<table>/<table>__<batch>.csv (git-ignored)
 ```
 - **Loader:** file-level incremental using `raw._ingestion_log` (file name + MD5). A new file is inserted, a changed file is reloaded, a removed file's rows are deleted. Columns `_source_file`, `_file_md5`, `_loaded_at` and `_batch_id` are added. `union_by_name` tolerates new columns.
-- **Replay:** the first load feeds the baseline month by month, with `dbt snapshot` after each month, so SCD2 history exists.
+- **Replay:** the first load feeds the baseline month by month, with `dbt snapshot` after each month, so SCD2 history exists. Inside a month, user versions are fed in passes (pass k = each user's k-th version that month) because most KYC approvals land days after sign-up; the timestamp strategy keeps business-time validity, so all ~40% of users with several versions are captured.
 - **Test batches** contain new rows *and* late updates to old ones (chargebacks 10–75 days later, KYC approvals, beneficiary changes, in-flight payouts resolving). `edge_cases/` has 6 bad rows that each trip a specific test.
 
 ---
@@ -555,4 +555,4 @@ def saved_query(name: str) -> pd.DataFrame:
   - Synthetic data, with illustrative processor/bank/store names.
   - The recursive CTE for clusters won't scale.
   - Projected LTV is a simple retention model (no CAC, no discounting).
-  - Replay batches are monthly.
+  - Replay is monthly. User versions inside a month are fed in passes, but a beneficiary that changes twice in one month keeps only its last change (1 of 26 in the baseline).

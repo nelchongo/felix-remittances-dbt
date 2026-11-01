@@ -96,3 +96,76 @@ macros:
       - name: reference_fx_rate
         type: string
         description: Expression for the mid-market rate at quote time.
+
+  - name: scd2_point_in_time_join
+    description: >
+      Join condition from a fact to the SCD2 dimension version valid at the event time:
+      `fact_key = dim.dim_key and event_ts >= dim.valid_from and event_ts < dim.valid_to`.
+      Use with a left join and coalesce the surrogate key to the unknown member `'-1'`.
+    arguments:
+      - name: dim_alias
+        type: string
+        description: Alias of the dimension in the join.
+      - name: fact_key
+        type: string
+        description: Qualified natural key on the fact side (e.g. `payments.user_id`).
+      - name: dim_key
+        type: string
+        description: Natural key column of the dimension (e.g. `user_id`).
+      - name: event_ts
+        type: string
+        description: Qualified event timestamp on the fact side.
+
+  - name: unknown_member
+    description: >
+      Select statement for a dimension's unknown member row, typed from the model's YAML columns:
+      `*_sk` columns `'-1'`, text columns `'unknown'`, other columns NULL, unless overridden.
+      Combine with `union all by name`.
+    arguments:
+      - name: columns
+        type: dict[str, any]
+        description: The model's columns, normally `model.columns` (each needs a `data_type`).
+      - name: overrides
+        type: dict[str, str]
+        description: Column name -> SQL expression, e.g. validity dates of SCD2 dimensions.
+
+  - name: values_from_var
+    description: >
+      Renders a dict var (`{key: {attribute: value}}`) as an inline `values` table with columns
+      `key_column` + every attribute. Replaces dbt seeds for small reference data.
+    arguments:
+      - name: var_name
+        type: string
+        description: Name of the var in dbt_project.yml.
+      - name: key_column
+        type: string
+        description: Column name for the dict keys.
+
+  - name: _felix_sql_literal
+    description: Internal helper of `values_from_var`. Renders a Python value as a SQL literal.
+    arguments:
+      - name: value
+        type: any
+        description: Value to render (string, number, boolean or none).
+
+  # ---------------------------------------------------------------- generic tests
+  - name: test_scd2_no_overlap
+    description: >
+      SCD2 integrity: per key, every version has `valid_from < valid_to`, versions never overlap, and
+      exactly one version is current (`valid_to` = 9999-12-31).
+    arguments:
+      - name: model
+        type: relation
+        description: Model or snapshot under test.
+      - name: key
+        type: string
+        description: Natural key column.
+      - name: valid_from
+        type: string
+        description: Validity start column (default `valid_from`).
+      - name: valid_to
+        type: string
+        description: Validity end column (default `valid_to`).
+      - name: current_valid_to
+        type: string
+        description: SQL literal marking the current version (default 9999-12-31).

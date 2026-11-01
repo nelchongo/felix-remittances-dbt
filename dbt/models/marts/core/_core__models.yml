@@ -1,0 +1,192 @@
+version: 2
+
+# Conformed dimensions shared by every data mart. Each has a surrogate key and an unknown member
+# (`*_sk = '-1'`) so facts never lose rows on a failed lookup. dim_users / dim_beneficiaries are SCD2.
+
+models:
+  # ------------------------------------------------------------------------------------- dim_users
+  - name: dim_users
+    description: >
+      Senders. **SCD Type 2** on `kyc_status` and `state` (one row per version, from `snp_users`) and
+      **Type 1** on masked email/phone and the classification labels (same value on every version).
+      Versions are half-open `[valid_from, valid_to)`; the first opens at 1900-01-01 and the current one
+      ends at 9999-12-31. Facts join with `scd2_point_in_time_join` on the event time.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per user version (+ unknown member)", scd_type: 2 }
+    data_tests:
+      - scd2_no_overlap:
+          arguments: { key: user_id }
+    columns:
+      - name: user_sk
+        description: Surrogate key of the user version (snapshot `dbt_scd_id`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: user_id, description: '{{ doc("col_user_id") }}', data_type: varchar, data_tests: [not_null] }
+      - { name: version_number, description: "1 for the first captured version of the user, then 2, 3, ...", data_type: integer }
+      - { name: email_masked, description: "Current email, masked (`m***@gmail.com`). Type 1.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: phone_masked, description: "Current phone, masked to the last 4 digits. Type 1.", data_type: varchar, config: { meta: { pii: true } } }
+      - { name: country, description: "Sender country (ISO-2).", data_type: varchar }
+      - { name: state, description: '{{ doc("col_us_state") }}', data_type: varchar }
+      - name: kyc_status
+        description: '{{ doc("col_kyc_status") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [pending, approved, rejected, unknown] }
+      - { name: signed_up_at, description: "When the user signed up, UTC.", data_type: timestamp }
+      - { name: volume_segment, description: "Q2 label (Type 1): `top_50pct`, `middle`, `long_tail` by cumulative share of volume. Filled in Phase 5.", data_type: varchar }
+      - { name: volume_rank, description: "Rank of the user by lifetime sent volume (1 = largest). Filled in Phase 5.", data_type: integer }
+      - { name: cluster_id, description: "Q5: sender cluster (connected component of the user ↔ beneficiary graph). Filled in Phase 5.", data_type: varchar }
+      - { name: primary_payment_method, description: "Payment method the user used most. Filled in Phase 5.", data_type: varchar }
+      - { name: first_transfer_month, description: "Month of the user's first succeeded transfer (cohort). Filled in Phase 5.", data_type: date }
+      - { name: valid_from, description: "Start of the version's validity (inclusive). 1900-01-01 for the first version.", data_type: timestamp }
+      - { name: valid_to, description: "End of the version's validity (exclusive). 9999-12-31 for the current version.", data_type: timestamp }
+      - { name: is_current, description: "True for the current version of the user.", data_type: boolean }
+
+  # ----------------------------------------------------------------------------- dim_beneficiaries
+  - name: dim_beneficiaries
+    description: >
+      Beneficiaries. **SCD Type 2** on payout method, account, name and country (from `snp_beneficiaries`).
+      The name is masked. Versions are half-open `[valid_from, valid_to)`, first opens at 1900-01-01.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per beneficiary version (+ unknown member)", scd_type: 2 }
+    data_tests:
+      - scd2_no_overlap:
+          arguments: { key: beneficiary_id }
+    columns:
+      - name: beneficiary_sk
+        description: Surrogate key of the beneficiary version (snapshot `dbt_scd_id`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: beneficiary_id, description: '{{ doc("col_beneficiary_id") }}', data_type: varchar, data_tests: [not_null] }
+      - { name: version_number, description: "1 for the first captured version, then 2, 3, ...", data_type: integer }
+      - { name: beneficiary_name_masked, description: "Beneficiary name, masked to the first letter.", data_type: varchar, config: { meta: { pii: true } } }
+      - name: beneficiary_country
+        description: '{{ doc("col_beneficiary_country") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [MX, GT, HN, SV, DO, CO, unknown] }
+      - name: payout_method
+        description: '{{ doc("col_payout_method") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [bank_deposit, cash_pickup, mobile_wallet, unknown] }
+      - { name: beneficiary_account_last4, description: "Last 4 digits of the account or wallet in this version.", data_type: varchar }
+      - { name: first_seen_at, description: "First time the beneficiary appeared on a payout attempt, UTC.", data_type: timestamp }
+      - { name: valid_from, description: "Start of the version's validity (inclusive). 1900-01-01 for the first version.", data_type: timestamp }
+      - { name: valid_to, description: "End of the version's validity (exclusive). 9999-12-31 for the current version.", data_type: timestamp }
+      - { name: is_current, description: "True for the current version.", data_type: boolean }
+
+  # --------------------------------------------------------------------------- reference (Type 1)
+  - name: dim_payment_methods
+    description: Pay-in methods with channel and chargeback eligibility (from the `payment_methods` var). Type 1.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per payment method (+ unknown member)", scd_type: 1 }
+    columns:
+      - name: payment_method_sk
+        description: Surrogate key (hash of `payment_method`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: payment_method, description: '{{ doc("col_payment_method") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: channel, description: "`online` (card) or `in_store` (cash).", data_type: varchar }
+      - { name: chargeback_eligible, description: "True when the method can be charged back (debit card). Cash can't.", data_type: boolean }
+
+  - name: dim_payment_processors
+    description: Pay-in processors (who collects the money for Félix) with their type (from the `payment_processors` var). Type 1.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per processor (+ unknown member)", scd_type: 1 }
+    columns:
+      - name: payment_processor_sk
+        description: Surrogate key (hash of `payment_processor`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: payment_processor, description: '{{ doc("col_payment_processor") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: processor_type, description: "`card_acquirer` (Adyen, Stripe) or `cash_network` (PayNearMe).", data_type: varchar }
+
+  - name: dim_funding_institutions
+    description: Where pay-in money comes from — card-issuing banks and neobanks, or the stores that take cash. Type 1.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per funding institution (+ unknown member)", scd_type: 1 }
+    columns:
+      - name: funding_institution_sk
+        description: Surrogate key (hash of `funding_institution`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: funding_institution, description: '{{ doc("col_funding_institution") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - name: funding_institution_type
+        description: '{{ doc("col_funding_institution_type") }}'
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: { values: [bank, neobank, retailer, unknown] }
+
+  - name: dim_payout_providers
+    description: Payout providers that deliver money in the destination countries, with the corridors and methods they serve. Type 1.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per payout provider (+ unknown member)", scd_type: 1 }
+    columns:
+      - name: payout_provider_sk
+        description: Surrogate key (hash of `provider_name`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: provider_name, description: '{{ doc("col_provider_name") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: corridors_served, description: "Comma-separated destination countries the provider pays out to.", data_type: varchar }
+      - { name: payout_methods_served, description: "Comma-separated payout methods the provider offers.", data_type: varchar }
+      - { name: first_attempt_at, description: "First payout attempt through the provider, UTC.", data_type: timestamp }
+      - { name: reliability_tier, description: "Q4 label from the attempt failure rate: `healthy`, `watch`, `critical` (or `insufficient_data`). Filled in Phase 5.", data_type: varchar }
+
+  - name: dim_corridors
+    description: Corridors (destination countries) with name, payout currency and region (from the `corridors` var). Type 1.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per destination country (+ unknown member)", scd_type: 1 }
+    columns:
+      - name: corridor_sk
+        description: Surrogate key (hash of `country_code`). `'-1'` = unknown member.
+        data_type: varchar
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: country_code, description: '{{ doc("col_beneficiary_country") }}', data_type: varchar, data_tests: [unique, not_null] }
+      - { name: country_name, description: "Destination country name.", data_type: varchar }
+      - { name: currency, description: "Payout currency (El Salvador pays out in USD).", data_type: varchar }
+      - { name: region, description: "Region: North America, Central America, Caribbean, South America.", data_type: varchar }
+
+  # -------------------------------------------------------------------------------------- dim_date
+  - name: dim_date
+    description: >
+      Calendar, one row per day from 2024-01-01 to 2027-12-31, with US federal holidays and the remittance
+      peaks planted in the data (December, May 1–10 before Mexican Mother's Day). Also the MetricFlow time spine.
+    config:
+      meta: { owner: data-platform@felixpago.com, grain: "one row per calendar day" }
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        description: Calendar day. Time-spine column.
+        data_type: date
+        granularity: day
+        constraints: [{ type: not_null }, { type: primary_key }]
+        data_tests: [unique, not_null]
+      - { name: date_sk, description: "Integer key `YYYYMMDD`.", data_type: integer, data_tests: [unique, not_null] }
+      - { name: year_number, description: "Calendar year.", data_type: integer }
+      - { name: quarter_number, description: "Calendar quarter (1–4).", data_type: integer }
+      - { name: month_number, description: "Calendar month (1–12).", data_type: integer }
+      - { name: month_name, description: "Month name (January ...).", data_type: varchar }
+      - { name: month_start_date, description: "First day of the month.", data_type: date }
+      - { name: quarter_start_date, description: "First day of the quarter.", data_type: date }
+      - { name: week_start_date, description: "Monday of the ISO week.", data_type: date }
+      - { name: day_of_month, description: "Day of the month (1–31).", data_type: integer }
+      - { name: iso_day_of_week, description: "ISO day of week, Monday = 1 … Sunday = 7.", data_type: integer }
+      - { name: day_name, description: "Day name (Monday ...).", data_type: varchar }
+      - { name: is_weekend, description: "True on Saturday and Sunday.", data_type: boolean }
+      - { name: us_holiday_name, description: "US federal holiday name, NULL on other days.", data_type: varchar }
+      - { name: is_us_holiday, description: "True on US federal holidays.", data_type: boolean }
+      - { name: is_mexican_mothers_day, description: "True on May 10 (Día de las Madres, the biggest remittance day to Mexico).", data_type: boolean }
+      - { name: is_remittance_peak, description: "True in December and on May 1–10 (seasonal peaks).", data_type: boolean }
