@@ -1,0 +1,16 @@
+semantic_models:
+  - name: sender_clusters
+    label: Sender clusters
+    description: dim_sender_clusters (Q5), so clusters can be counted by type and size.
+    model: ref('dim_sender_clusters')
+    defaults:
+      agg_time_dimension: first_transfer_at
+    entities:
+      - { name: sender_cluster, type: primary, expr: cluster_id }
+    dimensions:
+      - { name: first_transfer_at, label: First transfer of the cluster, type: time, type_params: { time_granularity: day } }
+      - { name: cluster_type, label: Cluster type, type: categorical }
+      - { name: n_users, label: Senders in the cluster, type: categorical }
+      - { name: n_beneficiaries, label: Beneficiaries of the cluster, type: categorical }
+    measures:
+      - { name: sender_clusters, label: Sender clusters, description: "Clusters (excluding the unknown member).", agg: sum, expr: "case when cluster_sk <> '-1' then 1 else 0 end" }

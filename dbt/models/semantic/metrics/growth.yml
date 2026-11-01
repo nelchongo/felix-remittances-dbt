@@ -197,3 +197,41 @@ metrics:
     type_params:
       expr: arpu_usd * least(coalesce(1 / nullif(churn_rate, 0), {{ var('ltv_horizon_months') }}), {{ var('ltv_horizon_months') }})
       metrics: [{ name: arpu_usd }, { name: churn_rate }]
+
+  # ------------------------------------------------------------------ ticket and take rate growth (dashboard tiles)
+  - name: atv_usd_mom_pct
+    label: ATV growth % M/M
+    description: Average transaction value vs the previous month.
+    type: derived
+    type_params:
+      expr: (atv_now - atv_prev) / nullif(atv_prev, 0)
+      metrics:
+        - { name: atv_usd, alias: atv_now }
+        - { name: atv_usd, alias: atv_prev, offset_window: 1 month }
+  - name: atv_usd_yoy_pct
+    label: ATV growth % Y/Y
+    description: Average transaction value vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (atv_now - atv_last_year) / nullif(atv_last_year, 0)
+      metrics:
+        - { name: atv_usd, alias: atv_now }
+        - { name: atv_usd, alias: atv_last_year, offset_window: 1 year }
+  - name: take_rate_mom_pct
+    label: Take rate change % M/M
+    description: Relative change of the take rate vs the previous month.
+    type: derived
+    type_params:
+      expr: (take_now - take_prev) / nullif(take_prev, 0)
+      metrics:
+        - { name: take_rate, alias: take_now }
+        - { name: take_rate, alias: take_prev, offset_window: 1 month }
+  - name: take_rate_yoy_pct
+    label: Take rate change % Y/Y
+    description: Relative change of the take rate vs the same month a year earlier.
+    type: derived
+    type_params:
+      expr: (take_now - take_last_year) / nullif(take_last_year, 0)
+      metrics:
+        - { name: take_rate, alias: take_now }
+        - { name: take_rate, alias: take_last_year, offset_window: 1 year }

@@ -11,3 +11,18 @@ metrics:
     description: "Q5. Distinct beneficiaries of succeeded transfers."
     type: simple
     type_params: { measure: { name: beneficiaries_paid, fill_nulls_with: 0 } }
+  - name: sender_clusters
+    label: Sender clusters
+    description: Number of sender clusters (connected components of the sender ↔ beneficiary graph).
+    type: simple
+    type_params: { measure: sender_clusters }
+  - name: distinct_senders_per_beneficiary
+    label: Senders paying the beneficiary
+    description: "Distinct senders who paid a beneficiary; grouped by beneficiary it shows fan-in (mule detection)."
+    type: simple
+    type_params: { measure: pair_senders }
+  - name: pair_volume_usd
+    label: Volume between sender and beneficiary (USD)
+    description: USD sent across the sender–beneficiary pairs in scope.
+    type: simple
+    type_params: { measure: pair_volume_usd }

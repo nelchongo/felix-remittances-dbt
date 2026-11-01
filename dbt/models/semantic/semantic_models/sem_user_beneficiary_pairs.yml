@@ -1,0 +1,18 @@
+semantic_models:
+  - name: user_beneficiary_pairs
+    label: Sender ↔ beneficiary pairs
+    description: "bridge_user_beneficiary (Q5): one row per sender × beneficiary pair, dated by the first transfer."
+    model: ref('bridge_user_beneficiary')
+    defaults:
+      agg_time_dimension: first_sent_at
+    entities:
+      - { name: user_beneficiary, type: primary, expr: user_beneficiary_id }
+      - { name: user, type: foreign, expr: user_id }
+    dimensions:
+      - { name: first_sent_at, label: First transfer of the pair, type: time, type_params: { time_granularity: day } }
+      - { name: beneficiary_id, label: Beneficiary, type: categorical }
+      - { name: cluster_type, label: Cluster type, type: categorical }
+      - { name: corridor, label: Corridor, type: categorical, expr: destination_country }
+    measures:
+      - { name: pair_senders, label: Distinct senders, description: "Distinct senders across the pairs in scope.", agg: count_distinct, expr: user_id }
+      - { name: pair_volume_usd, label: Pair volume (USD), description: "Σ USD sent across the pairs.", agg: sum, expr: volume_usd }

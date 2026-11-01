@@ -84,7 +84,10 @@ def trim_empty_months(df: pd.DataFrame) -> pd.DataFrame:
     if "metric_time__month" not in df.columns or df.empty:
         return df
     df = df.sort_values("metric_time__month").reset_index(drop=True)
-    base = [c for c in df.columns if c != "metric_time__month" and not is_percent(c)]
+    base = [
+        c for c in df.columns
+        if c != "metric_time__month" and not is_percent(c) and pd.api.types.is_numeric_dtype(df[c])
+    ]
     active = df[base].fillna(0).abs().sum(axis=1) > 0
     if not active.any():
         return df.iloc[0:0]

@@ -6,15 +6,30 @@ components as (
     select * from {{ ref('int_customers__sender_graph_components') }}
 ),
 
+receipts as (
+    select * from {{ ref('stg_felix_backend__receipts') }}
+),
+
+first_transfers as (
+    select
+        components.cluster_id,
+        min(receipts.created_at) as first_transfer_at
+    from components
+    inner join receipts on components.user_id = receipts.user_id
+    group by components.cluster_id
+),
+
 clusters as (
     select
-        cluster_id,
-        any_value(cluster_type) as cluster_type,
-        any_value(cluster_n_users) as n_users,
-        any_value(cluster_n_beneficiaries) as n_beneficiaries,
-        any_value(cluster_max_senders_per_beneficiary) as max_senders_per_beneficiary
+        components.cluster_id,
+        any_value(components.cluster_type) as cluster_type,
+        any_value(components.cluster_n_users) as n_users,
+        any_value(components.cluster_n_beneficiaries) as n_beneficiaries,
+        any_value(components.cluster_max_senders_per_beneficiary) as max_senders_per_beneficiary,
+        any_value(first_transfers.first_transfer_at) as first_transfer_at
     from components
-    group by cluster_id
+    left join first_transfers on components.cluster_id = first_transfers.cluster_id
+    group by components.cluster_id
 ),
 
 final as (
@@ -24,7 +39,8 @@ final as (
         cluster_type,
         n_users,
         n_beneficiaries,
-        max_senders_per_beneficiary
+        max_senders_per_beneficiary,
+        first_transfer_at
     from clusters
 )
 

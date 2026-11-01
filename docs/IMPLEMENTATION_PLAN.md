@@ -193,12 +193,12 @@ pytest tests_py -q                            # green
 > Do Phase 7 (DESIGN §14). Implement `run.py compile-metrics` (mf --explain → dashboard/compiled/*.sql), dashboard/db.py (read-only, cached) and the 5 pages. Business formulas come only from the semantic layer; plotly does presentation only. Register the pages as exposures. Run the acceptance checks.
 
 Tasks
-- [ ] `run.py compile-metrics`: for each saved query used by the dashboard, run `mf query --saved-query <q> --explain`, strip the header, and write `dashboard/compiled/<q>.sql`
-- [ ] `dashboard/db.py`: `saved_query(name)` → DataFrame via `duckdb.connect(DB, read_only=True)` + `st.cache_data(ttl=60)`. Show a friendly message if the DB is locked or missing ("run `python run.py all`")
-- [ ] `dashboard/app.py` (Overview): KPI tiles (volume, net revenue, active senders, ARPU, ATV, take rate) with MoM/YoY deltas; volume bars + YoY line
-- [ ] `pages/1_Finance.py`, `2_Operations.py`, `3_Growth.py` (ARPU trend with MoM/YoY, recurring share, Pareto, LTV cohort curves), `4_Risk.py`. Filters: date range, payment method, corridor
-- [ ] `run.py dashboard` = `streamlit run dashboard/app.py`. Update `marts/_exposures.yml`
-- [ ] Screenshots → `docs/img/` for the README
+- [x] `run.py compile-metrics`: for each saved query used by the dashboard, run `mf query --saved-query <q> --explain`, strip the header, and write `dashboard/compiled/<q>.sql`
+- [x] `dashboard/db.py`: `saved_query(name)` → DataFrame via `duckdb.connect(DB, read_only=True)` + `st.cache_data(ttl=60)`. Show a friendly message if the DB is locked or missing ("run `python run.py all`")
+- [x] `dashboard/app.py` (Overview): KPI tiles (volume, net revenue, active senders, ARPU, ATV, take rate) with MoM/YoY deltas; volume bars + YoY line
+- [x] `pages/1_Finance.py`, `2_Operations.py`, `3_Growth.py` (ARPU trend with MoM/YoY, recurring share, Pareto, LTV cohort curves), `4_Risk.py`. Filters: date range, payment method, corridor
+- [x] `run.py dashboard` = `streamlit run dashboard/app.py`. Update `marts/_exposures.yml`
+- [x] Screenshots → `docs/img/` for the README
 
 Acceptance
 ```bash

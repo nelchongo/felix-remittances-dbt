@@ -1,6 +1,7 @@
 version: 2
 
-# The Streamlit dashboard (dashboard/). Each page reads SQL compiled by MetricFlow from saved queries.
+# The Streamlit dashboard (dashboard/). Each page runs SQL compiled by MetricFlow from saved queries
+# (`python run.py compile-metrics` → dashboard/compiled/*.sql), so it depends on the metrics it shows.
 exposures:
   - name: dashboard_overview
     label: Dashboard · Overview
@@ -8,7 +9,7 @@ exposures:
     maturity: medium
     url: http://localhost:8501
     description: KPI tiles (volume, net revenue, active senders, ARPU, ATV, take rate) with MoM / YoY deltas.
-    depends_on: [ref('fct_payments'), ref('fct_customer_activity_monthly'), ref('dim_date')]
+    depends_on: [ref('fct_payments'), ref('dim_date'), metric('gross_volume_usd'), metric('net_revenue_usd'), metric('active_senders'), metric('arpu_usd'), metric('atv_usd'), metric('take_rate')]
     owner: { name: Data team, email: data-platform@felixpago.com }
 
   - name: dashboard_finance
@@ -17,7 +18,7 @@ exposures:
     maturity: medium
     url: http://localhost:8501/Finance
     description: Volume and revenue by method, ticket size, chargeback rate by bank, pay-in performance.
-    depends_on: [ref('fct_payments'), ref('fct_chargebacks'), ref('dim_users')]
+    depends_on: [ref('fct_payments'), ref('fct_chargebacks'), metric('gross_volume_usd'), metric('chargeback_rate'), metric('atv_usd'), metric('median_ticket_usd'), metric('card_decline_rate'), metric('cash_expiry_rate')]
     owner: { name: Finance & Treasury data, email: finance-data@felixpago.com }
 
   - name: dashboard_operations
@@ -26,7 +27,7 @@ exposures:
     maturity: medium
     url: http://localhost:8501/Operations
     description: Payout provider league table by reliability tier, failure reasons, delivery time.
-    depends_on: [ref('fct_disbursement_attempts'), ref('fct_remittances'), ref('dim_payout_providers')]
+    depends_on: [ref('fct_disbursement_attempts'), ref('fct_remittances'), ref('dim_payout_providers'), metric('payout_attempt_failure_rate'), metric('first_attempt_success_rate'), metric('delivery_rate'), metric('median_minutes_to_deliver')]
     owner: { name: Payout Operations data, email: payout-ops-data@felixpago.com }
 
   - name: dashboard_growth
@@ -35,7 +36,7 @@ exposures:
     maturity: medium
     url: http://localhost:8501/Growth
     description: Active and new senders, ARPU with MoM / YoY, recurring share, Pareto curve, LTV cohort curves.
-    depends_on: [ref('fct_payments'), ref('fct_customer_activity_monthly'), ref('dim_users')]
+    depends_on: [ref('fct_payments'), ref('fct_customer_activity_monthly'), ref('dim_users'), metric('active_senders'), metric('new_senders'), metric('arpu_usd'), metric('recurring_share'), metric('ltv_per_cohort_user')]
     owner: { name: Growth & CRM data, email: growth-data@felixpago.com }
 
   - name: dashboard_risk
@@ -44,5 +45,5 @@ exposures:
     maturity: medium
     url: http://localhost:8501/Risk
     description: Cluster sizes, high fan-in beneficiaries, chargeback rate by cluster type.
-    depends_on: [ref('bridge_user_beneficiary'), ref('dim_sender_clusters'), ref('fct_payments'), ref('dim_users')]
+    depends_on: [ref('bridge_user_beneficiary'), ref('dim_sender_clusters'), ref('dim_users'), metric('senders'), metric('chargeback_rate'), metric('sender_clusters'), metric('distinct_senders_per_beneficiary')]
     owner: { name: Risk & Compliance data, email: risk-data@felixpago.com }
