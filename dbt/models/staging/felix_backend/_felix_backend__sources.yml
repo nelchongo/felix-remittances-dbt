@@ -1,0 +1,229 @@
+version: 2
+
+sources:
+  - name: felix_backend
+    description: >
+      Backend extracts of the Félix remittance platform, loaded as text into the `raw` schema by
+      `ingest/load_raw.py` (no dbt seeds). Files are CDC-style and append-only: a record appears once per
+      status change or profile version, and exact duplicate rows exist. Typing, cleaning and dedupe happen
+      in staging. See data/README.md for the full data contract.
+    schema: raw
+    loader: ingest/load_raw.py
+    config:
+      loaded_at_field: _loaded_at
+      # `_loaded_at` is the time of the last load run, so freshness passes right after `run.py load` and
+      # warns/errors when the warehouse has not been reloaded for 24h/48h (expected for a static local demo).
+      freshness:
+        warn_after: { count: 24, period: hour }
+        error_after: { count: 48, period: hour }
+
+    tables:
+      - name: users
+        description: >
+          Sender profiles, one row per profile version (CDC). A user gets a new version when KYC status or
+          state changes. The latest version per `user_id` is the current profile.
+        columns:
+          - name: user_id
+            description: Sender identifier (`usr_...`). Not unique in raw because of versions and duplicates.
+            data_type: varchar
+          - name: first_name
+            description: Sender first name.
+            data_type: varchar
+            config:
+              meta: { pii: true }
+          - name: last_name
+            description: Sender last name.
+            data_type: varchar
+            config:
+              meta: { pii: true }
+          - name: email
+            description: Sender email. Casing is inconsistent in the source.
+            data_type: varchar
+            config:
+              meta: { pii: true }
+          - name: phone_number
+            description: Sender phone number in E.164 format.
+            data_type: varchar
+            config:
+              meta: { pii: true }
+          - name: country
+            description: Sender country (ISO-2). Always `US`.
+            data_type: varchar
+          - name: state
+            description: Sender US state (ISO-2). Can change between versions (SCD2 attribute).
+            data_type: varchar
+          - name: kyc_status
+            description: Know-your-customer status (`pending`, `approved`, `rejected`). Can change between versions (SCD2 attribute).
+            data_type: varchar
+          - name: created_at
+            description: When the user signed up. ISO `...Z` or `YYYY-MM-DD HH:MM:SS` text.
+            data_type: varchar
+          - name: updated_at
+            description: When this profile version was written. Orders the versions.
+            data_type: varchar
+          - &source_file { name: _source_file, description: '{{ doc("col_source_file") }}', data_type: varchar }
+          - &file_md5 { name: _file_md5, description: '{{ doc("col_file_md5") }}', data_type: varchar }
+          - &batch_id { name: _batch_id, description: '{{ doc("col_batch_id") }}', data_type: varchar }
+          - &loaded_at { name: _loaded_at, description: '{{ doc("col_loaded_at") }}', data_type: timestamp }
+
+      - name: payments
+        description: >
+          Pay-in transactions, one row per payment status change (CDC). Debit card payments go
+          pending → succeeded | failed, then succeeded → chargeback | refunded. Cash barcodes go
+          pending → succeeded | expired, then succeeded → refunded (cash can't be charged back).
+        columns:
+          - name: payment_id
+            description: Payment identifier (`pay_...`). Not unique in raw (one row per status change).
+            data_type: varchar
+          - name: user_id
+            description: Sender who made the payment.
+            data_type: varchar
+          - name: amount
+            description: Principal sent, in USD. Text that can contain a thousands separator (`"1,234.56"`).
+            data_type: varchar
+          - name: fee_amount
+            description: Félix commission in USD ($2.99 to a bank account or wallet, $4.98 to cash pickup, first transfer free).
+            data_type: varchar
+          - name: store_fee_amount
+            description: Store commission on cash payments ($3.98), else 0. A pass-through, not Félix revenue.
+            data_type: varchar
+          - name: currency
+            description: Pay-in currency. Always `USD`.
+            data_type: varchar
+          - name: payment_method
+            description: Pay-in method, `debit_card` or `cash`.
+            data_type: varchar
+          - name: payment_processor
+            description: Who collects the money for Félix. Card processors `Adyen` and `Stripe`, cash network `PayNearMe`.
+            data_type: varchar
+          - name: funding_institution
+            description: Where the money comes from. The card's issuing bank, or the store where the cash barcode was paid.
+            data_type: varchar
+          - name: funding_institution_type
+            description: Type of funding institution, `bank`, `neobank` or `retailer`.
+            data_type: varchar
+          - name: card_last4
+            description: Last 4 digits of the debit card. Empty for cash.
+            data_type: varchar
+          - name: status
+            description: >
+              Payment status of this version: `pending`, `succeeded`, `failed`, `expired`, `refunded`,
+              `chargeback`. Casing and surrounding whitespace are inconsistent in the source.
+            data_type: varchar
+          - name: failure_reason
+            description: Decline reason, `barcode_not_paid`, chargeback reason or refund reason. Empty otherwise.
+            data_type: varchar
+          - name: created_at
+            description: When the payment was created. ISO `...Z` or `YYYY-MM-DD HH:MM:SS` text.
+            data_type: varchar
+          - name: updated_at
+            description: When this status version was written. Orders the versions.
+            data_type: varchar
+          - *source_file
+          - *file_md5
+          - *batch_id
+          - *loaded_at
+
+      - name: receipts
+        description: >
+          One row per successful payment: the link between a payment and its disbursements, with the FX quote.
+          FX revenue = send_amount × (1 − fx_rate / reference_fx_rate). A few receipts point to payments that
+          don't exist in the extract (known orphans).
+        columns:
+          - name: receipt_id
+            description: Receipt identifier (`rcp_...`).
+            data_type: varchar
+          - name: payment_id
+            description: Payment the receipt was issued for.
+            data_type: varchar
+          - name: user_id
+            description: Sender.
+            data_type: varchar
+          - name: beneficiary_id
+            description: Beneficiary the money is sent to (`ben_...`).
+            data_type: varchar
+          - name: send_amount
+            description: Amount sent, in the send currency (USD).
+            data_type: varchar
+          - name: send_currency
+            description: Send currency. Always `USD`.
+            data_type: varchar
+          - name: fx_rate
+            description: Exchange rate applied to the customer (receive currency per USD).
+            data_type: varchar
+          - name: reference_fx_rate
+            description: Mid-market rate when the quote was made. The spread versus `fx_rate` is Félix's FX revenue.
+            data_type: varchar
+          - name: receive_amount
+            description: Amount the beneficiary receives, in the receive currency.
+            data_type: varchar
+          - name: receive_currency
+            description: Payout currency (MXN, GTQ, HNL, USD for El Salvador, DOP, COP).
+            data_type: varchar
+          - name: created_at
+            description: When the receipt was issued. ISO `...Z` or `YYYY-MM-DD HH:MM:SS` text.
+            data_type: varchar
+          - *source_file
+          - *file_md5
+          - *batch_id
+          - *loaded_at
+
+      - name: disbursements
+        description: >
+          Payout attempts to beneficiaries, one row per attempt status change (CDC). A receipt can have up to
+          3 attempts (retries). Status goes processing → completed | failed. Beneficiary attributes are
+          denormalised on every attempt and can change over time (SCD2 source for beneficiaries).
+        columns:
+          - name: disbursement_id
+            description: Payout attempt identifier (`dsb_...`). Not unique in raw (one row per status change).
+            data_type: varchar
+          - name: receipt_id
+            description: Receipt being paid out.
+            data_type: varchar
+          - name: attempt_number
+            description: Attempt sequence for the receipt (1, 2 or 3).
+            data_type: varchar
+          - name: provider_name
+            description: Payout provider that delivers the money in the destination country.
+            data_type: varchar
+          - name: payout_method
+            description: How the beneficiary receives the money, `bank_deposit`, `cash_pickup` or `mobile_wallet`.
+            data_type: varchar
+          - name: beneficiary_id
+            description: Beneficiary identifier (`ben_...`).
+            data_type: varchar
+          - name: beneficiary_name
+            description: Beneficiary full name.
+            data_type: varchar
+            config:
+              meta: { pii: true }
+          - name: beneficiary_country
+            description: Destination country (ISO-2), the corridor.
+            data_type: varchar
+          - name: beneficiary_account_last4
+            description: Last 4 digits of the beneficiary's account or wallet.
+            data_type: varchar
+          - name: amount
+            description: Payout amount in the local currency. Text that can contain a thousands separator.
+            data_type: varchar
+          - name: currency
+            description: Payout currency.
+            data_type: varchar
+          - name: status
+            description: >
+              Attempt status of this version: `processing`, `completed`, `failed`. Casing and surrounding
+              whitespace are inconsistent in the source.
+            data_type: varchar
+          - name: failure_reason
+            description: Why the attempt failed (`invalid_account`, `provider_timeout`, ...). Empty otherwise.
+            data_type: varchar
+          - name: created_at
+            description: When the attempt started. ISO `...Z` or `YYYY-MM-DD HH:MM:SS` text.
+            data_type: varchar
+          - name: updated_at
+            description: When this status version was written. Orders the versions.
+            data_type: varchar
+          - *source_file
+          - *file_md5
+          - *batch_id
+          - *loaded_at

@@ -47,15 +47,15 @@ python run.py --help                # lists every subcommand
 > Do Phase 1 of docs/IMPLEMENTATION_PLAN.md (DESIGN §4, data/README.md). Build ingest/load_raw.py with the file-level ingestion log, and the run.py commands `reset-data`, `load`, `replay` and `add-batch`. Then declare the dbt sources with freshness. Run the acceptance checks.
 
 Tasks
-- [ ] `run.py reset-data`: delete `data/landing/`, then copy `data/source/<t>.csv` → `data/landing/<t>/<t>__baseline.csv` for users, payments, receipts, disbursements. Delete `warehouse/felix.duckdb`
-- [ ] `ingest/load_raw.py`:
-  - [ ] create schema `raw` and table `raw._ingestion_log(table_name, file_name, file_md5, row_count, batch_id, loaded_at)`
-  - [ ] for each `data/landing/<table>/*.csv`: **new** file → insert, **changed MD5** → delete that file's rows and re-insert, **missing** file → delete its rows
-  - [ ] read with `read_csv(path, all_varchar=true, header=true)`. Add `_source_file`, `_file_md5`, `_batch_id` (from the `__<batch>` suffix) and `_loaded_at`. Use `union_by_name` / `INSERT BY NAME` so new columns don't break the load
-  - [ ] `--replay monthly`: for the first load only, insert baseline rows in month order of `coalesce(updated_at, created_at)` and call a callback after each month (run.py uses it to run `dbt snapshot`)
-  - [ ] print a summary per table: files new/changed/removed and rows
-- [ ] `run.py load` = loader. `run.py replay` = loader with `--replay monthly` and `dbt run -s staging intermediate` once, then `dbt snapshot` after each month. `run.py add-batch <name>` copies `data/test_batches/<name>/<t>.csv` → `landing/<t>/<t>__<name>.csv`, then load → `dbt snapshot` → `dbt build`
-- [ ] `dbt/models/staging/felix_backend/_felix_backend__sources.yml`: source `felix_backend` (schema `raw`), 4 tables, every column described (from data/README.md), `meta: {pii: true}` on name/email/phone/beneficiary_name, freshness on `_loaded_at` (warn 24h, error 48h). **Freshness will warn on synthetic data, which is expected and documented**
+- [x] `run.py reset-data`: delete `data/landing/`, then copy `data/source/<t>.csv` → `data/landing/<t>/<t>__baseline.csv` for users, payments, receipts, disbursements. Delete `warehouse/felix.duckdb`
+- [x] `ingest/load_raw.py`:
+  - [x] create schema `raw` and table `raw._ingestion_log(table_name, file_name, file_md5, row_count, batch_id, loaded_at)`
+  - [x] for each `data/landing/<table>/*.csv`: **new** file → insert, **changed MD5** → delete that file's rows and re-insert, **missing** file → delete its rows
+  - [x] read with `read_csv(path, all_varchar=true, header=true)`. Add `_source_file`, `_file_md5`, `_batch_id` (from the `__<batch>` suffix) and `_loaded_at`. Use `union_by_name` / `INSERT BY NAME` so new columns don't break the load
+  - [x] `--replay monthly`: for the first load only, insert baseline rows in month order of `coalesce(updated_at, created_at)` and call a callback after each month (run.py uses it to run `dbt snapshot`)
+  - [x] print a summary per table: files new/changed/removed and rows
+- [x] `run.py load` = loader. `run.py replay` = loader with `--replay monthly` and `dbt run -s staging intermediate` once, then `dbt snapshot` after each month. `run.py add-batch <name>` copies `data/test_batches/<name>/<t>.csv` → `landing/<t>/<t>__<name>.csv`, then load → `dbt snapshot` → `dbt build`
+- [x] `dbt/models/staging/felix_backend/_felix_backend__sources.yml`: source `felix_backend` (schema `raw`), 4 tables, every column described (from data/README.md), `meta: {pii: true}` on name/email/phone/beneficiary_name, freshness on `_loaded_at` (warn 24h, error 48h). **Freshness will warn on synthetic data, which is expected and documented**
 
 Acceptance
 ```bash

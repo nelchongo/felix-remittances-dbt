@@ -11,7 +11,7 @@ macros:
         type: string
         description: The `schema` config of the node, or none.
       - name: node
-        type: object
+        type: any
         description: The node being compiled (unused).
 
   - name: log_run_results
@@ -20,5 +20,5 @@ macros:
       executed node to `audit.dbt_run_results`.
     arguments:
       - name: results
-        type: list
+        type: list[any]
         description: The `results` context variable available in on-run-end hooks.
