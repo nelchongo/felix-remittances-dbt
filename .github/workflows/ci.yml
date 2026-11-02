@@ -1,7 +1,10 @@
 name: ci
 
-# Every pull request to main/master must pass both checks before it can be merged (direct pushes are blocked).
+# Every pull request to main/master must pass "all checks" before it can be merged (direct pushes are blocked).
 # The push trigger re-runs the checks on main after each merge so the README badge shows its state.
+#
+# Two stages, so the slow part runs once: `build` runs the whole dbt sequence per Python version and uploads the
+# warehouse; then test, lint and the two data checks run in parallel, each on its own copy of that warehouse.
 on:
   pull_request:
     branches: [main, master]
@@ -20,10 +23,10 @@ env:
   DO_NOT_TRACK: "1"
 
 jobs:
-  checks:
-    name: checks (Python ${{ matrix.python-version }})
+  build:
+    name: build (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -33,24 +36,75 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
-      - run: pip install -r requirements.txt
+      - name: Restore the installed dependencies
+        id: deps
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.pythonLocation }}
+          key: deps-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+      - if: steps.deps.outputs.cache-hit != 'true'
+        run: pip install -r requirements.txt
       - name: dbt deps + dbt debug
         run: python run.py setup
-      - name: Full pipeline (load, SCD2 replay, dbt build with every test, mf validate-configs, answers)
+      - name: Full sequence (ingest, dbt build per tag with every test, metrics, answers, docs)
         run: python run.py all
-      # After `all`, so sqlfluff also renders the incremental branches of fct_payments and fct_remittances.
-      - name: Lint (ruff on Python, sqlfluff on dbt SQL)
-        run: python run.py lint
-      - name: dbt test + pytest (semantic layer reconciliation, dashboard)
-        run: python run.py test
-      - name: Incremental facts equal a full refresh after late-arriving data
-        run: python run.py check-incremental
-      - name: Edge-case batch fails exactly the expected tests
-        run: python run.py check-edge-cases
+      - name: Share the built warehouse with the checks
+        uses: actions/upload-artifact@v4
+        with:
+          name: warehouse-py${{ matrix.python-version }}
+          path: |
+            warehouse/
+            dbt/target/
+            data/landing/
+          retention-days: 1
       - name: Upload the generated answers
-        if: always() && matrix.python-version == '3.13'
+        if: matrix.python-version == '3.13'
         uses: actions/upload-artifact@v4
         with:
           name: answers
           path: docs/answers.md
+
+  checks:
+    name: ${{ matrix.check }} (Python ${{ matrix.python-version }})
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+        check: [test, lint, check-incremental, check-edge-cases]
+        exclude:
+          - python-version: "3.11"  # ruff and sqlfluff give the same answer on every Python version
+            check: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Restore the installed dependencies
+        id: deps
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.pythonLocation }}
+          key: deps-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+      - if: steps.deps.outputs.cache-hit != 'true'
+        run: pip install -r requirements.txt
+      - name: Download the built warehouse
+        uses: actions/download-artifact@v4
+        with:
+          name: warehouse-py${{ matrix.python-version }}
+      - name: dbt deps + dbt debug
+        run: python run.py setup
+      # lint runs on the built warehouse, so sqlfluff also renders the incremental branches of the facts.
+      - name: python run.py ${{ matrix.check }}
+        run: python run.py ${{ matrix.check }}
+
+  all-checks:
+    name: all checks
+    if: always()
+    needs: [build, checks]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every build and check passed
+        run: test "${{ needs.build.result }}" = success && test "${{ needs.checks.result }}" = success

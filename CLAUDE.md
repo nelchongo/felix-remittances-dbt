@@ -19,8 +19,8 @@ standards matter as much as correctness. Reviewers will clone the repo and run i
 6. **Use the macros** for repeated logic (cleaning, dedupe, PIT join, unknown member, FX revenue). Don't copy-paste SQL patterns.
 7. **Runs anywhere with Python only.** `run.py` is the single entry point (no Make, no Docker). No absolute paths, and no reliance on `~/.dbt`.
 8. **Don't invent requirements.** If something isn't in DESIGN.md or the plan, ask or leave a `TODO(design):` note.
-9. **Never push to `main` or `master`.** Work on a branch, push the branch and open a pull request. CI (`checks (Python 3.11)` and
-   `checks (Python 3.13)`) must be green before merging. A `pre-push` hook blocks direct pushes locally.
+9. **Never push to `main` or `master`.** Work on a branch, push the branch and open a pull request. CI (the `all checks` job) must be green
+   before merging. A `pre-push` hook blocks direct pushes locally.
 
 ## Repo map
 ```
@@ -38,7 +38,7 @@ dbt/                        # the dbt project (dbt_project.yml, profiles.yml in-
   snapshots/                # YAML snapshots: snp_users, snp_beneficiaries
   models/staging/felix_backend/ · intermediate/ · marts/{core,finance,operations,growth,risk}/ · semantic/
 docs/                       # ASSIGNMENT, DESIGN (incl. decision records), IMPLEMENTATION_PLAN, answers.md (generated), img/
-.github/workflows/ci.yml    # pull-request checks: setup → all → lint → test → check-incremental → check-edge-cases (Python 3.11, 3.13)
+.github/workflows/ci.yml    # pull-request checks: build (run.py all, per Python 3.11/3.13) → test · lint · check-incremental · check-edge-cases in parallel → all checks
 warehouse/                  # generated: felix.duckdb + compiled/*.sql (git-ignored)
 ```
 

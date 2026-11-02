@@ -599,19 +599,17 @@ that test depends on `stg_felix_backend__payments`, which is skipped.
 
 ### 15.2 Continuous integration
 
-`.github/workflows/ci.yml` runs on every pull request to `main`/`master`, and on `main` after each merge:
+`.github/workflows/ci.yml` runs on every pull request to `main`/`master`, and on `main` after each merge, in two
+stages so the slow part runs once:
 
-| Step | What it checks |
+| Job | What it does |
 |---|---|
-| `run.py setup` | `dbt deps` + `dbt debug` |
-| `run.py all` | load, SCD2 replay, `dbt build` with every test, `mf validate-configs`, compiled SQL, answers |
-| `run.py lint` | ruff on Python, sqlfluff on dbt SQL. It runs after `all` so the incremental branches are rendered and linted too |
-| `run.py test` | `dbt test` + pytest (MetricFlow reconciles with the facts, the dashboard renders) |
-| `run.py check-incremental` | the incremental facts equal a full refresh after late-arriving data (§15.4) |
-| `run.py check-edge-cases` | the edge-case batch fails exactly the expected tests (§15.1) |
+| `build (Python 3.11 / 3.13)` | `run.py setup` → `run.py all` (the whole sequence with every dbt test, metrics, answers, docs), then uploads the warehouse, `dbt/target/` and `data/landing/` as an artifact |
+| `test`, `lint`, `check-incremental`, `check-edge-cases` (per Python version) | in parallel, each on its own copy of that warehouse: `dbt test` + pytest, ruff + sqlfluff (Python 3.13 only, and on the built warehouse so the incremental branches are linted too), incremental = full refresh, the edge-case batch |
+| `all checks` | passes only when every build and check passed: the one required status check |
 
-The job runs once per Python version (`checks (Python 3.11)`, `checks (Python 3.13)`) and uploads `docs/answers.md`.
-`main` only changes through a pull request with both checks green: a GitHub branch ruleset blocks direct
+The installed dependencies are cached per Python version and `requirements.txt`, so the check jobs skip `pip install`.
+`main` only changes through a pull request with `all checks` green: a GitHub branch ruleset blocks direct
 pushes (and a `pre-push` hook does the same in the maintainer's clone). Lint settings live in `run.py lint`, so there is no config file:
 ruff uses its default rules, and sqlfluff uses its defaults with the DuckDB dialect and the dbt templater, minus AM04
 (`select * from final` is the dbt CTE convention), ST06 (column order follows the YAML contract) and LT05 (line length).
