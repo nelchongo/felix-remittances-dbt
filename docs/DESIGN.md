@@ -1,4 +1,4 @@
-# Félix Remittances: dbt Project Design (v6)
+# Félix Remittances: dbt Project Design (v8)
 
 > Take-home for the Data Engineering Manager role at Félix Pago.
 > This is the plan for **what we build, why, and in what order**. It doubles as the repo's architecture note.
@@ -6,7 +6,20 @@
 > **Implementation:** see `CLAUDE.md` (rules for Claude Code) and `docs/IMPLEMENTATION_PLAN.md` (phases 0–8).
 >
 > **Changelog**
-> - **v6 (simplification after the first build):** the dashboard is one page with a tab per question that reads the
+> - **v8 (menu, step sequence and brand):** `python run.py` resets the data (so option 1 is always the full first
+>   run), clears the screen and opens a menu under the Félix logo,
+>   with the dashboard already running in the background and a clickable link. Option 1 runs the sequence step by step
+>   (`run.py pipeline`): ingest, then one `dbt build --select tag:<step>` per tag (`staging`, `intermediate`, `snapshot`,
+>   `core`, `marts`), then the semantic layer. The first run ingests and builds everything; later runs are
+>   incremental. The terminal splits in two: connected dots on the left (the marts step fans out into the four
+>   groups dbt builds in parallel), live dbt output on the right. The dashboard uses Félix Pago's logo, colors and
+>   look-alike fonts, light only like felixpago.com, with validated chart palettes (§14).
+> - v7 (pull-request workflow, load-time incremental, `src/`): CI runs every check on every pull request to `main`/`master` (one job per
+>   Python version, 3.11 and 3.13), and `main` only changes through a reviewed PR. Python is linted with `ruff`. The README
+>   is only the step-by-step guide; the ADRs, the edge-case notes and the implementation notes moved into this
+>   document (§15, §18, §19). `.sqlfluff` and `scripts/check_edge_cases.py` were folded into `run.py`. Every Python file except
+>   `run.py` lives in `src/`. The incremental facts use a load-time watermark, proven by `run.py check-incremental` (§15.4).
+> - v6 (simplification after the first build): the dashboard is one page with a tab per question that reads the
 >   same saved queries as `docs/answers.md` (no dashboard-only saved queries, semantic models or filters). No
 >   Makefile, Dockerfile or pre-commit: `run.py` and CI are the only entry points. The loader moved to `scripts/`.
 > - v5: **facts store ingredients, the semantic layer stores the formulas.** No rates, averages or growth % are stored in tables. Metrics are defined once in a **MetricFlow semantic layer** (dbt, open source, DuckDB-native) and plotly only draws them. New growth metrics: **ARPU, MoM, YoY**. History extended to 24 months so YoY is real.
@@ -21,7 +34,7 @@
 | Brief / goal | Solution |
 |---|---|
 | dbt on any warehouse | **DuckDB** (a file, no server) via `dbt-duckdb`. A `postgres` profile is included as an alternative |
-| Raw schema, **no seeds** | `scripts/load_raw.py` loads `data/landing/<table>/*.csv` → `raw.<table>`. **No `seeds/` folder.** Reference attributes live in `vars` and are turned into SQL by a macro |
+| Raw schema, **no seeds** | `src/load_raw.py` loads `data/landing/<table>/*.csv` → `raw.<table>`. **No `seeds/` folder.** Reference attributes live in `vars` and are turned into SQL by a macro |
 | First layer: dedupe + schema patterns | `staging/`, cleaned and deduped with macros |
 | Intermediate by business context | `intermediate/{payments,disbursements,remittances,customers}` |
 | Data modelling | **Kimball**: 4 business-process marts + conformed dimensions. **Facts hold only additive base measures** |
@@ -66,17 +79,23 @@ flowchart LR
 | Transform | `dbt-core` + `dbt-duckdb` + `dbt_utils`, versions pinned |
 | Semantic layer | **`dbt-metricflow`** (MetricFlow, Apache 2.0 since Oct 2025, ships a DuckDB SQL renderer). CLI: `mf` |
 | Dashboard | `streamlit` + `plotly` + `duckdb` |
-| Runner | **`run.py`** (cross-platform), the single entry point |
-| Quality | `sqlfluff`, `pytest` (semantic-layer reconciliation, dashboard smoke test), GitHub Actions |
+| Runner | **`run.py`** (cross-platform), the single entry point: a menu with no arguments, commands for scripts and CI |
+| Quality | `ruff` (Python), `sqlfluff` (dbt SQL), `pytest` (semantic-layer reconciliation, dashboard smoke test), GitHub Actions on every pull request (§15.2) |
 
 ```bash
 pip install -r requirements.txt
-python run.py all                  # load (monthly replay) → dbt build → mf validate-configs → compile dashboard metrics
+python run.py                      # menu: dashboard in the background + 1 = run sequentially (first run or incremental)
+python run.py pipeline             # the dbt sequence without the menu
+python run.py all                  # reset-data, then load (monthly replay) → dbt build → mf validate-configs → compile dashboard metrics
 python run.py answers              # runs every saved query and writes docs/answers.md (the 8 answers)
 python run.py dashboard            # http://localhost:8501
 python run.py add-batch 2026-07    # incremental test data → snapshot → build → recompile
 python run.py reset-data           # landing/ back to the untouched baseline
-mf query --metrics gross_volume_usd,gross_volume_mom_pct,gross_volume_yoy_pct --group-by metric_time__month   # ad hoc
+python run.py test                 # dbt test + pytest
+python run.py lint                 # ruff + sqlfluff
+python run.py check-incremental    # incremental facts = full refresh after late-arriving data (§15.4)
+python run.py check-edge-cases     # the edge-case batch fails exactly the expected tests (§15.1)
+mf query --metrics gross_volume_usd,gross_volume_usd_mom_pct,gross_volume_usd_yoy_pct --group-by metric_time__month   # ad hoc
 ```
 
 **Version pinning: verified.** A spike on 2026-11-01 ran a toy project end to end on `dbt-core 1.12.6 · dbt-duckdb 1.11.1 · dbt-metricflow 0.15.0 (metricflow 0.213.0) · duckdb 2.0.0` (Python 3.13). The following all work: YAML snapshots (business-time `dbt_valid_from`), the `time_spine` config, `sum_boolean` / `median` / `count_distinct` measures, filtered ratio metrics, derived metrics with `offset_window` 1 month / 1 year, `saved_queries`, `mf validate-configs`, and `mf query --csv` / `--explain`. Pins are in `requirements.txt`, and the spike's gotchas are in `CLAUDE.md`. The YAML below uses the `semantic_models:` + `metrics:` spec.
@@ -111,7 +130,7 @@ Why:
 | Additive measures | ✅ facts | `send_amount_usd`, `fee_revenue_usd`, `fx_revenue_usd`, `chargeback_loss_usd`, `is_succeeded`, `is_failed`… |
 | Semi-additive | ✅ periodic snapshot only, flagged in `meta` | `cumulative_net_revenue_usd` per user-month (sums across users, **not** across months) |
 | Classification labels (a business rule applied to an entity) | ✅ as **dimension attributes** | `volume_segment` (Q2), `lifecycle_status` / `is_recurring` (Q3), `reliability_tier` (Q4), `cluster_type` (Q5). The brief explicitly asks to *classify*, and labels are needed to group by |
-| Ratios, averages, medians, distinct counts, % of total, MoM, YoY, ARPU, LTV | ❌ semantic layer | `chargeback_rate`, `atv_usd`, `arpu_usd`, `gross_volume_yoy_pct`… |
+| Ratios, averages, medians, distinct counts, % of total, MoM, YoY, ARPU, LTV | ❌ semantic layer | `chargeback_rate`, `atv_usd`, `arpu_usd`, `gross_volume_usd_yoy_pct`… |
 | Presentation-only maths | ❌ plotly/pandas | % of total in a pie chart, cumulative share for the Pareto curve, sorting |
 
 Every fact column carries `meta: { additivity: additive | semi_additive }`, and a custom test fails if a column named `*_rate`, `*_pct`, `avg_*` or `*_ratio` appears in a fact.
@@ -334,15 +353,17 @@ Sample data preview: ~6% of senders make up 50% of volume. Monthly ARPU ≈ $10.
 
 ```
 felix-remittances-dbt/
-├── README.md · run.py · requirements.txt · .sqlfluff · .gitignore
+├── README.md · run.py · requirements.txt · .gitignore · CLAUDE.md
 ├── .github/workflows/ci.yml
 ├── data/  source/ · test_batches/ · landing/ · README.md
-├── scripts/   load_raw.py · render_answers.py · check_edge_cases.py · generate_sample_data.py
-├── dashboard/
-│   ├── app.py                                 # one page, one tab per question, read-only DuckDB
-│   └── compiled/*.sql                          # SQL generated by MetricFlow from saved queries (build artifact)
-├── tests_py/                                   # pytest: saved queries reconcile with facts; dashboard renders
-├── docs/  DESIGN.md · answers.md (generated) · adr/0001-duckdb · 0002-scd2-replay · 0003-semantic-layer
+├── src/                                       # every Python file except run.py
+│   ├── load_raw.py                             # CSV landing → raw (file-level incremental, no seeds)
+│   ├── render_answers.py                       # saved-query results → docs/answers.md
+│   ├── dashboard.py                            # Streamlit: one tab per question, read-only DuckDB
+│   ├── generate_sample_data.py                 # synthetic data generator (output in data/)
+│   └── tests/                                  # pytest: saved queries reconcile with facts; dashboard renders
+├── warehouse/  felix.duckdb · compiled/*.sql   # generated: the warehouse and MetricFlow's SQL for the dashboard
+├── docs/  ASSIGNMENT.md · DESIGN.md · IMPLEMENTATION_PLAN.md · answers.md (generated) · img/
 └── dbt/
     ├── dbt_project.yml · profiles.yml · packages.yml
     ├── snapshots/   snp_users.yml · snp_beneficiaries.yml
@@ -417,7 +438,7 @@ flowchart LR
 
 **Staging**: one model per source, macros only (`clean_amount`, `parse_timestamp`, `normalize_enum`, `dedupe_latest`). The `*_events` models keep history, which is needed because a chargeback overwrites `succeeded`.
 **Intermediate**: lifecycle pivots, joins, FX revenue (`fx_revenue` macro), and the **label models** described in §8.
-**Marts**: facts and dims (§6). `fct_payments` and `fct_remittances` are incremental (merge, re-processing the last 90 days for late chargebacks).
+**Marts**: facts and dims (§6). `fct_payments` and `fct_remittances` are incremental (§15.4).
 
 ---
 
@@ -491,8 +512,8 @@ Every semantic model, measure and metric has a `description` and `label`. dbt do
 - **plotly / pandas** handle presentation only: formatting, % of total in a chart, the cumulative line on the Pareto chart, colours.
 
 **How it reads data without locking DuckDB:**
-1. After each build, `python run.py compile-metrics` asks MetricFlow for the SQL of every saved query (`mf query --saved-query <name> --explain`) and writes it to `dashboard/compiled/<name>.sql`.
-2. `dashboard/app.py` runs those SQL files through a **short-lived read-only DuckDB connection**, cached with `st.cache_data(ttl=60)`. `dbt build` can still write between refreshes.
+1. After each build, `python run.py compile-metrics` asks MetricFlow for the SQL of every saved query (`mf query --saved-query <name> --explain`) and writes it to `warehouse/compiled/<name>.sql`.
+2. `src/dashboard.py` runs those SQL files through a **short-lived read-only DuckDB connection**, cached per warehouse version (the file's modification time), so a refresh after a build shows the new data at once. `dbt build` can still write between refreshes; a query that meets dbt's write lock shows "refresh in a few seconds".
 3. Ad-hoc questions work the same way: `mf query …` from the CLI.
 
 **One page, one tab per question (v6).** The dashboard shows exactly the saved queries behind `docs/answers.md`:
@@ -502,7 +523,36 @@ by bank) · Q7 average vs median ticket · Q8 historical / projected LTV and coh
 performance. There are no filters: a filter would need its own saved query per grain (filtering in pandas would mean
 re-implementing formulas), which v5 did with 15 dashboard-only queries. Every chart has a table view.
 
-**Fallback (ADR-0003):** if MetricFlow's compile step proves fragile in the pinned versions, the dashboard can calculate the same formulas from the base measures in a small pandas registry. Because the facts store the ingredients, both options stay open.
+**Background and brand (v8).** `python run.py` (the menu) starts the dashboard in the background on the first free
+port from 8501 (log in `warehouse/dashboard.log`) and stops it on exit. `src/brand.py` holds the Félix Pago tokens
+taken from felixpago.com's public stylesheet (slate `#082422`, linen `#fefcf9`, brand cyan `#2bf2f1`, stone, concrete,
+papaya, blueberry) and the logos in `src/assets/`. Like felixpago.com, the dashboard is light only (linen
+background, slate text, the logo on a slate band with a cyan rule). The site's fonts, Plain for headings and Saans
+for text, are licensed, so the dashboard loads their closest free equivalents from Google Fonts: Inter Tight
+ExtraBold and DM Sans (the system sans-serif when offline). `run.py` passes the theme and fonts as `--theme.*`
+flags, so there is no Streamlit config file. Chart colors are the brand tokens stepped until the palette passes the
+data-viz checks on linen (lightness band, chroma ≥ 0.1, colour-blind and normal-vision separation, 3:1 contrast):
+teal `#0d9999` (the brand hue, deeper, because the cyan is unreadable on linen), papaya `#f26629` and blueberry
+`#6060bf`. Cohort curves use a 6-step single-hue teal ramp. Status colors (provider tiers) stay reserved and always
+carry an icon and a label.
+
+**Layout (v8).** Every question tab has the same shape: the question in plain words, how it is measured (the saved
+query's description), four cards of the same size, and two charts of the same height side by side, each with its
+table view. Q1 splits the money into revenue before losses (fees + FX, the `revenue_before_losses_usd` metric),
+chargeback losses and net revenue, because one chargeback costs the whole principal and can take most of a month's
+margin.
+
+**Data model tab (v8).** The last tab explains the Kimball design: a star diagram (one cluster per mart, the
+conformed dimensions in `core`) and the bus matrix. Both are read from dbt's `manifest.json`: a ✔ is a
+`relationships` test from a mart model's key to a core dimension (✔✔ = role-playing, e.g. payment date and
+chargeback date), so the page cannot drift from the model.
+
+**Data catalog tab (v8).** The dbt docs inside the dashboard: pick any source, model or snapshot to see its
+description, owner, grain, every column with its type and description, and its lineage two steps upstream and
+downstream. A toggle embeds the full searchable dbt docs site (`dbt docs generate --static`, one 4 MB page). The
+dbt sequence regenerates the docs in its semantic-layer step; `python run.py docs` does it on demand.
+
+**Fallback (§18.3):** if MetricFlow's compile step proves fragile in the pinned versions, the dashboard can calculate the same formulas from the base measures in a small pandas registry. Because the facts store the ingredients, both options stay open.
 
 ---
 
@@ -518,7 +568,83 @@ re-implementing formulas), which v5 did with 15 dashboard-only queries. Every ch
 | Modelling rules | **`no_derived_metrics_in_facts`**, `scd2_no_overlap`, `share_at_least` (the Q2 top segment ≥ 50% of volume) |
 | Semantic layer | `mf validate-configs` in CI. **pytest** runs every saved query (smoke test) and reconciles: Σ `gross_volume_usd` from MetricFlow equals Σ in `fct_payments`, and ARPU × active senders equals net revenue per month |
 | Unit tests (dbt) | dedupe, Pareto boundary, recurring/churn labels, cluster merge, `fx_revenue` macro |
-| Edge-case batch | `add-batch edge_cases` produces exactly the expected failures |
+| Edge-case batch | `python run.py check-edge-cases` produces exactly the expected failures (§15.1) |
+
+### 15.1 Edge-case batch
+
+`data/test_batches/edge_cases/payments.csv` holds 6 hand-crafted bad payment rows. `python run.py check-edge-cases`
+loads them (`add-batch edge_cases`: load → snapshot → `dbt build`, which exits non-zero as intended) and checks
+`dbt/target/run_results.json` against the expected set below. Run `python run.py reset-data` afterwards.
+
+| Bad row (`payment_id`) | What is wrong | Test that catches it | Severity |
+|---|---|---|---|
+| `pay_edge_negative_amount` | amount is `-50.00` | `dbt_utils.expression_is_true` `send_amount_usd > 0` | error |
+| `pay_edge_unknown_method` | payment method `zelle` | `accepted_values` on `payment_method` | error |
+| | …and it carries a `card_last4` without being a debit card | singular `assert_card_last4_only_on_debit_cards` | error |
+| `pay_edge_unknown_status` | status `on_hold` | `accepted_values` on `status` | error |
+| `pay_edge_orphan_user` | `usr_does_not_exist` is not in the users extract | `relationships` `user_id → stg_felix_backend__users` | **warn** |
+| `pay_edge_cash_chargeback` | a cash payment with status `chargeback` | singular `assert_no_cash_chargebacks` | error |
+| `pay_edge_bad_timestamp` | `01/10/2026 12:00` (unsupported format, `parse_timestamp` returns NULL) | `not_null` on `created_at` **and** `updated_at` | error |
+
+Result: 7 tests fail and 1 warns (`Done. PASS=115 WARN=1 ERROR=7 SKIP=170` after the three monthly batches), and
+each failing test returns exactly one row, the bad payment it targets.
+
+**Why the rules sit on `stg_felix_backend__payment_events`.** `dbt build` skips every node downstream of a failing
+`error` test. That is the point: bad source data never reaches the marts (`fct_payments` and everything after it are
+skipped, so the dashboard keeps the last good build). It also means a rule on a downstream model would never run in
+the same build, so the row-level source rules live on the event-history model, where every version of every payment
+is checked once. Mart invariants (keys, relationships to dimensions, `no_derived_metrics_in_facts`, `scd2_no_overlap`,
+`share_at_least`) run on the marts during a clean build. The 4 known orphan receipts (warn) don't show here because
+that test depends on `stg_felix_backend__payments`, which is skipped.
+
+### 15.2 Continuous integration
+
+`.github/workflows/ci.yml` runs on every pull request to `main`/`master`, and on `main` after each merge, in two
+stages so the slow part runs once:
+
+| Job | What it does |
+|---|---|
+| `build (Python 3.11 / 3.13)` | `run.py setup` → `run.py all` (the whole sequence with every dbt test, metrics, answers, docs), then uploads the warehouse, `dbt/target/` and `data/landing/` as an artifact |
+| `test`, `lint`, `check-incremental`, `check-edge-cases` (per Python version) | in parallel, each on its own copy of that warehouse: `dbt test` + pytest, ruff + sqlfluff (Python 3.13 only, and on the built warehouse so the incremental branches are linted too), incremental = full refresh, the edge-case batch |
+| `all checks` | passes only when every build and check passed: the one required status check |
+
+The installed dependencies are cached per Python version and `requirements.txt`, so the check jobs skip `pip install`.
+`main` only changes through a pull request with `all checks` green: a GitHub branch ruleset blocks direct
+pushes (and a `pre-push` hook does the same in the maintainer's clone). Lint settings live in `run.py lint`, so there is no config file:
+ruff uses its default rules, and sqlfluff uses its defaults with the DuckDB dialect and the dbt templater, minus AM04
+(`select * from final` is the dbt CTE convention), ST06 (column order follows the YAML contract) and LT05 (line length).
+
+### 15.3 The step sequence
+
+`run.py pipeline` (menu option 1, and `all`, `add-batch`, `check-*`) runs ingest, then one `dbt build` per sequence
+tag, then the semantic layer. `dbt_project.yml` tags every model and snapshot with exactly one step, set per folder
+(tags add up down the tree). A test runs in the step that builds its last parent (`--indirect-selection buildable`).
+The last step uses `eager`, which also picks the fact → `dim_date` relationships: facts compute their date keys, so
+`dim_date` is not their ancestor, and by then every node exists. `src/tests/test_run.py` checks that every node has
+one tag, that no step depends on a later one, and that the steps run the same 258 tests as a single `dbt build`.
+Steps can't run as parallel processes, because DuckDB allows a single writer. Inside a step dbt uses 4 threads, so
+finance, operations, growth and risk build at the same time; the terminal shows them as parallel branches.
+
+### 15.4 Incremental facts
+
+`fct_payments` (one row per payment) and `fct_remittances` (one row per receipt) merge on their key. A run re-processes:
+
+| Rows | Why |
+|---|---|
+| `_loaded_at` > the fact's `max(_loaded_at)` | `_loaded_at` is the latest **load time** of the row's sources (payment events, receipt, payout attempts). Late or out-of-order CDC rows reach their fact row whatever their business timestamps |
+| created in the last `chargeback_maturity_days` (90) | values that depend on *other* rows catch up with late data: `is_first_transfer` (the user's other payments) and the point-in-time user and beneficiary versions |
+
+A merge never deletes. When the loader removes rows from raw (a landing file changed or was removed), `run.py`
+builds with `--full-refresh` (`add-batch` does it automatically; after `run.py load` it prints the command).
+Snapshots ignore `--full-refresh`, so SCD2 history is kept: an entity that left the source has its last version
+closed (`hard_deletes: invalidate`, which `scd2_no_overlap` accepts only for keys no longer in the source), and a
+removed later version stays in history. Rewriting history means rebuilding from landing (`reset-data` + `all`).
+
+`python run.py check-incremental` (CI) proves the facts equal a full refresh. It loads the three monthly batches
+but holds back the 12 July chargebacks and refunds of May–June payments until after September, so their business
+time is older than anything in the facts and their payments sit outside the lookback. The first version of the
+facts filtered on business time (`last_updated_at` > max) and missed all 12 rows in both facts; with the load-time
+watermark the check matches row for row.
 
 ---
 
@@ -530,9 +656,9 @@ re-implementing formulas), which v5 did with 15 dashboard-only queries. Every ch
 | 2 | Snapshots + replay, intermediate models (lifecycle, joins, label models), conformed dims, time spine |
 | 3 | Facts for the 4 marts (ingredients only, contracts, incremental), test batches pass |
 | 4 | Semantic models, metric catalog (incl. ARPU / MoM / YoY), saved queries, `run.py answers`, pytest reconciliation, edge-case run |
-| 5 | Streamlit dashboard on compiled saved queries, README with generated answers + screenshots, ADRs, fresh-clone test, optional Loom |
+| 5 | Streamlit dashboard on compiled saved queries, README, decision records (§18), fresh-clone test, optional Loom |
 
-**Definition of done:** on a clean machine with only Python, `git clone` → `pip install -r requirements.txt` → `python run.py all` → `python run.py dashboard` works. CI is green and `docs/answers.md` is regenerated from the semantic layer.
+**Definition of done:** on a clean machine with only Python, `git clone` → `pip install -r requirements.txt` → `python run.py` → **1** (or `python run.py all` → `python run.py dashboard`) works. CI is green and `docs/answers.md` is regenerated from the semantic layer.
 
 ---
 
@@ -547,3 +673,64 @@ re-implementing formulas), which v5 did with 15 dashboard-only queries. Every ch
   - The recursive CTE for clusters won't scale.
   - Projected LTV is a simple retention model (no CAC, no discounting).
   - Replay is monthly. User versions inside a month are fed in passes, but a beneficiary that changes twice in one month keeps only its last change (1 of 26 in the baseline).
+
+---
+
+## 18. Decision records
+
+Short ADRs (context → decision → consequences), all accepted on 2026-11-01.
+
+### 18.1 DuckDB as the warehouse
+- **Context.** The brief allows any database. Reviewers run the project on their own machines, and it must still show
+  warehouse patterns (schemas, incremental models, snapshots, contracts, a semantic layer) on small data.
+- **Decision.** DuckDB, a single file `warehouse/felix.duckdb`, through `dbt-duckdb`, with the profile in the repo.
+  Everything runs from `python run.py` with versions pinned in `requirements.txt`.
+- **Consequences.** `pip install -r requirements.txt` is the whole installation on Windows, macOS and Linux, and
+  MetricFlow's DuckDB renderer makes the semantic layer work locally. DuckDB allows one writer or many readers: the
+  dashboard uses short-lived read-only connections and never calls `mf`, which opens the file read-write. Some SQL is
+  DuckDB-specific (`qualify`, `union all by name`, `try_strptime`, `date_diff`), so moving to Snowflake or BigQuery is
+  a profile swap plus small dialect changes in a few macros and models.
+
+### 18.2 SCD Type 2 with dbt snapshots and a monthly replay
+- **Context.** Users change KYC status and state; beneficiaries change payout method and account. Facts must join the
+  version valid at event time, but the extract is one baseline file, so a single `dbt snapshot` sees only the latest version.
+- **Decision.** `dim_users` and `dim_beneficiaries` come from YAML snapshots (timestamp strategy,
+  `dbt_valid_to_current = 9999-12-31`). `python run.py replay` loads the baseline month by month with `dbt snapshot`
+  after each month. Inside a month, user versions are fed in passes (pass *k* inserts each user's *k*-th version):
+  without passes the snapshot saw 144 users with history instead of 865 (40%, as in the raw data). Beneficiary
+  versions come from payout attempts (gaps and islands in `int_beneficiaries__attribute_changes`). Facts join through
+  `scd2_point_in_time_join`, and the first version opens at 1900-01-01 so every event finds one.
+- **Consequences.** Real history from a single extract, and the same mechanism handles later batches (`add-batch`).
+  The replay costs about 60 snapshot runs (~80 s). A beneficiary that changes twice in one month keeps only the last
+  change (1 of 26 in the baseline). In production, CDC lands continuously and snapshots run on a schedule.
+
+### 18.3 Facts store ingredients, MetricFlow stores the formulas
+- **Context.** The questions mix additive totals with ratios and distinct counts (chargeback rate, ARPU, LTV, MoM/YoY).
+  Stored ratios can't be rolled up and tend to be re-implemented differently in each dashboard.
+- **Decision.** Facts hold additive measures, 0/1 flags and counts; labels the brief asks for live on dimensions, and
+  `no_derived_metrics_in_facts` fails on `*_rate`, `*_pct`, `*_ratio`, `avg_*` and `median_*` columns. Every formula is a
+  MetricFlow metric, answers are saved queries, and the dashboard runs the SQL MetricFlow compiles for them.
+- **Consequences.** One definition per metric, correct at any grain, changed in one YAML file with no backfill. pytest
+  reconciles MetricFlow with the facts. Offset (YoY) metrics also emit months after the data ends, so readers trim
+  trailing empty months. Fallback: because the facts keep the ingredients, the formulas could move to a small pandas
+  registry if MetricFlow became a blocker.
+
+### 18.4 No dbt seeds; reference data in vars
+- **Context.** The brief forbids seeds for sources, and seeds for small reference tables blur source data and configuration.
+- **Decision.** No `seeds/` folder. `src/load_raw.py` loads the CSVs into `raw` with a file-level ingestion log
+  (new / changed / removed files) and lineage columns. Reference attributes (`payment_methods`, `payment_processors`,
+  `corridors`) live in `dbt_project.yml` vars, rendered by `values_from_var`, and dimensions union them with the values
+  seen in the data so a new value never disappears.
+- **Consequences.** Reference data is reviewed like code and needs no load step. Values missing from vars still get a
+  dimension row with NULL attributes, which the tests surface. Large or volatile reference data would become a source table.
+
+---
+
+## 19. Implementation notes (where the build differs from the plan above)
+- **Intermediate access is `protected`**, not `private`: dbt only lets a private model be referenced from its own
+  group, and marts and snapshots in other groups need the intermediate models.
+- **SCD2 joins in MetricFlow resolve at day granularity**; the facts' own point-in-time keys use exact timestamps.
+- **Net revenue subtracts chargeback losses**, so historical LTV is about $22 per sender; fees + FX alone are about
+  $37 (the figure quoted in `data/README.md`).
+- **Source freshness** passes right after a load (it uses the load time) and warns after 24 hours.
+- The v6 and v7 simplifications are listed at the end of `docs/IMPLEMENTATION_PLAN.md`.

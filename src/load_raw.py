@@ -21,7 +21,7 @@ Most KYC approvals land days after sign-up, and without passes the monthly snaps
 The snapshots use the timestamp strategy (business-time validity), so the extra runs do not distort history.
 
 Usage:
-    python scripts/load_raw.py [--db warehouse/felix.duckdb] [--landing data/landing] [--replay monthly]
+    python src/load_raw.py [--db warehouse/felix.duckdb] [--landing data/landing] [--replay monthly]
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ import hashlib
 import os
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import duckdb
@@ -255,7 +255,7 @@ def table_count(con: duckdb.DuckDBPyConnection, table: str) -> int:
 # Incremental load
 # --------------------------------------------------------------------------------------
 def incremental_load(db_path: Path, landing: Path) -> list[TableSummary]:
-    loaded_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    loaded_at = datetime.now(UTC).replace(tzinfo=None)
     summaries: list[TableSummary] = []
     with duckdb.connect(str(db_path)) as con:
         ensure_log(con)
@@ -312,7 +312,7 @@ def is_first_load(db_path: Path) -> bool:
 def replay_monthly(db_path: Path, landing: Path, on_month: MonthCallback | None = None) -> list[TableSummary]:
     """First load, month by month. The DuckDB connection is closed before each callback so that
     another process (dbt) can open the database."""
-    loaded_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    loaded_at = datetime.now(UTC).replace(tzinfo=None)
     files = {table: landing_files(landing, table) for table in TABLES}
 
     # 1. Create the tables and find every month (and the passes it needs) in the landing files.

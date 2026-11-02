@@ -63,6 +63,13 @@ metrics:
     type_params: { measure: { name: chargebacks_recorded, fill_nulls_with: 0 } }
 
   # ------------------------------------------------------------------ formulas
+  - name: revenue_before_losses_usd
+    label: Revenue before losses (USD)
+    description: What Félix earns on succeeded payments, fee revenue + FX revenue, before chargeback losses.
+    type: derived
+    type_params:
+      expr: fee_revenue_usd + fx_revenue_usd
+      metrics: [{ name: fee_revenue_usd }, { name: fx_revenue_usd }]
   - name: net_revenue_usd
     label: Net revenue (USD)
     description: Fee revenue + FX revenue − chargeback losses. The store fee is a pass-through.

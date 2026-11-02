@@ -1,5 +1,6 @@
 -- One row per payment: the status history pivoted into milestone timestamps and 0/1 flags.
 -- Built from the event history, so a later chargeback or refund does not erase `succeeded_at`.
+-- `_loaded_at` is the latest load of any of the payment's events (the incremental facts' watermark).
 with
 
 payment_events as (
@@ -20,7 +21,8 @@ milestones as (
         min(updated_at) filter (where status = 'chargeback') as chargeback_at,
         max(failure_reason) filter (where status in ('failed', 'expired')) as decline_reason,
         max(failure_reason) filter (where status = 'chargeback') as chargeback_reason,
-        max(failure_reason) filter (where status = 'refunded') as refund_reason
+        max(failure_reason) filter (where status = 'refunded') as refund_reason,
+        max(_loaded_at) as _loaded_at
     from payment_events
     group by payment_id
 ),
@@ -53,7 +55,8 @@ joined as (
         milestones.expired_at is not null as is_expired,
         milestones.refunded_at is not null as is_refunded,
         milestones.chargeback_at is not null as is_charged_back,
-        payments.status = 'pending' as is_pending
+        payments.status = 'pending' as is_pending,
+        milestones._loaded_at
     from payments
     inner join milestones on payments.payment_id = milestones.payment_id
 ),
@@ -94,7 +97,8 @@ final as (
                 partition by user_id, is_succeeded order by succeeded_at, payment_id
             ) = 1,
             false
-        ) as is_first_transfer
+        ) as is_first_transfer,
+        _loaded_at
     from joined
 )
 

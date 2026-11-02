@@ -242,3 +242,48 @@ in extras, not in the dbt core, so v6 trims them without dropping any requiremen
 - [x] Moved `ingest/load_raw.py` to `scripts/load_raw.py` (one folder for the Python helpers)
 - [x] Docs (DESIGN v6, README, CLAUDE.md, ADR 0004) updated; fresh-clone run green on Python 3.11 and 3.13
 
+
+---
+
+## Pull-request workflow and fewer files (v7)
+
+- [x] CI on every pull request to `main`/`master`: one `checks` job per Python version (3.11, 3.13) running
+  `setup` → `all` → `lint` → `test` → `check-edge-cases`. `main` changes only through pull requests
+- [x] Python lint with `ruff` (default rules, pinned in `requirements.txt`); the mechanical fixes it asked for left
+  `scripts/generate_sample_data.py` output byte-identical
+- [x] Removed `.sqlfluff` (its settings are now flags in `run.py lint`), `scripts/check_edge_cases.py` (now
+  `python run.py check-edge-cases`), `warehouse/.gitkeep` (`run.py` creates the folder), `docs/adr/` and
+  `docs/edge_cases.md` (now DESIGN.md §15.1 and §18)
+- [x] README reduced to the step-by-step guide; `run.py answers` writes only `docs/answers.md`, whose summary table
+  replaces the README answers block
+- [x] Every Python file except `run.py` moved to `src/` (`dashboard/app.py` → `src/dashboard.py`, `tests_py/` →
+  `src/tests/`, `scripts/*` → `src/*`); the compiled metric SQL moved to `warehouse/compiled/` (generated, git-ignored)
+- [x] Incremental audit: a business-time watermark (`last_updated_at` > max) missed 12 late-arriving chargebacks and
+  refunds in both facts. Now the facts merge on a load-time watermark (`_loaded_at`) plus the maturity lookback, a load
+  that deletes raw rows triggers `--full-refresh`, and `run.py check-incremental` (CI) compares them with a full refresh
+
+---
+
+## Menu and brand (v8)
+
+- [x] `python run.py` with no arguments opens a menu (the help when there is no terminal, so CI never hangs). The
+  dashboard starts in the background on the first free port from 8501 and its link stays at the top; exiting stops it
+- [x] Option 1 is the dbt sequence (`run.py pipeline`): an empty warehouse gets the full ingest (monthly replay) and
+  build; afterwards it is incremental (new or changed landing files → snapshot → build), and a no-op when nothing is new.
+  Option 2 adds a monthly test batch and runs that increment; options 3–5 run the checks, open the dashboard, reset
+- [x] Dashboard in the Félix Pago brand (`src/brand.py`, `src/assets/`): logo header, favicon, light (linen) and dark
+  (slate) themes passed as flags, chart palettes derived from the brand tokens and validated with the data-viz checks
+  in both modes. Its cache follows the warehouse file, so a refresh after a build shows the new data
+- [x] `src/tests/test_run.py`: no menu without a terminal, brand theme flags, `pipeline` command
+- [x] The sequence runs step by step: ingest, one `dbt build --select tag:<step>` per tag (`staging`,
+  `intermediate`, `snapshot`, `core`, `marts`), then the semantic layer. Tests run where their last parent is built
+  (`buildable`, `eager` on the last step); a guard test checks one tag per node, DAG order and the same 258 tests
+- [x] Terminal: clean screen, Félix logo in block letters, clickable links (OSC 8); the sequence splits the screen
+  (connected dots with a spinner on the left, live dbt output on the right), and the marts step fans out into the
+  four groups dbt builds in parallel threads (separate processes are not possible: DuckDB has a single writer)
+- [x] `python run.py` resets the data on start, so option 1 always runs the whole sequence; README cut to a 2-minute read
+- [x] Dashboard tab **Data model**: star diagram and bus matrix generated from dbt's manifest (relationships tests)
+- [x] Dashboard redesign: every tab is a plain-language question, four equal cards and two equal charts; Q1 shows revenue before losses, chargeback losses and net revenue (new metric `revenue_before_losses_usd`)
+- [x] Dashboard tab **Data catalog**: dbt docs (descriptions, columns, two-level lineage) plus the embedded static dbt docs site; `run.py docs`, also run by the sequence
+- [x] Dashboard light only like felixpago.com, with free look-alikes of its licensed fonts (Inter Tight ExtraBold for Plain, DM Sans for Saans)
+- [x] CI in two stages: one build per Python version shares the warehouse as an artifact, then test, lint, check-incremental and check-edge-cases run in parallel; cached dependencies; one required check, `all checks`

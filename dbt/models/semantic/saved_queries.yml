@@ -8,9 +8,11 @@ saved_queries:
     label: "Q1 · Total amount transacted by month"
     description: >
       Gross volume = Σ principal (USD) of succeeded payments, by the month the payment succeeded, with
-      transfers, net revenue and month-over-month / year-over-year growth.
+      transfers, revenue before losses (fees + FX), chargeback losses, net revenue and month-over-month /
+      year-over-year growth.
     query_params:
-      metrics: [gross_volume_usd, transfers, net_revenue_usd, gross_volume_usd_mom_pct, gross_volume_usd_yoy_pct]
+      metrics: [gross_volume_usd, transfers, revenue_before_losses_usd, chargeback_loss_usd, net_revenue_usd,
+                gross_volume_usd_mom_pct, gross_volume_usd_yoy_pct]
       group_by: ["TimeDimension('metric_time', 'month')"]
       where: ["{{ TimeDimension('metric_time', 'month') }} is not null"]
       order_by: ["TimeDimension('metric_time', 'month')"]

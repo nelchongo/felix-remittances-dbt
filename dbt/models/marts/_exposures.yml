@@ -1,7 +1,7 @@
 version: 2
 
-# The Streamlit dashboard (dashboard/app.py): one tab per question. It runs the SQL MetricFlow generates for the
-# answer saved queries (`python run.py compile-metrics` → dashboard/compiled/*.sql), so it depends on the metrics.
+# The Streamlit dashboard (src/dashboard.py): one tab per question. It runs the SQL MetricFlow generates for the
+# answer saved queries (`python run.py compile-metrics` → warehouse/compiled/*.sql), so it depends on the metrics.
 exposures:
   - name: dashboard
     label: Félix remittances dashboard
@@ -13,6 +13,8 @@ exposures:
       - metric('gross_volume_usd')
       - metric('gross_volume_usd_yoy_pct')
       - metric('net_revenue_usd')
+      - metric('revenue_before_losses_usd')
+      - metric('chargeback_loss_usd')
       - metric('recurring_share')
       - metric('churn_rate')
       - metric('payout_attempt_failure_rate')

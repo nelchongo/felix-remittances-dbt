@@ -52,6 +52,7 @@ models:
       - { name: is_charged_back, description: "True if the card payment was charged back.", data_type: boolean }
       - { name: is_pending, description: "True if the payment is still `pending` (in flight at the extract cut-off).", data_type: boolean }
       - { name: is_first_transfer, description: "True for the user's first succeeded payment (ordered by `succeeded_at`). Félix's first transfer is free.", data_type: boolean }
+      - { name: _loaded_at, description: '{{ doc("col_latest_loaded_at") }}', data_type: timestamp }
 
 unit_tests:
   - name: lifecycle_chargeback_keeps_succeeded_at

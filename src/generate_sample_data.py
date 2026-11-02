@@ -30,7 +30,7 @@ Processor / bank / store names are illustrative examples of the US market, not F
 
 Usage
 -----
-    python scripts/generate_sample_data.py --users 2500 --seed 42
+    python src/generate_sample_data.py --users 2500 --seed 42
 """
 from __future__ import annotations
 
@@ -40,15 +40,15 @@ import math
 import random
 import shutil
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 # --------------------------------------------------------------------------------------
 # Time windows
 # --------------------------------------------------------------------------------------
-START = datetime(2024, 7, 1, tzinfo=timezone.utc)                 # first transaction (24 months of baseline -> YoY)
-BASELINE_END = datetime(2026, 6, 30, 23, 59, 59, tzinfo=timezone.utc)  # cut-off of data/source
-END = datetime(2026, 9, 30, 23, 59, 59, tzinfo=timezone.utc)      # end of simulation (test batches)
+START = datetime(2024, 7, 1, tzinfo=UTC)                 # first transaction (24 months of baseline -> YoY)
+BASELINE_END = datetime(2026, 6, 30, 23, 59, 59, tzinfo=UTC)  # cut-off of data/source
+END = datetime(2026, 9, 30, 23, 59, 59, tzinfo=UTC)      # end of simulation (test batches)
 TABLES = ["users", "payments", "receipts", "disbursements"]
 
 # --------------------------------------------------------------------------------------
@@ -207,8 +207,8 @@ def reference_rate(rng: random.Random, country: str, ts: datetime) -> float:
 def parse_ts(s: str) -> datetime:
     s = s.strip()
     if s.endswith("Z"):
-        return datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
-    return datetime.strptime(s, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+        return datetime.strptime(s, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC)
+    return datetime.strptime(s, "%Y-%m-%d %H:%M:%S").replace(tzinfo=UTC)
 
 
 # --------------------------------------------------------------------------------------
@@ -273,7 +273,7 @@ def make_beneficiary(rng: random.Random, last_name: str | None = None,
 def build_users(rng: random.Random, n_users: int) -> list[User]:
     users: list[User] = []
     persona_pairs = [(p, v[0]) for p, v in PERSONAS.items()]
-    signup_lo = datetime(2024, 1, 1, tzinfo=timezone.utc)
+    signup_lo = datetime(2024, 1, 1, tzinfo=UTC)
     for _ in range(n_users):
         fn, ln = rng.choice(FIRST_NAMES), rng.choice(LAST_NAMES)
         frac = rng.random() ** 0.6
@@ -346,7 +346,7 @@ def schedule(rng: random.Random, u: User) -> list[datetime]:
             t = t + timedelta(days=max(3, rng.gauss(gap_mean, gap_sd)), hours=rng.uniform(-12, 12))
     seasonal = [(y, 12, 10, 24, 0.18) for y in (2024, 2025)] + [(y, 5, 1, 10, 0.22) for y in (2025, 2026)]
     for yr, mo, d0, d1, p in seasonal:
-        a, b = datetime(yr, mo, d0, tzinfo=timezone.utc), datetime(yr, mo, d1, tzinfo=timezone.utc)
+        a, b = datetime(yr, mo, d0, tzinfo=UTC), datetime(yr, mo, d1, tzinfo=UTC)
         if lo < a and rng.random() < p * (1.3 if u.beneficiaries[0].country == "MX" else 1.0):
             dates.append(rand_ts(rng, a, b))
     if u.is_mule_sender:
@@ -409,7 +409,7 @@ def generate(n_users: int, seed: int) -> dict[str, list[dict]]:
             if ts.month == 5 and ts.day <= 10:
                 mean *= 1.15
             amount = lognormal_amount(rng, mean, sigma, CASH_MAX_USD if method == "cash" else CARD_MAX_USD)
-            payout_method, last4 = ben.as_of(ts)
+            payout_method, _last4 = ben.as_of(ts)
             first = u.user_id not in first_done
             fee = 0.00 if first else FEE_BY_PAYOUT[payout_method]
             store_fee = STORE_FEE_USD if method == "cash" else 0.0

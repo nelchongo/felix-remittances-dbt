@@ -4,11 +4,11 @@ sources:
   - name: felix_backend
     description: >
       Backend extracts of the Félix remittance platform, loaded as text into the `raw` schema by
-      `scripts/load_raw.py` (no dbt seeds). Files are CDC-style and append-only: a record appears once per
+      `src/load_raw.py` (no dbt seeds). Files are CDC-style and append-only: a record appears once per
       status change or profile version, and exact duplicate rows exist. Typing, cleaning and dedupe happen
       in staging. See data/README.md for the full data contract.
     schema: raw
-    loader: scripts/load_raw.py
+    loader: src/load_raw.py
     config:
       loaded_at_field: _loaded_at
       # `_loaded_at` is the time of the last load run, so freshness passes right after `run.py load` and

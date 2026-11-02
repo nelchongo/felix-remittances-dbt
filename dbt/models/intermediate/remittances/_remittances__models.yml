@@ -72,6 +72,7 @@ models:
       - { name: is_charged_back, description: "True when the payment was charged back.", data_type: boolean }
       - { name: is_refunded, description: "True when the payment was refunded.", data_type: boolean }
       - { name: is_payment_missing, description: "True when the receipt's payment is not in the extract (known source orphans).", data_type: boolean }
+      - { name: _loaded_at, description: '{{ doc("col_latest_loaded_at") }}', data_type: timestamp }
 
 unit_tests:
   - name: remittances_fx_revenue_and_status

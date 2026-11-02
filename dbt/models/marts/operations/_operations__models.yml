@@ -58,7 +58,7 @@ models:
       - { name: delivered_at, description: "Milestone: money delivered (final attempt completed), UTC.", data_type: timestamp }
       - { name: refunded_at, description: "Milestone: payment refunded, UTC.", data_type: timestamp }
       - { name: chargeback_at, description: "Milestone: payment charged back, UTC.", data_type: timestamp }
-      - { name: last_event_at, description: "Latest milestone reached. Drives the incremental filter.", data_type: timestamp }
+      - { name: last_event_at, description: "Latest milestone reached (receipt, delivery, refund or chargeback).", data_type: timestamp }
       - { name: send_amount_usd, description: '{{ doc("col_send_amount_usd") }}', data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
       - { name: fee_revenue_usd, description: "Félix fee of the payment, in USD.", data_type: "decimal(18,2)", config: { meta: { additivity: additive, unit: USD } } }
       - { name: fx_revenue_usd, description: '{{ doc("col_fx_revenue_usd") }}', data_type: "decimal(18,4)", config: { meta: { additivity: additive, unit: USD } } }
@@ -74,6 +74,7 @@ models:
       - { name: is_in_flight, description: "1 while the payout is processing or not attempted yet.", data_type: boolean, config: { meta: { additivity: additive } } }
       - { name: is_failed_refunded, description: "1 when the payment was refunded or every attempt failed.", data_type: boolean, config: { meta: { additivity: additive } } }
       - { name: is_charged_back, description: "1 when the payment was charged back.", data_type: boolean, config: { meta: { additivity: additive } } }
+      - { name: _loaded_at, description: '{{ doc("col_latest_loaded_at") }}', data_type: timestamp, data_tests: [not_null] }
 
   - name: fct_disbursement_attempts
     description: >
