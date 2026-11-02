@@ -144,6 +144,9 @@ def current_stdout():
 
 
 def dbt(*args: str) -> None:
+    """A fresh clone has no dbt_packages yet: install them (dbt deps) before the first dbt command that needs them."""
+    if args[0] not in ("deps", "clean") and not (DBT_DIR / "dbt_packages" / "dbt_utils").is_dir():
+        run(["dbt", "deps"])
     run(["dbt", *args])
 
 
