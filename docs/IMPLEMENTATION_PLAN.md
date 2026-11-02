@@ -285,3 +285,4 @@ in extras, not in the dbt core, so v6 trims them without dropping any requiremen
 - [x] Dashboard tab **Data model**: star diagram and bus matrix generated from dbt's manifest (relationships tests)
 - [x] Dashboard redesign: every tab is a plain-language question, four equal cards and two equal charts; Q1 shows revenue before losses, chargeback losses and net revenue (new metric `revenue_before_losses_usd`)
 - [x] Dashboard tab **Data catalog**: dbt docs (descriptions, columns, two-level lineage) plus the embedded static dbt docs site; `run.py docs`, also run by the sequence
+- [x] Dashboard light only like felixpago.com, with free look-alikes of its licensed fonts (Inter Tight ExtraBold for Plain, DM Sans for Saans)

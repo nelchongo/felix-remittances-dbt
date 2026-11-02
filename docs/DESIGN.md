@@ -12,8 +12,8 @@
 >   (`run.py pipeline`): ingest, then one `dbt build --select tag:<step>` per tag (`staging`, `intermediate`, `snapshot`,
 >   `core`, `marts`), then the semantic layer. The first run ingests and builds everything; later runs are
 >   incremental. The terminal splits in two: connected dots on the left (the marts step fans out into the four
->   groups dbt builds in parallel), live dbt output on the right. The dashboard uses Félix Pago's logo and colors,
->   validated as chart palettes (§14).
+>   groups dbt builds in parallel), live dbt output on the right. The dashboard uses Félix Pago's logo, colors and
+>   look-alike fonts, light only like felixpago.com, with validated chart palettes (§14).
 > - v7 (pull-request workflow, load-time incremental, `src/`): CI runs every check on every pull request to `main`/`master` (one job per
 >   Python version, 3.11 and 3.13), and `main` only changes through a reviewed PR. Python is linted with `ruff`. The README
 >   is only the step-by-step guide; the ADRs, the edge-case notes and the implementation notes moved into this
@@ -526,13 +526,15 @@ re-implementing formulas), which v5 did with 15 dashboard-only queries. Every ch
 **Background and brand (v8).** `python run.py` (the menu) starts the dashboard in the background on the first free
 port from 8501 (log in `warehouse/dashboard.log`) and stops it on exit. `src/brand.py` holds the Félix Pago tokens
 taken from felixpago.com's public stylesheet (slate `#082422`, linen `#fefcf9`, brand cyan `#2bf2f1`, stone, concrete,
-papaya, blueberry) and the logos in `src/assets/`. `run.py` passes the theme as `--theme.light.*` / `--theme.dark.*`
-flags, so there is no Streamlit config file. Chart colors are the brand tokens stepped until each palette passes
-the data-viz checks against its own background (lightness band, chroma ≥ 0.1, colour-blind and normal-vision
-separation, 3:1 contrast): light mode teal `#0d9999` (the brand hue, deeper, because the cyan is unreadable on
-linen), papaya `#f26629`, blueberry `#6060bf`; dark mode `#06a7a6`, `#e85f22`, `#8080d8`. Cohort curves use a
-6-step single-hue teal ramp whose newest step in dark mode is the brand cyan. Status colors (provider tiers) stay
-reserved and always carry an icon and a label. The brand fonts (Plain, Saans) are licensed, so the system font stays.
+papaya, blueberry) and the logos in `src/assets/`. Like felixpago.com, the dashboard is light only (linen
+background, slate text, the logo on a slate band with a cyan rule). The site's fonts, Plain for headings and Saans
+for text, are licensed, so the dashboard loads their closest free equivalents from Google Fonts: Inter Tight
+ExtraBold and DM Sans (the system sans-serif when offline). `run.py` passes the theme and fonts as `--theme.*`
+flags, so there is no Streamlit config file. Chart colors are the brand tokens stepped until the palette passes the
+data-viz checks on linen (lightness band, chroma ≥ 0.1, colour-blind and normal-vision separation, 3:1 contrast):
+teal `#0d9999` (the brand hue, deeper, because the cyan is unreadable on linen), papaya `#f26629` and blueberry
+`#6060bf`. Cohort curves use a 6-step single-hue teal ramp. Status colors (provider tiers) stay reserved and always
+carry an icon and a label.
 
 **Layout (v8).** Every question tab has the same shape: the question in plain words, how it is measured (the saved
 query's description), four cards of the same size, and two charts of the same height side by side, each with its

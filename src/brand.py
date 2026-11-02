@@ -4,8 +4,9 @@ Tokens come from felixpago.com's public stylesheet (slate, linen, brand cyan, st
 Chart colors are those tokens stepped where needed so each palette passes the data-viz checks against its own
 background (lightness band, chroma floor, colour-blind and normal-vision separation, 3:1 contrast). The brand
 cyan is too light to draw on linen, so light mode uses a deeper step of the same hue (194°); the 6-step cohort
-ramps are that hue only, and in dark mode the newest cohort is the brand cyan itself. The fonts (Plain, Saans)
-are licensed, so the dashboard keeps the system font.
+ramp is that hue only. Like felixpago.com, the dashboard is light only. The site's fonts (Plain for headings, Saans
+for text) are licensed, so the dashboard loads their closest free equivalents from Google Fonts: Inter Tight
+ExtraBold and DM Sans (the system sans-serif when offline).
 """
 
 from __future__ import annotations
@@ -18,33 +19,30 @@ LOGO_ON_DARK = ASSETS / "felix_logo_white.svg"  # linen wordmark (the slate one,
 FAVICON = ASSETS / "felix_favicon.png"
 
 SLATE, LINEN, CYAN = "#082422", "#fefcf9", "#2bf2f1"
-STONE, CONCRETE, EVERGREEN = "#edebe9", "#cfcabf", "#35605f"
+STONE, CONCRETE = "#edebe9", "#cfcabf"
 
-# Streamlit theme, one per mode. run.py passes it as `--theme.<mode>.<option>` flags (no config file).
+TEXT_FONT, HEADING_FONT = "DM Sans", "Inter Tight"
+_GOOGLE_FONTS = "https://fonts.googleapis.com/css2?family={}&display=swap"
+
+# Streamlit theme, light only like felixpago.com. run.py passes it as `--theme.<option>` flags (no config file).
 THEME = {
-    "light": {"primaryColor": "#028382", "backgroundColor": LINEN, "secondaryBackgroundColor": STONE,
-              "textColor": SLATE},
-    "dark": {"primaryColor": CYAN, "backgroundColor": SLATE, "secondaryBackgroundColor": "#142e2c",
-             "textColor": LINEN},
+    "base": "light", "primaryColor": "#028382", "backgroundColor": LINEN, "secondaryBackgroundColor": STONE,
+    "textColor": SLATE,
+    "font": f"{TEXT_FONT}:{_GOOGLE_FONTS.format('DM+Sans:wght@400;500;700')}, sans-serif",
+    "headingFont": f"{HEADING_FONT}:{_GOOGLE_FONTS.format('Inter+Tight:wght@700;800')}, sans-serif",
 }
 
-# Chart roles per mode. `series` is the fixed categorical order (teal, papaya, blueberry); `ordinal` runs from
-# the oldest cohort to the newest (most emphasis); status colors for good / bad tiers live in the dashboard.
-CHARTS = {
-    "light": {"series": ["#0d9999", "#f26629", "#6060bf"],
-              "ordinal": ["#00bcbb", "#059f9e", "#028382", "#006868", "#024e4e", "#003635"],
-              "neutral": CONCRETE, "grid": STONE, "axis": CONCRETE, "ink": "rgba(8,36,34,0.72)",
-              "shade": "rgba(207,202,191,0.35)"},
-    "dark": {"series": ["#06a7a6", "#e85f22", "#8080d8"],
-             "ordinal": ["#036262", "#027d7d", "#059999", "#02b6b6", "#22d4d3", CYAN],
-             "neutral": EVERGREEN, "grid": "#213a37", "axis": "#394f4d", "ink": "rgba(254,252,249,0.75)",
-             "shade": "rgba(207,202,191,0.12)"},
-}
+# Chart roles. `series` is the fixed categorical order (teal, papaya, blueberry); `ordinal` runs from the oldest
+# cohort to the newest (most emphasis); status colors for good / bad tiers live in the dashboard.
+CHART = {"series": ["#0d9999", "#f26629", "#6060bf"],
+         "ordinal": ["#00bcbb", "#059f9e", "#028382", "#006868", "#024e4e", "#003635"],
+         "neutral": CONCRETE, "grid": STONE, "axis": CONCRETE, "ink": "rgba(8,36,34,0.72)",
+         "shade": "rgba(207,202,191,0.35)"}
 
 
 def streamlit_flags() -> list[str]:
-    """`streamlit run` flags that apply the brand theme in light and dark mode."""
-    return [f"--theme.{mode}.{option}={value}" for mode, options in THEME.items() for option, value in options.items()]
+    """`streamlit run` flags that apply the brand theme and fonts."""
+    return [f"--theme.{option}={value}" for option, value in THEME.items()]
 
 
 # The wordmark in block letters for the terminal (run.py's menu), with the accent over the é.

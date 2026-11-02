@@ -18,11 +18,11 @@ def test_no_command_without_a_terminal_prints_the_help():
     assert "Dashboard" not in result.stdout  # no background dashboard was started
 
 
-def test_dashboard_command_applies_the_brand_theme_in_both_modes():
-    command = run.dashboard_command()
-    assert "--theme.light.backgroundColor=#fefcf9" in command  # linen
-    assert "--theme.dark.backgroundColor=#082422" in command  # slate
-    assert "--theme.dark.primaryColor=#2bf2f1" in command  # brand cyan
+def test_dashboard_command_applies_the_brand_theme_and_fonts():
+    command = " ".join(run.dashboard_command())
+    assert "--theme.base=light" in command  # light only, like felixpago.com
+    assert "--theme.backgroundColor=#fefcf9" in command  # linen
+    assert "--theme.headingFont=Inter Tight:" in command and "--theme.font=DM Sans:" in command
 
 
 def test_pipeline_is_a_command():

@@ -25,7 +25,16 @@ import streamlit.components.v1 as components
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.brand import CHARTS, CYAN, FAVICON, LINEN, LOGO_ON_DARK, SLATE
+from src.brand import (
+    CHART,
+    CYAN,
+    FAVICON,
+    HEADING_FONT,
+    LINEN,
+    LOGO_ON_DARK,
+    SLATE,
+    TEXT_FONT,
+)
 from src.render_answers import fmt_money, trim_empty_months
 
 DB = Path(os.environ.get("DUCKDB_PATH", ROOT / "warehouse" / "felix.duckdb"))
@@ -47,12 +56,8 @@ SEGMENT = {"top_50pct": "Top 50% of volume", "middle_30pct": "Middle 30%", "tail
 CLUSTER = {"individual": "Individual", "household": "Household", "high_fan_in": "High fan-in"}
 
 
-def mode() -> str:
-    return "dark" if getattr(getattr(st.context, "theme", None), "type", None) == "dark" else "light"
-
-
 def colors() -> dict:
-    return CHARTS[mode()]
+    return CHART
 
 
 # --------------------------------------------------------------------------------------
@@ -159,13 +164,13 @@ def lineage_diagram(entries: dict, selected: str, depth: int = 2) -> str:
         return seen
 
     keep = walk(selected, "parents") | walk(selected, "children") | {selected}
-    c, ink = colors(), "#fefcf9" if mode() == "dark" else "#082422"
+    c = colors()
     lines = ['digraph { rankdir=LR; bgcolor="transparent"; nodesep=0.1; ranksep=0.5;',
              f'node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, color="{c["axis"]}"];',
              f'edge [color="{c["axis"]}", arrowsize=0.5];']
     for uid in sorted(keep):
         e = entries[uid]
-        fill, font = (c["series"][0], "white") if uid == selected else (c["neutral"], "#082422" if mode() == "light" else ink)
+        fill, font = (c["series"][0], "white") if uid == selected else (c["neutral"], SLATE)
         lines.append(f'"{uid}" [label="{e["name"]}\\n{LAYERS.get(e["layer"], "")}", fillcolor="{fill}", fontcolor="{font}"];')
     lines += [f'"{parent}" -> "{uid}";' for uid in keep for parent in entries[uid]["parents"] if parent in keep]
     return "\n".join(lines + ["}"])
@@ -174,7 +179,7 @@ def lineage_diagram(entries: dict, selected: str, depth: int = 2) -> str:
 def star_diagram(graph: dict) -> str:
     """Graphviz DOT: one cluster per mart on the left, the conformed dimensions in core on the right."""
     graph = {name: (mart, dims) for name, (mart, dims, *_) in graph.items()}
-    c, ink = colors(), "#fefcf9" if mode() == "dark" else "#082422"
+    c, ink = colors(), SLATE
     lines = ['digraph { rankdir=LR; bgcolor="transparent"; nodesep=0.12; ranksep=1.6; size="9,5.5";',
              f'node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, color="{c["axis"]}"];',
              f'edge [color="{c["axis"]}", arrowsize=0.5]; fontname="Helvetica"; fontcolor="{ink}";']
@@ -185,7 +190,7 @@ def star_diagram(graph: dict) -> str:
         lines.append("}")
     dims = sorted({d for _, (_, ds) in graph.items() for d in ds})
     lines.append(f'subgraph cluster_core {{ label="core · conformed dimensions"; color="{c["axis"]}"; style="rounded";')
-    lines += [f'"{d}" [fillcolor="{c["neutral"]}", fontcolor="{ink if mode() == "dark" else "#082422"}"];' for d in dims]
+    lines += [f'"{d}" [fillcolor="{c["neutral"]}", fontcolor="{ink}"];' for d in dims]
     lines.append("}")
     lines += [f'"{name}" -> "{d}";' for name, (_, ds) in graph.items() for d in ds]
     return "\n".join(lines + ["}"])
@@ -200,7 +205,7 @@ def show(fig: go.Figure, table: pd.DataFrame, *, key: str, y: str | None = None,
     c = colors()
     fig.update_layout(height=height, margin={"l": 12, "r": 16, "t": 40 if legend else 16, "b": 12},
                       paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", showlegend=legend,
-                      font={"family": 'system-ui, -apple-system, "Segoe UI", sans-serif', "color": c["ink"]},
+                      font={"family": f'"{TEXT_FONT}", system-ui, sans-serif', "color": c["ink"]},
                       legend={"orientation": "h", "y": 1.02, "yanchor": "bottom", "x": 0, "title": None},
                       barcornerradius=4, bargap=0.25)
     axis = {"gridcolor": c["grid"], "linecolor": c["axis"], "zerolinecolor": c["axis"], "showline": True,
@@ -279,13 +284,13 @@ def hbar(df: pd.DataFrame, x: str, y: str, hover: str, colors_: list[str] | str 
 def hero() -> None:
     """Brand header: the linen wordmark on a slate band with a cyan rule, as on felixpago.com."""
     logo = base64.b64encode(LOGO_ON_DARK.read_bytes()).decode()
-    border = f"border:1px solid {CYAN};" if mode() == "dark" else ""
     st.markdown(
-        f"""<div style="background:{SLATE};{border}border-radius:16px;padding:20px 24px;display:flex;
+        f"""<div style="background:{SLATE};border-radius:16px;padding:20px 24px;display:flex;
         align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:8px">
           <img src="data:image/svg+xml;base64,{logo}" alt="Félix Pago" style="height:32px">
           <div style="border-left:3px solid {CYAN};padding-left:16px;color:{LINEN}">
-            <div style="font-size:1.4rem;font-weight:700;line-height:1.25">Remittances analytics</div>
+            <div style="font-family:'{HEADING_FONT}',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;
+            letter-spacing:-0.02em">Remittances analytics</div>
             <div style="font-size:0.85rem;opacity:0.75">Take-home prototype on synthetic data · every number is a
             MetricFlow saved query, the same ones behind docs/answers.md</div>
           </div>
